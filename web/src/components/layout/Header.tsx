@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Menu, Globe, ChevronDown, User, LogOut } from 'lucide-react';
+import { Menu, Globe, ChevronDown, User, LogOut } from 'lucide-react';
 
 const Header = () => {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
