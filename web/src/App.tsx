@@ -1,3 +1,4 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
 
@@ -5,11 +6,13 @@ import Home from "./pages/Home";
 function App() {
 
   return (
-    <>
+    <BrowserRouter>
       <Layout>
-        <Home />
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
       </Layout>
-    </>
+    </BrowserRouter>
   )
 }
 
