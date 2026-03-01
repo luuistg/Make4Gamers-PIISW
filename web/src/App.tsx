@@ -9,26 +9,26 @@ import Register from "./pages/Register";
 
 
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>
-        {/* Auth Routes */}
+
+        {/* Auth */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/recuperar-password" element={<RecuperarPassword />} />
 
-        {/* Main Routes */}
-        <Route
-          element={<Layout />}
-        >
+        {/* Main */}
+        <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/juegos" element={<Juegos />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/chat" element={<Chat />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   )
 }
 
-export default App
+export default App;
