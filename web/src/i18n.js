@@ -37,6 +37,33 @@ i18n
                         terms: "Términos"
                     }
                     },
+                    auth: {
+                        login: "Iniciar sesión",
+                        register: "Registrarse",
+                        email: "Correo electrónico",
+                        password: "Contraseña",
+                        confirmPassword: "Confirmar contraseña",
+                        fullName: "Nombre completo",
+                        username: "Nombre de usuario",
+                        loginButton: "Iniciar sesión",
+                        registerButton: "Crear cuenta",
+                        noAccount: "¿No tienes cuenta?",
+                        haveAccount: "¿Ya tienes cuenta?",
+                        loginLink: "Inicia sesión",
+                        registerLink: "Regístrate",
+                        forgotPassword: "¿Olvidaste tu contraseña?",
+                        rememberMe: "Recuérdame",
+                        or: "o",
+                        continueWithGoogle: "Continuar con Google",
+                        errors: {
+                            emailRequired: "El correo es obligatorio",
+                            invalidEmail: "El correo no es válido",
+                            passwordRequired: "La contraseña es obligatoria",
+                            passwordTooShort: "La contraseña debe tener al menos 6 caracteres",
+                            passwordMismatch: "Las contraseñas no coinciden",
+                            nameRequired: "El nombre es obligatorio",
+                            usernameRequired: "El nombre de usuario es obligatorio"
+                        }
                     home: {
                         popular: "Juegos Populares",
                         search: "Buscar juegos...",
@@ -90,6 +117,33 @@ i18n
                             terms: "Terms"
                         }
                     },
+                    auth: {
+                        login: "Sign In",
+                        register: "Sign Up",
+                        email: "Email",
+                        password: "Password",
+                        confirmPassword: "Confirm Password",
+                        fullName: "Full Name",
+                        username: "Username",
+                        loginButton: "Sign In",
+                        registerButton: "Create Account",
+                        noAccount: "Don't have an account?",
+                        haveAccount: "Already have an account?",
+                        loginLink: "Sign in here",
+                        registerLink: "Sign up here",
+                        forgotPassword: "Forgot your password?",
+                        rememberMe: "Remember me",
+                        or: "or",
+                        continueWithGoogle: "Continue with Google",
+                        errors: {
+                            emailRequired: "Email is required",
+                            invalidEmail: "Email is invalid",
+                            passwordRequired: "Password is required",
+                            passwordTooShort: "Password must be at least 6 characters",
+                            passwordMismatch: "Passwords don't match",
+                            nameRequired: "Name is required",
+                            usernameRequired: "Username is required"
+                        }
                     home: {
                         popular: "Popular Games",
                         search: "Search games...",
@@ -143,6 +197,33 @@ i18n
                             terms: "条款"
                         }
                     },
+                    auth: {
+                        login: "登录",
+                        register: "注册",
+                        email: "电子邮件",
+                        password: "密码",
+                        confirmPassword: "确认密码",
+                        fullName: "全名",
+                        username: "用户名",
+                        loginButton: "登录",
+                        registerButton: "创建账户",
+                        noAccount: "没有账户？",
+                        haveAccount: "已有账户？",
+                        loginLink: "在这里登录",
+                        registerLink: "在这里注册",
+                        forgotPassword: "忘记密码？",
+                        rememberMe: "记住我",
+                        or: "或",
+                        continueWithGoogle: "使用Google继续",
+                        errors: {
+                            emailRequired: "电子邮件是必需的",
+                            invalidEmail: "电子邮件无效",
+                            passwordRequired: "密码是必需的",
+                            passwordTooShort: "密码至少需要6个字符",
+                            passwordMismatch: "密码不匹配",
+                            nameRequired: "名称是必需的",
+                            usernameRequired: "用户名是必需的"
+                        }
                     home: {
                         popular: "热门游戏",
                         search: "搜索游戏...",
