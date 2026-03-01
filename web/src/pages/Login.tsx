@@ -63,7 +63,7 @@ export default function Login() {
       }
 
       if (data.user) {
-        navigate("/panel"); // Ruta de éxito
+        navigate("/"); // Ruta de éxito
       }
     } catch (err) {
       setErrors({ auth: "Ocurrió un error inesperado" });
