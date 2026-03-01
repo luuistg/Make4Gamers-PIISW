@@ -1,10 +1,24 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/layout/Layout";
+import Home from "./pages/Home";
+import Chat from "./pages/Chat";
+import Ranking from "./pages/Ranking";
+import Juegos from "./pages/Juegos";
+
 
 function App() {
 
   return (
-    <>
-      <h1 className="text-3xl font-bold text-blue-600 text-center">Welcome to My App</h1>
-    </>
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/juegos" element={<Juegos />} />
+          <Route path="/ranking" element={<Ranking />} />
+          <Route path="/chat" element={<Chat />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
   )
 }
 
