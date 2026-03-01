@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, Globe, ChevronDown, User, LogOut } from 'lucide-react';
 import { Logo } from '../icons/Logo';
+import { logout } from '../../services/LogOutService';
 
 const Header = () => {
     const { t, i18n } = useTranslation(); 
@@ -54,7 +55,7 @@ const Header = () => {
                                     <span>{t('nav.account')}</span>
                                 </Link>
                                 <div className="h-px bg-slate-800 my-1"></div>
-                                <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-slate-800 hover:text-red-300 transition-colors" onClick={() => setIsProfileOpen(false)}>
+                                <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-slate-800 hover:text-red-300 transition-colors" onClick={() => { logout(); setIsProfileOpen(false); }}>
                                     <LogOut size={16} />
                                     <span>{t('nav.logout')}</span>
                                 </button>
