@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Globe, ChevronDown, User, LogOut } from 'lucide-react';
+import { Logo } from '../icons/Logo';
 
 const Header = () => {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -10,7 +11,7 @@ const Header = () => {
             <div className="container mx-auto flex h-16 items-center justify-between px-4">
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-2 font-bold text-2xl text-indigo-500">
-                    <img src="/logo.png" alt="Logo" className="h-8 w-8" />
+                    <Logo className="h-8 w-8" />
                     <span className="tracking-tighter text-white">Make<span className="text-indigo-500">4Gamers</span></span>
                 </Link>
 
