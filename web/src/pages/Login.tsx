@@ -80,6 +80,22 @@ export default function Login() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: 'http://localhost:5173/' 
+        }
+      });
+
+      if (error) throw error;
+      
+    } catch (err: any) {
+      setErrors({ auth: "Error al intentar conectar con Google: " + err.message });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col">
       <AuthHeader />
@@ -194,8 +210,10 @@ export default function Login() {
               </div>
             </div>
 
+            {/* boton de google*/}
             <button
               type="button"
+              onClick={handleGoogleLogin}
               className="w-full flex items-center justify-center gap-3 bg-slate-800/50 border border-slate-700 hover:bg-slate-800 text-white font-medium py-3 rounded-lg transition-all"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
