@@ -5,6 +5,7 @@ import GameViewport from "../components/gameplay/GameViewport";
 import { supabase } from "../supabase";
 import { createMatch } from "../services/matches/createMatch.service";
 import { getUserGameScore } from "../services/scores/getUserGameScore.service";
+import { useTranslation } from "react-i18next";
 
 type MoveItem = {
   id: string;
@@ -15,6 +16,7 @@ type MoveItem = {
 export default function Gameplay() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [loading, setLoading] = useState(true);
   const [game, setGame] = useState<Game | null>(null);
@@ -55,7 +57,7 @@ export default function Gameplay() {
       setMoves((prev) => [
         {
           id: crypto.randomUUID(),
-          move: msg.payload?.move ?? "Movimiento",
+          move: msg.payload?.move ?? t("gameplay.noMovesYet"),
           at: new Date().toLocaleTimeString(),
         },
         ...prev,
@@ -64,7 +66,7 @@ export default function Gameplay() {
 
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, []);
+  }, [t]);
 
   const supportsHistory = useMemo(() => {
     const modes = game?.available_modes ?? [];
@@ -153,8 +155,8 @@ export default function Gameplay() {
     loadMyScore();
   }, [user?.id, game?.id]);
 
-  if (loading) return <div className="p-6 text-slate-300">Cargando juego...</div>;
-  if (!game) return <div className="p-6 text-red-400">No se encontró el juego.</div>;
+  if (loading) return <div className="p-6 text-slate-300">{t("gameplay.loading")}</div>;
+  if (!game) return <div className="p-6 text-red-400">{t("gameplay.notFound")}</div>;
 
 
   return (
@@ -163,7 +165,7 @@ export default function Gameplay() {
         <div>
           <h1 className="text-xl font-semibold">{game.title}</h1>
           <p className="text-xs text-slate-400">
-            {game.genre ?? "Sin género"} {game.rating ? `· ⭐ ${game.rating}` : ""}
+            {game.genre ?? t("gameplay.noGenre")} {game.rating ? `· ⭐ ${game.rating}` : ""}
           </p>
         </div>
 
@@ -171,7 +173,7 @@ export default function Gameplay() {
           onClick={() => navigate(`/ranking?gameId=${game.id}`)}
           className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm font-medium"
         >
-          Ver ranking
+          {t("gameplay.viewRanking")}
         </button>
       </div>
 
@@ -190,7 +192,7 @@ export default function Gameplay() {
             {/* Aside más compacto */}
             <aside className="h-[600px] rounded-xl border border-slate-800 bg-slate-900 flex flex-col overflow-hidden">
               <div className="px-4 py-3 border-b border-slate-800">
-                <p className="text-xs uppercase tracking-wide text-slate-400">Mi score</p>
+                <p className="text-xs uppercase tracking-wide text-slate-400">{t("gameplay.myScore")}</p>
                 <p className="text-2xl font-bold text-emerald-400 mt-1">
                   {scoreLoading ? "..." : myScore ?? "-"}
                 </p>
@@ -203,7 +205,7 @@ export default function Gameplay() {
                     tab === "chat" ? "bg-slate-800 text-white" : "text-slate-400"
                   }`}
                 >
-                  Chat
+                  {t("gameplay.chat")}
                 </button>
                 <button
                   onClick={() => setTab("history")}
@@ -211,7 +213,7 @@ export default function Gameplay() {
                     tab === "history" ? "bg-slate-800 text-white" : "text-slate-400"
                   }`}
                 >
-                  Historial
+                  {t("gameplay.history")}
                 </button>
               </div>
 
@@ -219,7 +221,7 @@ export default function Gameplay() {
                 <div className="flex flex-col h-full">
                   <div className="flex-1 overflow-auto p-3 space-y-2">
                     {chatMessages.length === 0 ? (
-                      <p className="text-slate-500 text-sm">Sin mensajes todavía.</p>
+                      <p className="text-slate-500 text-sm">{t("gameplay.noMessages")}</p>
                     ) : (
                       chatMessages.map((m, i) => (
                         <div key={i} className="text-sm bg-slate-800 rounded p-2">
@@ -234,14 +236,14 @@ export default function Gameplay() {
                       value={chatInput}
                       onChange={(e) => setChatInput(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && sendChat()}
-                      placeholder="Escribe un mensaje..."
+                      placeholder={t("gameplay.writeMessage")}
                       className="flex-1 bg-slate-800 border border-slate-700 rounded px-3 py-2 text-sm outline-none"
                     />
                     <button
                       onClick={sendChat}
                       className="px-3 py-2 rounded bg-indigo-600 hover:bg-indigo-500 text-sm"
                     >
-                      Enviar
+                      {t("gameplay.send")}
                     </button>
                   </div>
                 </div>

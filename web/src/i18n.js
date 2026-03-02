@@ -85,6 +85,20 @@ i18n
                             premium: "Premium"
                         },
                         players: "jugadores"
+                    },
+                    gameplay: {
+                        loading: "Cargando juego...",
+                        notFound: "No se encontró el juego.",
+                        noGenre: "Sin género",
+                        viewRanking: "Ver ranking",
+                        myScore: "Mi score",
+                        chat: "Chat",
+                        history: "Historial",
+                        noMessages: "Sin mensajes todavía.",
+                        writeMessage: "Escribe un mensaje...",
+                        send: "Enviar",
+                        noMovesRequired: "Este juego no requiere historial de movimientos.",
+                        noMovesYet: "Sin movimientos aún."
                     }
                 }
             },
@@ -166,6 +180,20 @@ i18n
                             premium: "Premium"
                         },
                         players: "players"
+                    },
+                    gameplay: {
+                        loading: "Loading game...",
+                        notFound: "Game not found.",
+                        noGenre: "No genre",
+                        viewRanking: "View ranking",
+                        myScore: "My score",
+                        chat: "Chat",
+                        history: "History",
+                        noMessages: "No messages yet.",
+                        writeMessage: "Write a message...",
+                        send: "Send",
+                        noMovesRequired: "This game does not require move history.",
+                        noMovesYet: "No moves yet."
                     }
                 }
             },
@@ -247,6 +275,20 @@ i18n
                             premium: "高级"
                         },
                         players: "玩家"
+                    },
+                    gameplay: {
+                        loading: "正在加载游戏...",
+                        notFound: "未找到游戏。",
+                        noGenre: "无类型",
+                        viewRanking: "查看排行榜",
+                        myScore: "我的分数",
+                        chat: "聊天",
+                        history: "历史记录",
+                        noMessages: "暂无消息。",
+                        writeMessage: "输入消息...",
+                        send: "发送",
+                        noMovesRequired: "该游戏不需要操作历史。",
+                        noMovesYet: "暂无操作记录。"
                     }
                 }
             }
