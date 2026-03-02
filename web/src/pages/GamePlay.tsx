@@ -4,6 +4,7 @@ import { getGameById, type Game } from "../services/games/getGameById.service";
 import GameViewport from "../components/gameplay/GameViewport";
 import { supabase } from "../supabase";
 import { createMatch } from "../services/matches/createMatch.service";
+import { getUserGameScore } from "../services/scores/getUserGameScore.service";
 
 type MoveItem = {
   id: string;
@@ -25,6 +26,8 @@ export default function Gameplay() {
 
   const [user, setUser] = useState<any>(null);
   const [matchId, setMatchId] = useState<string | null>(null);
+  const [myScore, setMyScore] = useState<number | null>(null);
+  const [scoreLoading, setScoreLoading] = useState(false);
 
   useEffect(() => {
     const loadGame = async () => {
@@ -98,7 +101,7 @@ export default function Gameplay() {
 
       try {
         const newMatchId = await createMatch({
-          gameId: game.id,
+          gameId: game.id
         });
         setMatchId(newMatchId);
         console.log("[Gameplay] match creado:", newMatchId);
@@ -115,19 +118,40 @@ export default function Gameplay() {
 
     const playerName = user?.id || "anonimo";
     const currentMatchId = matchId || "";
+    const currentGameId = game.id || id || "";
 
     const url = new URL(game.game_url);
     url.searchParams.set("player", playerName);
     url.searchParams.set("matchId", currentMatchId);
+    url.searchParams.set("gameId", currentGameId);
 
     return url.toString();
-  }, [game, user, matchId]);
+  }, [game, id, user, matchId]);
 
   useEffect(() => {
     if (finalGameUrl) {
         console.log("[Gameplay] finalGameUrl:", finalGameUrl);
     }
   }, [finalGameUrl]);
+
+  useEffect(() => {
+    const loadMyScore = async () => {
+      if (!user?.id || !game?.id) return;
+
+      setScoreLoading(true);
+      try {
+        const score = await getUserGameScore(user.id, game.id);
+        setMyScore(score);
+      } catch (error) {
+        console.error("Error cargando mi score:", error);
+        setMyScore(null);
+      } finally {
+        setScoreLoading(false);
+      }
+    };
+
+    loadMyScore();
+  }, [user?.id, game?.id]);
 
   if (loading) return <div className="p-6 text-slate-300">Cargando juego...</div>;
   if (!game) return <div className="p-6 text-red-400">No se encontró el juego.</div>;
@@ -165,6 +189,13 @@ export default function Gameplay() {
 
             {/* Aside más compacto */}
             <aside className="h-[600px] rounded-xl border border-slate-800 bg-slate-900 flex flex-col overflow-hidden">
+              <div className="px-4 py-3 border-b border-slate-800">
+                <p className="text-xs uppercase tracking-wide text-slate-400">Mi score</p>
+                <p className="text-2xl font-bold text-emerald-400 mt-1">
+                  {scoreLoading ? "..." : myScore ?? "-"}
+                </p>
+              </div>
+
               <div className="flex border-b border-slate-800">
                 <button
                   onClick={() => setTab("chat")}
