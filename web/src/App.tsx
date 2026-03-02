@@ -13,12 +13,8 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          
-          {/* --- Tus Rutas --- */}
           <Route path="/login" element={<Login />} />
           <Route path="/recuperar-password" element={<RecuperarPassword />} />
-          
-          {/* --- Rutas de tu compañero --- */}
           <Route path="/juegos" element={<Juegos />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/chat" element={<Chat />} />
