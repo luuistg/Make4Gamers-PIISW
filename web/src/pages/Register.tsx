@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
 import AuthHeader from '../components/auth/AuthHeader';
+import { supabase } from '../supabase'; 
 
 export default function Register() {
     const { t } = useTranslation();
+    const [isSuccess, setIsSuccess] = useState(false); 
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -18,6 +20,21 @@ export default function Register() {
         password: '',
         confirmPassword: ''
     });
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+        ...prev,
+        [name]: value
+    }));
+   
+    if (errors[name]) {
+        setErrors(prev => {
+            const newErrors = { ...prev };
+            delete newErrors[name];
+            return newErrors;
+        });
+    }
+};
 
     const validateForm = () => {
         const newErrors: { [key: string]: string } = {};
@@ -55,39 +72,48 @@ export default function Register() {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    e.preventDefault();
+    if (!validateForm()) return;
 
-        if (!validateForm()) return;
+    setLoading(true);
+    setErrors({});
+    setIsSuccess(false);
 
-        setLoading(true);
-        // Simulación de petición a API
-        setTimeout(() => {
-            console.log('Registro con:', {
-                fullName: formData.fullName,
-                username: formData.username,
-                email: formData.email
-            });
-            // Aquí iría la lógica de registro
-            navigate('/');
-            setLoading(false);
-        }, 1500);
-    };
+    try {
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+            email: formData.email,
+            password: formData.password,
+            options: {
+                data: {
+                    username: formData.username,
+                    full_name: formData.fullName, 
+                }
+            }
+        });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-        // Limpiar errores mientras el usuario escribe
-        if (errors[name]) {
-            setErrors(prev => ({
-                ...prev,
-                [name]: ''
-            }));
+        if (authError) throw authError;
+
+    
+
+        if (authData.user) {
+            setIsSuccess(true);
+            setTimeout(() => navigate('/login'), 3000);
         }
-    };
 
+    } catch (error: any) {
+        console.error("Error completo:", error);
+        
+        if (error.message.includes("profiles_pkey")) {
+            setErrors({ form: "Este usuario ya tiene un perfil creado. Intenta con otro correo." });
+        } else if (error.message.includes("username")) {
+            setErrors({ username: "Este nombre de usuario ya está en uso." });
+        } else {
+            setErrors({ form: error.message || 'Ocurrió un error inesperado' });
+        }
+    } finally {
+        setLoading(false);
+    }
+};
     return (
         <div className="min-h-screen bg-slate-950">
             <AuthHeader />
@@ -106,6 +132,19 @@ export default function Register() {
 
                         <h1 className="text-3xl font-bold text-white mb-2 text-center">{t('auth.register')}</h1>
                     
+                                
+                        {isSuccess && (
+                            <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/50 rounded-lg text-emerald-400 text-sm text-center">
+                                ¡Registro exitoso! Por favor, revisa tu correo electrónico para confirmar tu cuenta.
+                            </div>
+                        )}
+
+                        {errors.form && (
+                            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm text-center">
+                                {errors.form}
+                            </div>
+                        )}
+                       
                     {/* Formulario */}
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {/* Nombre completo */}
