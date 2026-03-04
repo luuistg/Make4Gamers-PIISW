@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, X, LogIn } from "lucide-react";
 import GameCard from "../components/games/GameCard";
 import { getGames, type Game } from "../services/games/getGames";
 import { Link } from "react-router-dom";
+import { useAuthStatus } from "../services/session/notAuthenticated";
+import { Alert } from "../components/layout/Alert";
 
 export default function Home() {
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
+  const { loading: authLoading, isAuthenticated } = useAuthStatus();
+  const [showAuthNotice, setShowAuthNotice] = useState(true);
 
   useEffect(() => {
     const loadGames = async () => {
@@ -59,6 +63,17 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-slate-950">
+      {!authLoading && !isAuthenticated && showAuthNotice && (
+        <Alert
+            type="warning"
+            title={t("auth.loginRequiredTitle")}
+            message={t("auth.loginRequired")}
+            actionLabel={t("auth.loginButton")}
+            actionTo="/login"
+            onClose={() => setShowAuthNotice(false)}
+        ></Alert>
+      )}
+
       {/* Hero - Juegos populares */}
       <section className="bg-linear-to-b from-indigo-950/20 to-slate-950 py-12 mb-8">
         <div className="container mx-auto px-4">

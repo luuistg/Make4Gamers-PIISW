@@ -63,7 +63,9 @@ i18n
                             passwordMismatch: "Las contraseñas no coinciden",
                             nameRequired: "El nombre es obligatorio",
                             usernameRequired: "El nombre de usuario es obligatorio"
-                        }
+                        },
+                        loginRequiredTitle: "Inicia sesión",
+                        loginRequired: "Inicia sesión para guardar progreso y acceder a todas las funciones."
                     },
                     home: {
                         popular: "Juegos Populares",
@@ -157,7 +159,9 @@ i18n
                             passwordMismatch: "Passwords don't match",
                             nameRequired: "Name is required",
                             usernameRequired: "Username is required"
-                        }
+                        },
+                        loginRequiredTitle: "Sign in",
+                        loginRequired: "Sign in to save progress and access all features."
                     },
                     home: {
                         popular: "Popular Games",
@@ -251,7 +255,9 @@ i18n
                             passwordMismatch: "密码不匹配",
                             nameRequired: "名称是必需的",
                             usernameRequired: "用户名是必需的"
-                        }
+                        },
+                        loginRequiredTitle: "请登录",
+                        loginRequired: "登录后可保存进度并访问所有功能。"
                     },
                     home: {
                         popular: "热门游戏",
