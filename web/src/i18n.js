@@ -86,6 +86,12 @@ i18n
                         },
                         players: "jugadores"
                     },
+                    genres: {
+                        arcade: "Arcade",
+                        action: "Acción",
+                        rpg: "RPG",
+                        puzzle: "Puzle"
+                    },
                     gameplay: {
                         loading: "Cargando juego...",
                         notFound: "No se encontró el juego.",
@@ -181,6 +187,12 @@ i18n
                         },
                         players: "players"
                     },
+                    genres: {
+                        arcade: "Arcade",
+                        action: "Action",
+                        rpg: "RPG",
+                        puzzle: "Puzzle"
+                    },
                     gameplay: {
                         loading: "Loading game...",
                         notFound: "Game not found.",
@@ -275,6 +287,12 @@ i18n
                             premium: "高级"
                         },
                         players: "玩家"
+                    },
+                    genres: {
+                        arcade: "街机",
+                        action: "动作",
+                        rpg: "角色扮演",
+                        puzzle: "益智"
                     },
                     gameplay: {
                         loading: "正在加载游戏...",

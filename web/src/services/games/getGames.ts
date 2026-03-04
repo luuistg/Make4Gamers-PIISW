@@ -16,6 +16,7 @@ export type Game = {
   created_at: string;
   updated_at: string;
   rating: number | null;
+  players?: number | null;
 };
 
 export async function getGames(): Promise<Game[]> {
@@ -36,7 +37,8 @@ export async function getGames(): Promise<Game[]> {
       available_modes,
       created_at,
       updated_at,
-      rating
+      rating,
+      players
     `)
     .order("created_at", { ascending: false });
 
