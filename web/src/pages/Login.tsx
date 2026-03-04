@@ -224,7 +224,7 @@ export default function Login() {
                     Google
                   </button>
 
-                  {/* NUEVO: Botón de Invitado que activa el interruptor */}
+                  {/* Boton de Invitado */}
                   <button
                     type="button"
                     onClick={() => setMostrarAvisoInvitado(true)}
@@ -244,7 +244,7 @@ export default function Login() {
 
             ) : (
 
-              /* --- PANTALLA DE AVISO MODO INVITADO --- */
+              /* Pantalla de Aviso de Modo Inivtado */
               <div className="animate-fade-in">
                 <div className="flex justify-center mb-4">
                   <div className="p-3 bg-indigo-500/10 rounded-full text-indigo-400">
@@ -257,7 +257,7 @@ export default function Login() {
                 </h2>
                 
                 <p className="text-slate-400 text-center mb-6 text-sm">
-                  Podrás explorar la plataforma, pero tendrás las siguientes limitaciones:
+                  Podrás explorar entrar a M4G, pero tendrás las siguientes limitaciones:
                 </p>
 
                 <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-5 mb-8 space-y-4">
@@ -280,7 +280,7 @@ export default function Login() {
                     onClick={handleEntrarComoInvitado}
                     className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 active:scale-[0.98]"
                   >
-                    Entendido, entrar como invitado
+                    Lo entindo
                   </button>
 
                   <button

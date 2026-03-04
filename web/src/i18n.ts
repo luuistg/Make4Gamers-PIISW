@@ -10,32 +10,32 @@ i18n
             es: {
                 translation: {
                     nav: {
-                    games: "Juegos",
-                    ranking: "Ranking",
-                    chat: "Chat",
-                    account: "Cuenta",
-                    logout: "Cerrar sesión"
+                        games: "Juegos",
+                        ranking: "Ranking",
+                        chat: "Chat",
+                        account: "Cuenta",
+                        logout: "Cerrar sesión"
                     },
                     footer: {
-                    description: "La plataforma definitiva para descubrir, jugar y compartir tus experiencias de juego favoritas.",
-                    rights: "Todos los derechos reservados.",
-                    explore: {
-                        title: "Explorar",
-                        popular: "Populares",
-                        new: "Novedades",
-                        offers: "Ofertas"
-                    },
-                    support: {
-                        title: "Soporte",
-                        help: "Ayuda",
-                        refunds: "Reembolsos",
-                        contact: "Contacto"
-                    },
-                    legal: {
-                        title: "Legal",
-                        privacy: "Privacidad",
-                        terms: "Términos"
-                    }
+                        description: "La plataforma definitiva para descubrir, jugar y compartir tus experiencias de juego favoritas.",
+                        rights: "Todos los derechos reservados.",
+                        explore: {
+                            title: "Explorar",
+                            popular: "Populares",
+                            new: "Novedades",
+                            offers: "Ofertas"
+                        },
+                        support: {
+                            title: "Soporte",
+                            help: "Ayuda",
+                            refunds: "Reembolsos",
+                            contact: "Contacto"
+                        },
+                        legal: {
+                            title: "Legal",
+                            privacy: "Privacidad",
+                            terms: "Términos"
+                        }
                     },
                     auth: {
                         login: "Iniciar sesión",
@@ -64,6 +64,7 @@ i18n
                             nameRequired: "El nombre es obligatorio",
                             usernameRequired: "El nombre de usuario es obligatorio"
                         }
+                    }, // <--- ¡AQUÍ ESTABA EL PROBLEMA! Faltaba esta llave para cerrar 'auth'
                     home: {
                         popular: "Juegos Populares",
                         search: "Buscar juegos...",
@@ -144,6 +145,7 @@ i18n
                             nameRequired: "Name is required",
                             usernameRequired: "Username is required"
                         }
+                    }, // <--- CORREGIDO
                     home: {
                         popular: "Popular Games",
                         search: "Search games...",
@@ -224,6 +226,7 @@ i18n
                             nameRequired: "名称是必需的",
                             usernameRequired: "用户名是必需的"
                         }
+                    }, // <--- CORREGIDO
                     home: {
                         popular: "热门游戏",
                         search: "搜索游戏...",

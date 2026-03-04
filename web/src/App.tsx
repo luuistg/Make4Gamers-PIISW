@@ -7,7 +7,7 @@ import Juegos from "./pages/Juegos";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import RecuperarPassword from "./pages/RecuperarPassword";
-import Gameplay from "./pages/GamePlay";
+//import Gameplay from "./pages/GamePlay";
 
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
           <Route path="/juegos" element={<Juegos />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/juego/:id/gameplay" element={<Gameplay />} />
+          {/* <Route path="/juego/:id/gameplay" element={<Gameplay />} /> */}
         </Route>
 
       </Routes>
