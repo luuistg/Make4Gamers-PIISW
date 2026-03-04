@@ -71,18 +71,11 @@ i18n
                         allGames: "Todos los Juegos",
                         noResults: "No se encontraron juegos",
                         filters: {
-                            category: "Categoría",
-                            price: "Precio",
                             all: "Todos",
                             action: "Acción",
-                            adventure: "Aventura",
+                            arcade: "Arcade",
                             rpg: "RPG",
-                            strategy: "Estrategia",
-                            sports: "Deportes",
-                            free: "Gratis",
-                            under20: "Menos de 20€",
-                            under50: "Menos de 50€",
-                            premium: "Premium"
+                            puzzle: "Puzle"
                         },
                         players: "jugadores"
                     },
@@ -172,18 +165,11 @@ i18n
                         allGames: "All Games",
                         noResults: "No games found",
                         filters: {
-                            category: "Category",
-                            price: "Price",
                             all: "All",
                             action: "Action",
-                            adventure: "Adventure",
+                            arcade: "Arcade",
                             rpg: "RPG",
-                            strategy: "Strategy",
-                            sports: "Sports",
-                            free: "Free",
-                            under20: "Under $20",
-                            under50: "Under $50",
-                            premium: "Premium"
+                            puzzle: "Puzzle"
                         },
                         players: "players"
                     },
@@ -273,18 +259,11 @@ i18n
                         allGames: "所有游戏",
                         noResults: "未找到游戏",
                         filters: {
-                            category: "类别",
-                            price: "价格",
                             all: "全部",
                             action: "动作",
-                            adventure: "冒险",
+                            arcade: "街机",
                             rpg: "角色扮演",
-                            strategy: "策略",
-                            sports: "体育",
-                            free: "免费",
-                            under20: "20元以下",
-                            under50: "50元以下",
-                            premium: "高级"
+                            puzzle: "益智"
                         },
                         players: "玩家"
                     },

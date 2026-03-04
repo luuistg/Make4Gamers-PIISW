@@ -113,10 +113,9 @@ export default function Home() {
               >
                 <option value="all">{t("home.filters.all")}</option>
                 <option value="action">{t("home.filters.action")}</option>
-                <option value="adventure">{t("home.filters.adventure")}</option>
+                <option value="arcade">{t("home.filters.arcade")}</option>
                 <option value="rpg">{t("home.filters.rpg")}</option>
-                <option value="strategy">{t("home.filters.strategy")}</option>
-                <option value="sports">{t("home.filters.sports")}</option>
+                <option value="puzzle">{t("home.filters.puzzle")}</option>
               </select>
             </div>
           </div>
