@@ -64,7 +64,7 @@ i18n
                             nameRequired: "El nombre es obligatorio",
                             usernameRequired: "El nombre de usuario es obligatorio"
                         }
-                    }, // <--- ¡AQUÍ ESTABA EL PROBLEMA! Faltaba esta llave para cerrar 'auth'
+                    },
                     home: {
                         popular: "Juegos Populares",
                         search: "Buscar juegos...",
@@ -145,7 +145,7 @@ i18n
                             nameRequired: "Name is required",
                             usernameRequired: "Username is required"
                         }
-                    }, // <--- CORREGIDO
+                    },
                     home: {
                         popular: "Popular Games",
                         search: "Search games...",
