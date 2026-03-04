@@ -6,9 +6,11 @@ type GameCardProps = {
   image: string;
   genre: string;
   rating: number;
+  players: number;
+  
 };
 
-export default function GameCard({ title, image, genre, rating }: GameCardProps) {
+export default function GameCard({ title, image, genre, rating, players }: GameCardProps) {
   const { t } = useTranslation();
 
   return (
@@ -39,7 +41,7 @@ export default function GameCard({ title, image, genre, rating }: GameCardProps)
 
         <div className="flex items-center gap-1 text-slate-400">
           <Users size={16} />
-          <span className="text-sm">{rating.toFixed(1)}</span>
+          <span className="text-sm">{players.toLocaleString()}</span>
         </div>
       </div>
     </div>

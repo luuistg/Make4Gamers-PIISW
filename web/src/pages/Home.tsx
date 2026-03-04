@@ -71,6 +71,7 @@ export default function Home() {
                     image={game.thumbnail_url ??  "https://via.placeholder.com/400x300?text=No+Image"}
                     genre={game.genre ?? game.genre?? "Sin género"}
                     rating={typeof game.rating === "number" ? game.rating : 0}
+                    players={game.players ?? 0}
                 />
               </Link>
             ))}
@@ -138,6 +139,7 @@ export default function Home() {
                     image={game.thumbnail_url ??  "https://via.placeholder.com/400x300?text=No+Image"}
                     genre={game.genre ?? game.genre?? "Sin género"}
                     rating={typeof game.rating === "number" ? game.rating : 0}
+                    players={game.players ?? 0}
                 />
               </Link>
             ))}
