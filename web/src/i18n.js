@@ -73,6 +73,7 @@ i18n
                         allGames: "Todos los Juegos",
                         noResults: "No se encontraron juegos",
                         filters: {
+                            category: "Categoría",
                             all: "Todos",
                             action: "Acción",
                             arcade: "Arcade",
@@ -169,6 +170,7 @@ i18n
                         allGames: "All Games",
                         noResults: "No games found",
                         filters: {
+                            category: "Category",
                             all: "All",
                             action: "Action",
                             arcade: "Arcade",
@@ -265,6 +267,7 @@ i18n
                         allGames: "所有游戏",
                         noResults: "未找到游戏",
                         filters: {
+                            category: "类别",
                             all: "全部",
                             action: "动作",
                             arcade: "街机",
