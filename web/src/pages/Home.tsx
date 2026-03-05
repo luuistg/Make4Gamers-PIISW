@@ -65,12 +65,12 @@ export default function Home() {
     <div className="min-h-screen bg-slate-950">
       {!authLoading && !isAuthenticated && showAuthNotice && (
         <Alert
-            type="warning"
-            title={t("auth.loginRequiredTitle")}
-            message={t("auth.loginRequired")}
-            actionLabel={t("auth.loginButton")}
-            actionTo="/login"
-            onClose={() => setShowAuthNotice(false)}
+          type="warning"
+          title={t("auth.loginRequiredTitle")}
+          message={t("auth.loginRequired")}
+          actionLabel={t("auth.loginButton")}
+          actionTo="/login"
+          onClose={() => setShowAuthNotice(false)}
         ></Alert>
       )}
 
@@ -82,11 +82,11 @@ export default function Home() {
             {popularGames.map((game) => (
               <Link key={game.id} to={`/game/${game.id}`} className="block">
                 <GameCard
-                    title={game.title ?? game.title ?? "Sin título"}
-                    image={game.thumbnail_url ??  "https://via.placeholder.com/400x300?text=No+Image"}
-                    genre={game.genre ?? game.genre?? "Sin género"}
-                    rating={typeof game.rating === "number" ? game.rating : 0}
-                    players={game.players ?? 0}
+                  title={game.title ?? game.title ?? "Sin título"}
+                  image={game.thumbnail_url ?? "https://via.placeholder.com/400x300?text=No+Image"}
+                  genre={game.genre ?? game.genre ?? "Sin género"}
+                  rating={typeof game.rating === "number" ? game.rating : 0}
+                  players={game.players ?? 0}
                 />
               </Link>
             ))}
@@ -112,7 +112,7 @@ export default function Home() {
           {/* Filtros */}
           <div className="flex items-center gap-2 mb-4">
             <Filter className="text-slate-400" size={20} />
-            <span className="text-slate-400 font-medium">Filtros:</span>
+            <span className="text-slate-400 font-medium">{t("home.filtersLabel")}</span>
           </div>
 
           <div>
@@ -141,7 +141,7 @@ export default function Home() {
       <section className="container mx-auto px-4 pb-12">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-white">{t("home.allGames")}</h2>
-          <span className="text-slate-400">{filteredGames.length} juegos</span>
+          <span className="text-slate-400">{filteredGames.length} {t("home.gamesCount")}</span>
         </div>
 
         {filteredGames.length > 0 ? (
@@ -149,11 +149,11 @@ export default function Home() {
             {filteredGames.map((game) => (
               <Link key={game.id} to={`/game/${game.id}`} className="block">
                 <GameCard
-                    title={game.title ?? game.title ?? "Sin título"}
-                    image={game.thumbnail_url ??  "https://via.placeholder.com/400x300?text=No+Image"}
-                    genre={game.genre ?? game.genre?? "Sin género"}
-                    rating={typeof game.rating === "number" ? game.rating : 0}
-                    players={game.players ?? 0}
+                  title={game.title ?? game.title ?? "Sin título"}
+                  image={game.thumbnail_url ?? "https://via.placeholder.com/400x300?text=No+Image"}
+                  genre={game.genre ?? game.genre ?? "Sin género"}
+                  rating={typeof game.rating === "number" ? game.rating : 0}
+                  players={game.players ?? 0}
                 />
               </Link>
             ))}

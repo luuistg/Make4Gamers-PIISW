@@ -80,7 +80,9 @@ i18n
                             rpg: "RPG",
                             puzzle: "Puzle"
                         },
-                        players: "jugadores"
+                        players: "jugadores",
+                        filtersLabel: "Filtros:",
+                        gamesCount: "juegos"
                     },
                     genres: {
                         arcade: "Arcade",
@@ -177,7 +179,9 @@ i18n
                             rpg: "RPG",
                             puzzle: "Puzzle"
                         },
-                        players: "players"
+                        players: "players",
+                        filtersLabel: "Filters:",
+                        gamesCount: "games"
                     },
                     genres: {
                         arcade: "Arcade",
@@ -274,7 +278,9 @@ i18n
                             rpg: "角色扮演",
                             puzzle: "益智"
                         },
-                        players: "玩家"
+                        players: "玩家",
+                        filtersLabel: "筛选:",
+                        gamesCount: "游戏"
                     },
                     genres: {
                         arcade: "街机",
