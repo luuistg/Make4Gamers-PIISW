@@ -148,7 +148,7 @@ export default function Gameplay() {
             onClick={() => navigate("/juegos")}
             className="mt-2 px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors"
           >
-            {t("gameplay.backToGames", "Volver a juegos")}
+            {t("gameplay.backToGames")}
           </button>
         </div>
       </div>

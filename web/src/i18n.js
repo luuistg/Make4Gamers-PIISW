@@ -102,7 +102,8 @@ i18n
                         writeMessage: "Escribe un mensaje...",
                         send: "Enviar",
                         noMovesRequired: "Este juego no requiere historial de movimientos.",
-                        noMovesYet: "Sin movimientos aún."
+                        noMovesYet: "Sin movimientos aún.",
+                        backToGames: "Volver a juegos"
                     }
                 }
             },
@@ -201,7 +202,8 @@ i18n
                         writeMessage: "Write a message...",
                         send: "Send",
                         noMovesRequired: "This game does not require move history.",
-                        noMovesYet: "No moves yet."
+                        noMovesYet: "No moves yet.",
+                        backToGames: "Back to games"
                     }
                 }
             },
@@ -300,7 +302,8 @@ i18n
                         writeMessage: "输入消息...",
                         send: "发送",
                         noMovesRequired: "该游戏不需要操作历史。",
-                        noMovesYet: "暂无操作记录。"
+                        noMovesYet: "暂无操作记录。",
+                        backToGames: "返回游戏列表"
                     }
                 }
             }
