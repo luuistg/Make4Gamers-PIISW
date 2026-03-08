@@ -10,7 +10,6 @@ export const registrarPuntos = async (userId: string, puntos: number, nombreHito
   // Establecemos un límite de 1000 puntos por acción para evitar trampas.
   const LIMITE_SEGURIDAD = 1000;
   if (puntos > LIMITE_SEGURIDAD) {
-    console.error("ALERTA DE SEGURIDAD: Intento de suma de puntos sospechosa.");
     return { error: "Cantidad de puntos excede el límite permitido." };
   }
 
@@ -28,10 +27,8 @@ export const registrarPuntos = async (userId: string, puntos: number, nombreHito
 
     if (error) throw error;
 
-    console.log(`¡Éxito! Se han sumado ${puntos} puntos por el hito: ${nombreHito}`);
     return { data, error: null };
   } catch (error) {
-    console.error("Error al registrar puntos:", error);
     return { data: null, error };
   }
 };

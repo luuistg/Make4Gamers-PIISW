@@ -61,7 +61,6 @@ export default function Gameplay() {
       try {
         const newMatchId = await createMatch({ gameId: game.id });
         setMatchId(newMatchId);
-        console.log("[Gameplay] match creado:", newMatchId);
       } catch (error) {
         console.error("Error creando match:", error);
       }
@@ -84,12 +83,6 @@ export default function Gameplay() {
 
     return url.toString();
   }, [game, id, user, matchId]);
-
-  useEffect(() => {
-    if (finalGameUrl) {
-      console.log("[Gameplay] finalGameUrl:", finalGameUrl);
-    }
-  }, [finalGameUrl]);
 
   useEffect(() => {
     const loadMyScore = async () => {
