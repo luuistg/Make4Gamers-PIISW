@@ -18,7 +18,7 @@ const Header = () => {
         setIsLangOpen(false);   
     };
 
-    const currentLang = i18n.language.split('-')[0].toUpperCase();
+    const currentLang = (i18n.language ?? 'es').split('-')[0].toUpperCase();
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-slate-950/80 backdrop-blur-md">
