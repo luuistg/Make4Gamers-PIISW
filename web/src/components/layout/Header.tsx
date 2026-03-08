@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, Globe, ChevronDown, User, LogOut } from 'lucide-react';
+import { Menu, Globe, ChevronDown, User, LogOut, LogIn } from 'lucide-react';
 import { Logo } from '../icons/Logo';
 import { logout } from '../../services/LogOutService';
+import { useAuthStatus } from '../../services/session/notAuthenticated';
 
 const Header = () => {
     const { t, i18n } = useTranslation(); 
+    const { isAuthenticated } = useAuthStatus();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isLangOpen, setIsLangOpen] = useState(false);
 
@@ -36,32 +38,41 @@ const Header = () => {
 
                 {/* Actions */}
                 <div className="flex items-center gap-4">
-                    {/* Profile Dropdown */}
-                    <div className="relative">
-                        <button
-                            onClick={() => { setIsProfileOpen(!isProfileOpen); setIsLangOpen(false); }}
-                            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-                        >
-                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 border border-slate-700 text-slate-300">
-                                <User size={16} />
-                            </div>
-                            <ChevronDown size={14} className={`text-slate-400 hidden sm:block transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
-                        </button>
-
-                        {isProfileOpen && (
-                            <div className="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-lg shadow-xl overflow-hidden py-1 z-50">
-                                <Link to="/cuenta" className="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white transition-colors" onClick={() => setIsProfileOpen(false)}>
+                    {/* Profile Dropdown / Login Button */}
+                    {isAuthenticated ? (
+                        <div className="relative">
+                            <button
+                                onClick={() => { setIsProfileOpen(!isProfileOpen); setIsLangOpen(false); }}
+                                className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                            >
+                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 border border-slate-700 text-slate-300">
                                     <User size={16} />
-                                    <span>{t('nav.account')}</span>
-                                </Link>
-                                <div className="h-px bg-slate-800 my-1"></div>
-                                <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-slate-800 hover:text-red-300 transition-colors" onClick={() => { logout(); setIsProfileOpen(false); }}>
-                                    <LogOut size={16} />
-                                    <span>{t('nav.logout')}</span>
-                                </button>
-                            </div>
-                        )}
-                    </div>
+                                </div>
+                                <ChevronDown size={14} className={`text-slate-400 hidden sm:block transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
+                            </button>
+
+                            {isProfileOpen && (
+                                <div className="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-lg shadow-xl overflow-hidden py-1 z-50">
+                                    <Link to="/cuenta" className="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white transition-colors" onClick={() => setIsProfileOpen(false)}>
+                                        <User size={16} />
+                                        <span>{t('nav.account')}</span>
+                                    </Link>
+                                    <div className="h-px bg-slate-800 my-1"></div>
+                                    <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-slate-800 hover:text-red-300 transition-colors" onClick={() => { logout(); setIsProfileOpen(false); }}>
+                                        <LogOut size={16} />
+                                        <span>{t('nav.logout')}</span>
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <Link
+                            to="/login"
+                            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+                        >
+                            <span className="hidden sm:inline">{t('auth.login') || 'Iniciar Sesión'}</span>
+                        </Link>
+                    )}
 
                     <button className="md:hidden p-2 text-slate-300">
                         <Menu size={24} />
