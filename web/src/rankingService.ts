@@ -7,7 +7,10 @@ import { supabase } from './supabase';
 export const registrarPuntos = async (userId: string, puntos: number, nombreHito: string) => {
   
   // --- SCRUM-97: Control de Abuso ---
-  // Establecemos un límite de 1000 puntos por acción para evitar trampas.
+  if (!Number.isFinite(puntos) || puntos <= 0) {
+    return { data: null, error: "Los puntos deben ser un número positivo válido." };
+  }
+
   const LIMITE_SEGURIDAD = 1000;
   if (puntos > LIMITE_SEGURIDAD) {
     return { data: null, error: "Cantidad de puntos excede el límite permitido." };
