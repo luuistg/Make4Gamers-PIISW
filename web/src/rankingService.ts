@@ -10,7 +10,7 @@ export const registrarPuntos = async (userId: string, puntos: number, nombreHito
   // Establecemos un límite de 1000 puntos por acción para evitar trampas.
   const LIMITE_SEGURIDAD = 1000;
   if (puntos > LIMITE_SEGURIDAD) {
-    return { error: "Cantidad de puntos excede el límite permitido." };
+    return { data: null, error: "Cantidad de puntos excede el límite permitido." };
   }
 
   try {
