@@ -9,10 +9,9 @@ import Register from "./pages/Register";
 import RecuperarPassword from "./pages/RecuperarPassword";
 import GameplayPage from "./pages/GamePlay";
 
-
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         {/* Auth */}
         <Route path="/login" element={<Login />} />
@@ -27,7 +26,6 @@ function App() {
           <Route path="/chat" element={<Chat />} />
           <Route path="/game/:id" element={<GameplayPage />} />
         </Route>
-
       </Routes>
     </BrowserRouter>
   );
