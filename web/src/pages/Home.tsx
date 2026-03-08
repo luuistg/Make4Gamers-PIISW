@@ -79,9 +79,9 @@ export default function Home() {
             {popularGames.map((game) => (
               <Link key={game.id} to={`/game/${game.id}`} className="block">
                 <GameCard
-                  title={game.title ?? game.title ?? "Sin título"}
+                  title={game.title}
                   image={game.thumbnail_url ?? "https://via.placeholder.com/400x300?text=No+Image"}
-                  genre={game.genre ?? game.genre ?? "Sin género"}
+                  genre={game.genre ?? t("gameplay.noGenre")}
                   rating={typeof game.rating === "number" ? game.rating : 0}
                   players={game.players ?? 0}
                 />
@@ -146,9 +146,9 @@ export default function Home() {
             {filteredGames.map((game) => (
               <Link key={game.id} to={`/game/${game.id}`} className="block">
                 <GameCard
-                  title={game.title ?? game.title ?? "Sin título"}
+                  title={game.title}
                   image={game.thumbnail_url ?? "https://via.placeholder.com/400x300?text=No+Image"}
-                  genre={game.genre ?? game.genre ?? "Sin género"}
+                  genre={game.genre ?? t("gameplay.noGenre")}
                   rating={typeof game.rating === "number" ? game.rating : 0}
                   players={game.players ?? 0}
                 />
