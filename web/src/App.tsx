@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
 import Chat from "./pages/Chat";
@@ -11,7 +11,7 @@ import GameplayPage from "./pages/GamePlay";
 
 function App() {
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <HashRouter>
       <Routes>
         {/* Auth */}
         <Route path="/login" element={<Login />} />
@@ -27,7 +27,7 @@ function App() {
           <Route path="/game/:id" element={<GameplayPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
