@@ -1,15 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import type { User } from "@supabase/supabase-js";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { getGameById, type Game } from "../services/games/getGameById.service";
-import { createMatch } from "../services/matches/createMatch.service";
-import { getUserGameScore } from "../services/scores/getUserGameScore.service";
+import { getGameById, type Game } from "../features/games/services/getGameById.service";
+import { createMatch } from "../features/gameplay/services/createMatch.service";
+import { getUserGameScore } from "../features/gameplay/services/getUserGameScore.service";
+import { getAuthenticatedUserId } from "../features/auth/services/auth.service";
 
-import { supabase } from "../supabase";
-import GameViewport from "../components/gameplay/GameViewport";
-import GameplaySidebar from "../components/gameplay/GameplaySidebar";
+import GameViewport from "../features/gameplay/components/GameViewport";
+import GameplaySidebar from "../features/gameplay/components/GameplaySidebar";
 
 export default function Gameplay() {
   const { id } = useParams<{ id: string }>();
@@ -19,7 +18,7 @@ export default function Gameplay() {
   const [loading, setLoading] = useState(true);
   const [game, setGame] = useState<Game | null>(null);
 
-  const [user, setUser] = useState<User | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [matchId, setMatchId] = useState<string | null>(null);
 
   const [myScore, setMyScore] = useState<number | null>(null);
@@ -45,10 +44,8 @@ export default function Gameplay() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user ?? null);
+      const currentUserId = await getAuthenticatedUserId();
+      setUserId(currentUserId);
     };
 
     fetchUser();
@@ -56,7 +53,7 @@ export default function Gameplay() {
 
   useEffect(() => {
     const initMatch = async () => {
-      if (!game?.id || !user?.id || matchId) return;
+      if (!game?.id || !userId || matchId) return;
 
       try {
         const newMatchId = await createMatch({ gameId: game.id });
@@ -67,12 +64,12 @@ export default function Gameplay() {
     };
 
     initMatch();
-  }, [game?.id, user?.id, matchId]);
+  }, [game?.id, userId, matchId]);
 
   const finalGameUrl = useMemo(() => {
     if (!game?.game_url) return "";
 
-    const playerName = user?.id || "anonimo";
+    const playerName = userId || "anonimo";
     const currentMatchId = matchId || "";
     const currentGameId = game.id || id || "";
 
@@ -82,15 +79,15 @@ export default function Gameplay() {
     url.searchParams.set("gameId", currentGameId);
 
     return url.toString();
-  }, [game, id, user, matchId]);
+  }, [game, id, userId, matchId]);
 
   useEffect(() => {
     const loadMyScore = async () => {
-      if (!user?.id || !game?.id) return;
+      if (!userId || !game?.id) return;
 
       setScoreLoading(true);
       try {
-        const score = await getUserGameScore(user.id, game.id);
+        const score = await getUserGameScore(userId, game.id);
         setMyScore(score);
       } catch (error) {
         console.error("Error cargando mi score:", error);
@@ -101,7 +98,7 @@ export default function Gameplay() {
     };
 
     loadMyScore();
-  }, [user?.id, game?.id]);
+  }, [userId, game?.id]);
 
   if (loading)
     return (
