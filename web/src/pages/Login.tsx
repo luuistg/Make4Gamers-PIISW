@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Mail, Lock, Eye, EyeOff, AlertCircle, Info } from 'lucide-react';
-import { loginWithEmail, loginWithGoogle } from '../features/auth/services/auth.service';
-import AuthHeader from '../features/auth/components/AuthHeader';
+import { supabase } from "../supabase"; 
+import AuthHeader from '../components/auth/AuthHeader';
 
 export default function Login() {
   const { t } = useTranslation();
@@ -49,10 +49,10 @@ export default function Login() {
     setErrors({});
 
     try {
-      const { data, error: supabaseError } = await loginWithEmail(
-        formData.email,
-        formData.password,
-      );
+      const { data, error: supabaseError } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
 
       if (supabaseError) {
         const message = supabaseError.message === "Invalid login credentials"
@@ -84,7 +84,12 @@ export default function Login() {
 
   const handleGoogleLogin = async () => {
     try {
-      const { error } = await loginWithGoogle('http://localhost:5173/');
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: 'http://localhost:5173/' 
+        }
+      });
 
       if (error) throw error;
       

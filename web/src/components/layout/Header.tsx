@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, Globe, ChevronDown, User, LogOut } from 'lucide-react';
 import { Logo } from '../icons/Logo';
-import { logout } from '../../features/auth/services/logout.service';
-import { useAuthStatus } from '../../features/auth/hooks/useAuthStatus';
+import { logout } from '../../services/LogOutService';
+import { useAuthStatus } from '../../services/session/notAuthenticated';
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {

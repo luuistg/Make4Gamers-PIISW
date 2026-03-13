@@ -1,11 +1,7 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
+import { supabase } from "../../supabase";
 
-export async function findTopUserGameScore(
-  client: SupabaseClient,
-  userId: string,
-  gameId: string,
-): Promise<number | null> {
-  const { data, error } = await client
+export async function getUserGameScore(userId: string, gameId: string): Promise<number | null> {
+  const { data, error } = await supabase
     .from("scores")
     .select("score")
     .eq("user_id", userId)

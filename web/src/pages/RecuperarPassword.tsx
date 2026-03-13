@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { requestPasswordReset } from "../features/auth/services/auth.service";
+import { supabase } from "../supabase";
 
 export default function RecuperarPassword() {
   const [email, setEmail] = useState("");
@@ -18,7 +18,9 @@ export default function RecuperarPassword() {
 
     setIsLoading(true);
 
-    const { error } = await requestPasswordReset(email, "http://localhost:5173/actualizar-password");
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "http://localhost:5173/actualizar-password",
+    });
 
     setIsLoading(false);
 
