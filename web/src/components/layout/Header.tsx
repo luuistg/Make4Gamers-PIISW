@@ -34,7 +34,7 @@ const Header = () => {
                 {/* Logo */}
                 <Link to="/" className="flex items-center gap-2 font-bold text-2xl text-indigo-500">
                     <Logo className="h-8 w-8" />
-                    <span className="tracking-tighter text-white">Make<span className="text-indigo-500">4Gamers</span></span>
+                    <span className="tracking-tighter text-white">Made<span className="text-indigo-500">4Gamers</span></span>
                 </Link>
 
                 {/* Desktop Nav - Usando t() para los textos */}
