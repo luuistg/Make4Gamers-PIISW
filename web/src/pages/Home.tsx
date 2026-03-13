@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Search, Filter } from "lucide-react";
-import GameCard from "../components/games/GameCard";
-import { getGames, type Game } from "../services/games/getGames";
+import GameCard from "../features/games/components/GameCard";
+import { getGames, type Game } from "../features/games/services/getGames";
 import { Link } from "react-router-dom";
-import { useAuthStatus } from "../services/session/notAuthenticated";
-import { Alert } from "../components/layout/Alert";
+import { useAuthStatus } from "../features/auth/hooks/useAuthStatus";
+import { Alert } from "../shared/layout/Alert";
 
 export default function Home() {
   const [games, setGames] = useState<Game[]>([]);

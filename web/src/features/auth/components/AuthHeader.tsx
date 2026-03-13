@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Globe, ChevronDown } from 'lucide-react';
-import { Logo } from '../icons/Logo';
+import { Logo } from '../../../shared/icons/Logo';
 
 export default function AuthHeader() {
     const { i18n } = useTranslation();

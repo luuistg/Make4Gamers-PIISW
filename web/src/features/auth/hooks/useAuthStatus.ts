@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../../supabase";
+import {
+  getAuthenticatedUser,
+  subscribeToAuthState,
+} from "../services/auth.service";
 
 export const useAuthStatus = () => {
   const [loading, setLoading] = useState(true);
@@ -9,9 +12,7 @@ export const useAuthStatus = () => {
     let mounted = true;
 
     const checkUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const user = await getAuthenticatedUser();
 
       if (!mounted) return;
       setIsAuthenticated(!!user);
@@ -22,7 +23,7 @@ export const useAuthStatus = () => {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = subscribeToAuthState((_event, session) => {
       setIsAuthenticated(!!session?.user);
       setLoading(false);
     });
