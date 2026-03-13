@@ -1,0 +1,37 @@
+import { supabase } from './supabase';
+
+/**
+ * SCRUM-95: Sistema de Puntuación y Hitos
+ * Esta función se encarga de registrar los puntos que gana un usuario.
+ */
+export const registrarPuntos = async (userId: string, puntos: number, nombreHito: string) => {
+  
+  // --- SCRUM-97: Control de Abuso ---
+  if (!Number.isFinite(puntos) || puntos <= 0) {
+    return { data: null, error: "Los puntos deben ser un número positivo válido." };
+  }
+
+  const LIMITE_SEGURIDAD = 1000;
+  if (puntos > LIMITE_SEGURIDAD) {
+    return { data: null, error: "Cantidad de puntos excede el límite permitido." };
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('puntuaciones') // Asegúrate de que tu tabla en Supabase se llame así
+      .insert([
+        { 
+          user_id: userId, 
+          cantidad: puntos, 
+          hito: nombreHito, 
+          creado_en: new Date().toISOString() 
+        }
+      ]);
+
+    if (error) throw error;
+
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+};
