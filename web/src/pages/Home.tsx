@@ -12,7 +12,7 @@ function Home() {
 
   const { loading: authLoading, isAuthenticated } = useAuthStatus();
   const [showAuthNotice, setShowAuthNotice] = useState(true);
-  
+
   return (
     <>
 
@@ -43,7 +43,7 @@ function Home() {
           </div>
 
           <h1 className="max-w-5xl text-6xl font-black uppercase leading-[0.9] tracking-[-0.05em] text-white drop-shadow-[0_0_10px_rgba(192,132,252,0.25)] md:text-8xl xl:text-[10rem]">
-            <span className="text-violet-700 drop-shadow-[0_0_10px_rgba(139,92,246,0.4)]">Made</span>4Gamers
+            Made<span className="text-violet-700 drop-shadow-[0_0_10px_rgba(139,92,246,0.4)]">4Gamers</span>
           </h1>
 
           <div className="relative mt-8 inline-flex items-center justify-center">
