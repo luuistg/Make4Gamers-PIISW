@@ -1,65 +1,21 @@
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Search, Filter } from "lucide-react";
-import GameCard from "../features/games/components/GameCard";
-import { getGames, type Game } from "../features/games/services/getGames";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Logo } from '../shared/icons/Logo'
+import { ScrollSplitHero } from '../features/landing/components/ScrollSplitHero'
+import Typewriter from 'typewriter-effect'
 import { useAuthStatus } from "../features/auth/hooks/useAuthStatus";
 import { Alert } from "../shared/layout/Alert";
+import { t } from "i18next";
 
-export default function Home() {
-  const [games, setGames] = useState<Game[]>([]);
-  const { t } = useTranslation();
+
+
+function Home() {
+
   const { loading: authLoading, isAuthenticated } = useAuthStatus();
   const [showAuthNotice, setShowAuthNotice] = useState(true);
 
-  useEffect(() => {
-    const loadGames = async () => {
-      try {
-        const gamesData = await getGames(); // llamada a la función
-        setGames(gamesData);
-      } catch (error) {
-        console.error("Error loading games:", error);
-      }
-    };
-
-    loadGames();
-  }, []);
-
-  // Datos de ejemplo de juegos
-  /*const gamesData = [
-    { id: 1, title: "Cyberpunk 2077", category: "RPG", players: 1250000, rating: 4.5, image: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=400&h=300&fit=crop" },
-    { id: 2, title: "The Witcher 3", category: "RPG", players: 2100000, rating: 4.9, image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&h=300&fit=crop" },
-    { id: 3, title: "Fortnite", category: "Action", players: 5000000, rating: 4.3, image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop" },
-    { id: 4, title: "Minecraft", category: "Adventure", players: 8000000, rating: 4.8, image: "https://images.unsplash.com/photo-1580327344181-c1163234e5a0?w=400&h=300&fit=crop" },
-    { id: 5, title: "League of Legends", category: "Strategy", players: 6500000, rating: 4.2, image: "https://images.unsplash.com/photo-1560419015-7c427e8ae5ba?w=400&h=300&fit=crop" },
-    { id: 6, title: "FIFA 24", category: "Sports", players: 3200000, rating: 4.0, image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=300&fit=crop" },
-    { id: 7, title: "God of War", category: "Action", players: 1800000, rating: 4.9, image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&h=300&fit=crop" },
-    { id: 8, title: "Valorant", category: "Action", players: 4200000, rating: 4.4, image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop" },
-    { id: 9, title: "Elden Ring", category: "RPG", players: 2500000, rating: 4.7, image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=300&fit=crop" },
-    { id: 10, title: "Apex Legends", category: "Action", players: 3800000, rating: 4.3, image: "https://images.unsplash.com/photo-1592155931584-901ac15763e3?w=400&h=300&fit=crop" },
-    { id: 11, title: "Zelda: BOTW", category: "Adventure", players: 1500000, rating: 4.9, image: "https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=400&h=300&fit=crop" },
-    { id: 12, title: "Counter Strike 2", category: "Action", players: 7200000, rating: 4.6, image: "https://images.unsplash.com/photo-1542751110-97427bbecf20?w=400&h=300&fit=crop" },
-  ];*/
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("all");
-
-  // Obtener juegos populares (top 4 por rating)
-  const popularGames = [...games]
-    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
-    .slice(0, 4);
-
-  // Filtrar juegos
-  const filteredGames = games.filter((game) => {
-    const matchesSearch = game.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === "all" || (game.genre?.toLowerCase() === categoryFilter.toLowerCase());
-
-    return matchesSearch && matchesCategory;
-  });
-
   return (
-    <div className="min-h-screen bg-slate-950">
+    <>
+
       {!authLoading && !isAuthenticated && showAuthNotice && (
         <Alert
           type="warning"
@@ -68,99 +24,111 @@ export default function Home() {
           actionLabel={t("auth.loginButton")}
           actionTo="/login"
           onClose={() => setShowAuthNotice(false)}
-        ></Alert>
+        />
       )}
 
-      {/* Hero - Juegos populares */}
-      <section className="bg-linear-to-b from-indigo-950/20 to-slate-950 py-12 mb-8">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-6">{t("home.popular")}</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {popularGames.map((game) => (
-              <Link key={game.id} to={`/game/${game.id}`} className="block">
-                <GameCard
-                  title={game.title}
-                  image={game.thumbnail_url ?? "https://via.placeholder.com/400x300?text=No+Image"}
-                  genre={game.genre ?? t("gameplay.noGenre")}
-                  rating={typeof game.rating === "number" ? game.rating : 0}
-                  players={game.players ?? 0}
-                />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Sección de filtros y barra de búsqueda */}
-      <section className="container mx-auto px-4 mb-8">
-        <div className="bg-slate-900 rounded-xl p-6 border border-slate-800">
-          {/* Barra de búsqueda */}
-          <div className="relative mb-6">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-            <input
-              type="text"
-              placeholder={t("home.search")}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-slate-800 text-white pl-12 pr-4 py-3 rounded-lg border border-slate-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all"
+      <section className="relative flex min-h-[100svh] items-center justify-center px-8 text-white">
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-center text-center">
+          <div className="mb-6 text-sm font-semibold uppercase tracking-[0.45em] text-lime-200 md:text-base">
+            <Typewriter
+              onInit={(typewriter) => {
+                typewriter
+                  .typeString('Challenge the Top,')
+                  .pauseFor(1000)
+                  .deleteAll()
+                  .typeString('Be the Top.')
+                  .start()
+              }}
             />
           </div>
 
-          {/* Filtros */}
-          <div className="flex items-center gap-2 mb-4">
-            <Filter className="text-slate-400" size={20} />
-            <span className="text-slate-400 font-medium">{t("home.filtersLabel")}</span>
-          </div>
+          <h1 className="max-w-5xl text-6xl font-black uppercase leading-[0.9] tracking-[-0.05em] text-white drop-shadow-[0_0_10px_rgba(192,132,252,0.25)] md:text-8xl xl:text-[10rem]">
+            Made<span className="text-violet-700 drop-shadow-[0_0_10px_rgba(139,92,246,0.4)]">4Gamers</span>
+          </h1>
 
-          <div>
-            {/* Filtro de categoría */}
-            <div>
-              <label className="block text-sm font-medium text-slate-400 mb-2">
-                {t("home.filters.category")}
-              </label>
-              <select
-                value={categoryFilter}
-                onChange={(e) => setCategoryFilter(e.target.value)}
-                className="w-full bg-slate-800 text-white px-4 py-2 rounded-lg border border-slate-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all"
-              >
-                <option value="all">{t("home.filters.all")}</option>
-                <option value="action">{t("home.filters.action")}</option>
-                <option value="arcade">{t("home.filters.arcade")}</option>
-                <option value="rpg">{t("home.filters.rpg")}</option>
-                <option value="puzzle">{t("home.filters.puzzle")}</option>
-              </select>
+          <div className="relative mt-8 inline-flex items-center justify-center">
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center [animation:spin_14s_linear_infinite]">
+              <Logo className="h-80 w-auto text-fuchsia-400/55 blur-xl" />
             </div>
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center [animation:pulse_3.8s_ease-in-out_infinite]">
+              <Logo className="h-80 w-auto text-lime-300/70 blur-md" />
+            </div>
+            <Logo className="h-80 w-auto text-lime-200 drop-shadow-[0_0_28px_rgba(163,230,53,0.75)]" />
           </div>
+
+
+          <svg
+            viewBox="0 0 1200 260"
+            className="mt-8 w-full max-w-5xl"
+            role="img"
+            aria-label="Decoración visual Made4Gamers"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <linearGradient id="limeLine" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#bef264" stopOpacity="0" />
+                <stop offset="20%" stopColor="#bef264" stopOpacity="0.9" />
+                <stop offset="80%" stopColor="#bef264" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#bef264" stopOpacity="0" />
+              </linearGradient>
+              <radialGradient id="glow" cx="50%" cy="50%" r="55%">
+                <stop offset="0%" stopColor="#84cc16" stopOpacity="0.22" />
+                <stop offset="100%" stopColor="#84cc16" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+
+            <rect x="0" y="0" width="1200" height="260" fill="url(#glow)" />
+            <path
+              d="M20 170 C160 70, 340 250, 520 160 C700 70, 880 250, 1180 120"
+              fill="none"
+              stroke="url(#limeLine)"
+              strokeWidth="4"
+              strokeLinecap="round"
+            />
+            <path
+              d="M20 200 C210 120, 360 240, 590 170 C820 100, 980 210, 1180 170"
+              fill="none"
+              stroke="url(#limeLine)"
+              strokeWidth="2"
+              strokeOpacity="0.7"
+              strokeLinecap="round"
+            />
+          </svg>
         </div>
       </section>
 
-      {/* All Games Section */}
-      <section className="container mx-auto px-4 pb-12">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-white">{t("home.allGames")}</h2>
-          <span className="text-slate-400">{filteredGames.length} {t("home.gamesCount")}</span>
-        </div>
-
-        {filteredGames.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredGames.map((game) => (
-              <Link key={game.id} to={`/game/${game.id}`} className="block">
-                <GameCard
-                  title={game.title}
-                  image={game.thumbnail_url ?? "https://via.placeholder.com/400x300?text=No+Image"}
-                  genre={game.genre ?? t("gameplay.noGenre")}
-                  rating={typeof game.rating === "number" ? game.rating : 0}
-                  players={game.players ?? 0}
-                />
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16">
-            <p className="text-slate-400 text-lg">{t("home.noResults")}</p>
-          </div>
-        )}
-      </section>
-    </div>
-  );
+      <ScrollSplitHero
+        direction="right"
+        imageSrc="/assets/ps5.png"
+        imageAlt="Producto"
+        title={
+          <h2 className="text-6xl font-black leading-tight text-white">
+            Al igual que el mundo de los videjuegos evoluciona, en <br /> <span className="text-lime-200">Made</span>4Gamers tu podrás hacerlo.
+          </h2>
+        }
+      />
+      <ScrollSplitHero
+        direction="left"
+        imageSrc="/assets/ps3.png"
+        imageAlt="Producto"
+        title={
+          <h2 className="text-6xl font-black leading-tight text-white">
+            Comienza desde abajo, compite con gente de tu nivel y llega al<span className="text-lime-200"> Top</span>.
+          </h2>
+        }
+      />
+      <ScrollSplitHero
+        direction="right"
+        imageSrc="/assets/nintendo.png"
+        imageAlt="Producto"
+        title={
+          <h2 className="text-6xl font-black leading-tight text-white">
+            <span className="text-lime-200">EVOLUCIONA</span> y llegarás a ser el mejor.
+          </h2>
+        }
+      />
+    </>
+  )
 }
+
+export default Home
