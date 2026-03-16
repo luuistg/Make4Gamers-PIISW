@@ -1,6 +1,3 @@
-import { t } from "i18next";
-
-
 export type SlotButton = {
   textKey: string
   onClick: () => void
@@ -25,27 +22,22 @@ export const slots: SlotEvent[] = [
   },
   {
     title: 'Polygon Zero',
-    imageSrc: '/assets/emblems/nintendoEmblem.png',
+    imageSrc: '/assets/emblems/ps1Emblem.png',
     imageAlt: 'Tier 2',
   },
   {
-    title: 'Emotion Engine',
-    imageSrc: '/assets/emblems/nintendoEmblem.png',
-    imageAlt: 'Tier 3',
-  },
-  {
     title: 'Cell Core',
-    imageSrc: '/assets/emblems/nintendoEmblem.png',
+    imageSrc: '/assets/emblems/ps3Emblem.png',
     imageAlt: 'Tier 4',
   },
   {
     title: 'High Definition',
-    imageSrc: '/assets/emblems/nintendoEmblem.png',
+    imageSrc: '/assets/emblems/ps4Emblem.png',
     imageAlt: 'Tier 5',
   },
   {
     title: 'Ray-Tracing',
-    imageSrc: '/assets/emblems/nintendoEmblem.png',
+    imageSrc: '/assets/emblems/ps5Emblem.png',
     imageAlt: 'Tier 6',
   },
 ]
