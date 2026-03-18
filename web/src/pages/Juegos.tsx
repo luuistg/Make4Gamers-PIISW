@@ -4,14 +4,10 @@ import { Search, Filter } from "lucide-react";
 import GameCard from "../features/games/components/GameCard";
 import { getGames, type Game } from "../features/games/services/getGames";
 import { Link } from "react-router-dom";
-import { useAuthStatus } from "../features/auth/hooks/useAuthStatus";
-import { Alert } from "../shared/layout/Alert";
 
 export default function Juegos() {
   const [games, setGames] = useState<Game[]>([]);
   const { t } = useTranslation();
-  const { loading: authLoading, isAuthenticated } = useAuthStatus();
-  const [showAuthNotice, setShowAuthNotice] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
 
