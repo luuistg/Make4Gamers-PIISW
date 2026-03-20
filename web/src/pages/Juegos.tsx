@@ -4,14 +4,11 @@ import { Search, Filter } from "lucide-react";
 import GameCard from "../features/games/components/GameCard";
 import { getGames, type Game } from "../features/games/services/getGames";
 import { Link } from "react-router-dom";
-import { useAuthStatus } from "../features/auth/hooks/useAuthStatus";
-import { Alert } from "../shared/layout/Alert";
+
 
 export default function Juegos() {
   const [games, setGames] = useState<Game[]>([]);
   const { t } = useTranslation();
-  const { loading: authLoading, isAuthenticated } = useAuthStatus();
-  const [showAuthNotice, setShowAuthNotice] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
 
@@ -45,7 +42,7 @@ export default function Juegos() {
       {/* Hero - Juegos populares */}
       <section className="bg-linear-to-b from-indigo-950/20 to-slate-950 py-12 mb-8">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-6">{t("home.popular")}</h2>
+          <h2 className="text-3xl font-bold text-white mb-6">{t("game.popular")}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {popularGames.map((game) => (
               <Link key={game.id} to={`/game/${game.id}`} className="block">
@@ -69,7 +66,7 @@ export default function Juegos() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
             <input
               type="text"
-              placeholder={t("home.search")}
+              placeholder={t("game.search")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-slate-800 text-white pl-12 pr-4 py-3 rounded-lg border border-slate-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all"
@@ -78,23 +75,23 @@ export default function Juegos() {
 
           <div className="flex items-center gap-2 mb-4">
             <Filter className="text-slate-400" size={20} />
-            <span className="text-slate-400 font-medium">{t("home.filtersLabel")}</span>
+            <span className="text-slate-400 font-medium">{t("game.filtersLabel")}</span>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-400 mb-2">
-              {t("home.filters.category")}
+              {t("game.filters.category")}
             </label>
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
               className="w-full bg-slate-800 text-white px-4 py-2 rounded-lg border border-slate-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all"
             >
-              <option value="all">{t("home.filters.all")}</option>
-              <option value="action">{t("home.filters.action")}</option>
-              <option value="arcade">{t("home.filters.arcade")}</option>
-              <option value="rpg">{t("home.filters.rpg")}</option>
-              <option value="puzzle">{t("home.filters.puzzle")}</option>
+              <option value="all">{t("game.filters.all")}</option>
+              <option value="action">{t("game.filters.action")}</option>
+              <option value="arcade">{t("game.filters.arcade")}</option>
+              <option value="rpg">{t("game.filters.rpg")}</option>
+              <option value="puzzle">{t("game.filters.puzzle")}</option>
             </select>
           </div>
         </div>
@@ -103,8 +100,8 @@ export default function Juegos() {
       {/* All Games */}
       <section className="container mx-auto px-4 pb-12">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-white">{t("home.allGames")}</h2>
-          <span className="text-slate-400">{filteredGames.length} {t("home.gamesCount")}</span>
+          <h2 className="text-2xl font-bold text-white">{t("game.allGames")}</h2>
+          <span className="text-slate-400">{filteredGames.length} {t("game.gamesCount")}</span>
         </div>
 
         {filteredGames.length > 0 ? (
@@ -123,7 +120,7 @@ export default function Juegos() {
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-slate-400 text-lg">{t("home.noResults")}</p>
+            <p className="text-slate-400 text-lg">{t("game.noResults")}</p>
           </div>
         )}
       </section>

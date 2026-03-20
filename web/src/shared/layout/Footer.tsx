@@ -17,7 +17,7 @@ const Footer = () => {
                     <div className="col-span-2">
                         <Link to="/" className="flex items-center gap-2 font-bold text-xl mb-4">
                             <Logo className="h-8 w-8 text-indigo-500" />
-                            <span className="text-white">Make4Gamers</span>
+                            <span className="text-white">Made4Gamers</span>
                         </Link>
                         <p className="text-slate-400 text-sm max-w-xs">
                             {t('footer.description')}
@@ -56,15 +56,15 @@ const Footer = () => {
 
                 {/* Bottom Bar */}
                 <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-                    <p>© 2026 Make4Gamers Inc. {t('footer.rights')}</p>
+                    <p>© 2026 Made4Gamers Inc. {t('footer.rights')}</p>
                     <div className="flex gap-6">
-                        <a href="https://twitter.com/make4gamers" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors">
+                        <a href="https://twitter.com/made4gamers" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors">
                             <Twitter className='h-4 w-4' />
                         </a>
-                        <a href="https://discord.gg/make4gamers" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors">
+                        <a href="https://discord.gg/made4gamers" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors">
                             <Discord className='h-4 w-4' />
                         </a>
-                        <a href="https://twitch.tv/make4gamers" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors">
+                        <a href="https://twitch.tv/made4gamers" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors">
                             <Twitch className='h-4 w-4' />
                         </a>
                     </div>

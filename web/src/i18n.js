@@ -67,7 +67,7 @@ i18n
                         loginRequiredTitle: "Inicia sesión",
                         loginRequired: "Inicia sesión para guardar progreso y acceder a todas las funciones."
                     },
-                    home: {
+                    game: {
                         popular: "Juegos Populares",
                         search: "Buscar juegos...",
                         allGames: "Todos los Juegos",
@@ -104,6 +104,30 @@ i18n
                         noMovesRequired: "Este juego no requiere historial de movimientos.",
                         noMovesYet: "Sin movimientos aún.",
                         backToGames: "Volver a juegos"
+                    },
+                    home: {
+                        splitHero: {
+                            one: {
+                                imageAlt: "Producto",
+                                prefix: "A medida que el mundo gaming evoluciona, en",
+                                brand: "Made",
+                                suffix: "4Gamers tú también puedes hacerlo."
+                            },
+                            two: {
+                                imageAlt: "Producto",
+                                prefix: "Empieza desde abajo, compite con jugadores de tu nivel y alcanza la",
+                                highlight: "Cima"
+                            },
+                            three: {
+                                imageAlt: "Producto",
+                                highlight: "EVOLUCIONA",
+                                suffix: " y te convertirás en el mejor."
+                            }
+                        },
+                        ranks: {
+                            title: "Escala en nuestra clasificación",
+                            firstButton: "Comenzar  ➜"
+                        }
                     }
                 }
             },
@@ -167,7 +191,7 @@ i18n
                         loginRequiredTitle: "Sign in",
                         loginRequired: "Sign in to save progress and access all features."
                     },
-                    home: {
+                    game: {
                         popular: "Popular Games",
                         search: "Search games...",
                         allGames: "All Games",
@@ -204,6 +228,30 @@ i18n
                         noMovesRequired: "This game does not require move history.",
                         noMovesYet: "No moves yet.",
                         backToGames: "Back to games"
+                    },
+                    home: {
+                        splitHero: {
+                            one: {
+                                imageAlt: "Product",
+                                prefix: "As the gaming world evolves, in",
+                                brand: "Made",
+                                suffix: "4Gamers you can do it too."
+                            },
+                            two: {
+                                imageAlt: "Product",
+                                prefix: "Start from the bottom, compete with players at your level and reach the",
+                                highlight: "Top"
+                            },
+                            three: {
+                                imageAlt: "Product",
+                                highlight: "EVOLVE",
+                                suffix: " and you will become the best."
+                            }
+                        },
+                        ranks: {
+                            title: "Climb our ranking",
+                            firstButton: "Start ➜"
+                        }
                     }
                 }
             },
@@ -267,7 +315,7 @@ i18n
                         loginRequiredTitle: "请登录",
                         loginRequired: "登录后可保存进度并访问所有功能。"
                     },
-                    home: {
+                    game: {
                         popular: "热门游戏",
                         search: "搜索游戏...",
                         allGames: "所有游戏",
@@ -304,6 +352,30 @@ i18n
                         noMovesRequired: "该游戏不需要操作历史。",
                         noMovesYet: "暂无操作记录。",
                         backToGames: "返回游戏列表"
+                    },
+                    home: {
+                        splitHero: {
+                            one: {
+                                imageAlt: "产品",
+                                prefix: "正如游戏世界不断进化，在",
+                                brand: "Made",
+                                suffix: "4Gamers 你也可以做到。"
+                            },
+                            two: {
+                                imageAlt: "产品",
+                                prefix: "从底部开始，与同级玩家竞争并冲向",
+                                highlight: "巅峰"
+                            },
+                            three: {
+                                imageAlt: "产品",
+                                highlight: "进化",
+                                suffix: "，你将成为最强。"
+                            }
+                        },
+                        ranks: {
+                            title: "提升我们的排名",
+                            firstButton: "开始 ➜"
+                        }
                     }
                 }
             }

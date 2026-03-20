@@ -87,10 +87,10 @@ export function ScrollSplitHero({
 
         {/* Imagen: capa superior que se desplaza con el scroll */}
         <motion.div
-          className={`relative z-10 overflow-hidden rounded-2xl shadow-2xl ${imageWidthClassName} ${imageAspectClassName}`}
+          className={`relative z-10 overflow-hidden rounded-2xl shadow-2xl  ${imageWidthClassName} ${imageAspectClassName}`}
           style={{ x: imageX }}
         >
-          <img src={imageSrc} className="h-full w-full object-cover" alt={imageAlt} />
+          <img src={imageSrc} className="h-full w-full object-cover " alt={imageAlt} />
         </motion.div>
 
       </div>

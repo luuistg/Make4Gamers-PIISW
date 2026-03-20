@@ -1,5 +1,6 @@
 import { Users, Star } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { motion } from "framer-motion";
 
 type GameCardProps = {
   title: string;
@@ -14,7 +15,14 @@ export default function GameCard({ title, image, genre, rating, players }: GameC
   const { t } = useTranslation();
 
   return (
-    <div className="group relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/10 cursor-pointer">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.96, y: 18 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.25 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+      className="group relative cursor-pointer overflow-hidden rounded-xl border border-slate-800 bg-slate-900 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-xl hover:shadow-indigo-500/10
+        timeline-view animate-zoom-in animate-range-cover"
+    >
       {/* Imagen */}
       <div className="relative h-48 overflow-hidden bg-slate-800">
         <img
@@ -46,6 +54,6 @@ export default function GameCard({ title, image, genre, rating, players }: GameC
           <span className="text-sm">{players.toLocaleString()}</span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
