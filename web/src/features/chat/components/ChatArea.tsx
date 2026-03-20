@@ -1,0 +1,169 @@
+
+import { useState, useRef, useEffect } from 'react';
+import { Send } from 'lucide-react';
+import { useChatMessages } from '../hooks/useChatMessages';
+import { sendMessage } from '../services/chat.service';
+import type { ChatProfile } from '../types/chat.types';
+
+
+interface ChatAreaProps {
+  roomId: string;
+  currentUserId: string;
+  friendProfile: ChatProfile;
+}
+
+export default function ChatArea({ roomId, currentUserId, friendProfile }: ChatAreaProps) {
+const [newMessage, setNewMessage] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  
+
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  
+  const { messages, loading } = useChatMessages(roomId);
+
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+    
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  }, [messages]);
+
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMessage.trim() || isSending) return;
+
+    setIsSending(true);
+    try {
+      await sendMessage(roomId, currentUserId, newMessage.trim());
+      setNewMessage(''); 
+    } catch (error) {
+      console.error('Error al enviar el mensaje', error);
+   
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-slate-900/50">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col h-full bg-slate-900/50 rounded-xl overflow-hidden border border-slate-700/50 shadow-inner">
+    {/* Cabecera del chat */}
+          <div className="px-6 py-4 bg-slate-800/80 border-b border-slate-700/50 flex items-center gap-3 shadow-sm z-10">
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-700">
+              {friendProfile.avatar_url ? (
+                <img src={friendProfile.avatar_url} alt={friendProfile.username} className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center font-bold bg-gradient-to-br from-indigo-500 to-purple-600 text-white">
+                    {friendProfile.username.charAt(0).toUpperCase()}
+                </div>
+              )}
+            </div>
+            <div>
+              <h2 className="font-semibold text-slate-100">{friendProfile.username}</h2>
+              
+            
+              <span className={`text-xs flex items-center gap-1.5 mt-0.5 ${
+                  friendProfile.status === 'Ocupado' ? 'text-red-400' :
+                  friendProfile.status === 'Ausente' ? 'text-yellow-400' :
+                  friendProfile.status === 'Invisible' ? 'text-slate-400' :
+                  'text-green-400' 
+              }`}>
+                <span className={`w-2 h-2 rounded-full inline-block ${
+                    friendProfile.status === 'Ocupado' ? 'bg-red-500' :
+                    friendProfile.status === 'Ausente' ? 'bg-yellow-500' :
+                    friendProfile.status === 'Invisible' ? 'bg-slate-500' :
+                    'bg-green-500'
+                }`}></span> 
+                
+              
+                {friendProfile.status === 'Invisible' ? 'Desconectado' : (friendProfile.status || 'Disponible')}
+              </span>
+            </div>
+      </div>
+      {/* Área de mensajes */}
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-6 hide-scrollbar">
+        {messages.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-slate-500 space-y-2">
+            <p className="text-lg">¡Rompe el hielo!</p>
+            <p className="text-sm">
+              Envía el primer mensaje a {friendProfile.username}.
+            </p>
+          </div>
+        ) : (
+          <>
+            {messages.map((msg) => {
+             
+              const isMine = msg.sender_id === currentUserId;
+
+           
+              const timeString = new Date(msg.created_at).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+
+              return (
+                <div
+                  key={msg.id}
+                  className={`flex flex-col ${
+                    isMine ? "items-end" : "items-start"
+                  }`}
+                >
+                 
+                  <div
+                    className={`px-4 py-2.5 max-w-[75%] rounded-2xl shadow-sm ${
+                      isMine
+                        ? "bg-indigo-600 text-white rounded-br-sm"
+                        : "bg-slate-700 text-slate-100 rounded-bl-sm"
+                    }`}
+                  >
+                    <p className="break-words leading-relaxed">
+                      {msg.content}
+                    </p>
+                  </div>
+
+          
+                  <span className="text-[11px] font-medium text-slate-500 mt-1.5 px-1">
+                    {timeString}
+                  </span>
+                </div>
+              );
+            })}
+           
+          </>
+        )}
+      </div>
+
+      {/* Input para escribir */}
+      <form onSubmit={handleSendMessage} className="p-4 bg-slate-800/80 border-t border-slate-700/50">
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder={`Escribe un mensaje a ${friendProfile.username}...`}
+            className="flex-1 bg-slate-900 border border-slate-600 rounded-full px-5 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+            disabled={isSending}
+          />
+          <button
+            type="submit"
+            disabled={!newMessage.trim() || isSending}
+            className="p-3 bg-indigo-600 rounded-full text-white hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95 shadow-lg shadow-indigo-600/20"
+          >
+            <Send size={18} />
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}

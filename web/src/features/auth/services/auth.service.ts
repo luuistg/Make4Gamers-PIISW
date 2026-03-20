@@ -11,6 +11,9 @@ import {
 } from "../../../../../packages/api/src";
 import { supabase } from "../../../supabase";
 
+
+import { updateUserStatus } from "../../chat/services/chat.service";
+
 export function loginWithEmail(email: string, password: string) {
   return loginWithEmailFromApi(supabase, email, password);
 }
@@ -32,7 +35,19 @@ export function requestPasswordReset(email: string, redirectTo: string) {
   return requestPasswordResetFromApi(supabase, email, redirectTo);
 }
 
-export function logout() {
+
+export async function logout() {
+  try {
+
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (user) {
+      await updateUserStatus(user.id, 'Invisible');
+    }
+  } catch (error) {
+    console.error("Error al actualizar estado antes de cerrar sesión:", error);
+  }
+
   return logoutFromApi(supabase);
 }
 
