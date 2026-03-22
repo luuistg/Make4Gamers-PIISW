@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, Globe, ChevronDown, User, LogOut } from 'lucide-react';
 import { Logo } from '../icons/Logo';
 import { logout } from '../../features/auth/services/logout.service';
 import { useAuthStatus } from '../../features/auth/hooks/useAuthStatus';
-import { useNavigate } from "react-router-dom";
+import { supabase } from '../../supabase'; 
 
 const Header = () => {
     const { t, i18n } = useTranslation(); 
@@ -13,8 +13,59 @@ const Header = () => {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isLangOpen, setIsLangOpen] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
-    // Función para cambiar el idioma
+
+    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+    const [hasUnread, setHasUnread] = useState(false);
+
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                setCurrentUserId(user.id);
+            }
+        };
+        if (isAuthenticated) {
+            fetchUser();
+        }
+    }, [isAuthenticated]);
+
+   
+    useEffect(() => {
+        if (location.pathname === '/chat') {
+            setHasUnread(false);
+        }
+    }, [location.pathname]);
+
+   
+    useEffect(() => {
+        if (!currentUserId) return;
+
+        const channel = supabase
+            .channel('header-badge-notifications')
+            .on(
+                'postgres_changes',
+                { event: 'INSERT', schema: 'public', table: 'messages' },
+                (payload) => {
+                    const newMessage = payload.new;
+                    
+                   
+                    if (newMessage.sender_id !== currentUserId && location.pathname !== '/chat') {
+                        setHasUnread(true); 
+                    }
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [currentUserId, location.pathname]);
+
+
+   
     const changeLanguage = (lng: string): void => {
         i18n.changeLanguage(lng);
         setIsLangOpen(false);   
@@ -25,7 +76,7 @@ const Header = () => {
     const handleLogout = async () => {
         await logout();
         setIsProfileOpen(false);
-        navigate("/login"); // con HashRouter -> .../#/login
+        navigate("/login");
     };
 
     return (
@@ -37,16 +88,28 @@ const Header = () => {
                     <span className="tracking-tighter text-white">Made<span className="text-indigo-500">4Gamers</span></span>
                 </Link>
 
-                {/* Desktop Nav - Usando t() para los textos */}
+                {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
                     <Link to="/juegos" className="hover:text-indigo-400 transition-colors">{t('nav.games')}</Link>
                     <Link to="/ranking" className="hover:text-indigo-400 transition-colors">{t('nav.ranking')}</Link>
-                    <Link to="/chat" className="hover:text-indigo-400 transition-colors">{t('nav.chat')}</Link>
+                    
+                  
+                    <Link to="/chat" className="relative hover:text-indigo-400 transition-colors flex items-center">
+                        {t('nav.chat')}
+                        
+                 
+                        {hasUnread && (
+                            <span className="absolute -top-1.5 -right-3.5 flex h-2.5 w-2.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                            </span>
+                        )}
+                    </Link>
                 </nav>
 
-                {/* Actions */}
+         
                 <div className="flex items-center gap-4">
-                    {/* Profile Dropdown / Login Button */}
+                  
                     {isAuthenticated ? (
                         <div className="relative">
                             <button

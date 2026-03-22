@@ -8,8 +8,10 @@ import { getOrCreateChatRoom, updateUserStatus } from '../features/chat/services
 import type { ChatProfile } from '../features/chat/types/chat.types';
 import AddFriendModal from '../features/chat/components/AddFriendModal'; 
 import { Plus } from 'lucide-react'; 
+import { useTranslation } from 'react-i18next';
 
 export default function Chat() {
+    const { t } = useTranslation();
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const [myStatus, setMyStatus] = useState('Disponible');
     const [selectedFriend, setSelectedFriend] = useState<ChatProfile | null>(null);
@@ -141,18 +143,18 @@ export default function Chat() {
         );
     }
 
-    if (!currentUserId) {
+if (!currentUserId) {
         return (
             <section className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4">
-                <h2 className="text-3xl font-bold text-white mb-4">¡Alto ahí!</h2>
+                <h2 className="text-3xl font-bold text-white mb-4">{t('chat.unauthorizedTitle')}</h2>
                 <p className="text-slate-400 max-w-md mb-8">
-                    Para poder chatear con otros usuarios y acceder a tus mensajes privados, necesitas iniciar sesión en tu cuenta.
+                    {t('chat.unauthorizedDesc')}
                 </p>
                 <Link 
                     to="/login" 
                     className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-lg font-medium transition-all shadow-lg shadow-indigo-600/20 active:scale-95"
                 >
-                    Ir a Iniciar Sesión
+                    {t('chat.loginButton')}
                 </Link>
             </section>
         );
@@ -165,28 +167,28 @@ export default function Chat() {
                 {/* Panel Izquierdo: Lista de Amigos */}
                 <div className="w-full md:w-1/3 lg:w-1/4 flex flex-col h-full bg-slate-800/50 rounded-xl border border-slate-700/50 overflow-hidden">
                     
-                    {/* Selector de Mi Estado */}
+
                     <div className="p-3 bg-slate-900/50 border-b border-slate-700/50 flex items-center justify-between">
-                        <span className="text-sm font-medium text-slate-400">Mi estado:</span>
+                        <span className="text-sm font-medium text-slate-400">{t('chat.myStatus')}</span>
                         <select 
                             value={myStatus}
                             onChange={handleStatusChange}
                             className="bg-slate-800 text-sm text-slate-200 border border-slate-700 rounded-lg px-2 py-1 outline-none focus:border-indigo-500 cursor-pointer"
                         >
-                            <option value="Disponible">🟢 Disponible</option>
-                            <option value="Ausente">🟡 Ausente</option>
-                            <option value="Ocupado">🔴 Ocupado</option>
-                            <option value="Invisible">⚫ Invisible</option>
+                            <option value="Disponible">🟢 {t('chat.status.online')}</option>
+                            <option value="Ausente">🟡 {t('chat.status.away')}</option>
+                            <option value="Ocupado">🔴 {t('chat.status.busy')}</option>
+                            <option value="Invisible">⚫ {t('chat.status.offline')}</option>
                         </select>
                     </div>
 
-                    {/* Cabecera de Mensajes */}
+{/* Cabecera de Mensajes */}
                     <div className="p-4 border-b border-slate-700/50 bg-slate-800 flex justify-between items-center">
-                        <h2 className="text-xl font-bold text-white">Mensajes</h2>
+                        <h2 className="text-xl font-bold text-white">{t('chat.messagesTitle')}</h2>
                         <button 
                             onClick={() => setIsAddFriendOpen(true)}
                             className="p-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition-all active:scale-90"
-                            title="Añadir amigo"
+                            title={t('chat.addFriendTooltip')}
                         >
                             <Plus size={20} />
                         </button>
@@ -205,10 +207,10 @@ export default function Chat() {
 
                 {/* Panel Derecho: Área de Chat */}
                 <div className="w-full md:w-2/3 lg:w-3/4 h-full flex flex-col">
-                    {!selectedFriend ? (
+                {!selectedFriend ? (
                         <div className="flex-1 flex flex-col items-center justify-center bg-slate-800/30 rounded-xl border border-slate-700/50 text-slate-400">
-                            <h3 className="text-xl font-medium text-slate-200 mb-2">Tus Mensajes</h3>
-                            <p>Selecciona un amigo de la lista para empezar a chatear.</p>
+                            <h3 className="text-xl font-medium text-slate-200 mb-2">{t('chat.messagesTitle')}</h3>
+                            <p>{t('chat.selectFriend')}</p>
                         </div>
                     ) : loadingRoom ? (
                         <div className="flex-1 flex items-center justify-center bg-slate-800/30 rounded-xl border border-slate-700/50">
@@ -222,7 +224,7 @@ export default function Chat() {
                         />
                     ) : (
                         <div className="flex-1 flex items-center justify-center text-red-400 bg-slate-800/30 rounded-xl border border-red-900/50">
-                            Hubo un error al preparar el chat. Inténtalo de nuevo.
+                            {t('chat.errorLoading')}
                         </div>
                     )}
                 </div>
