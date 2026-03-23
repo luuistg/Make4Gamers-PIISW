@@ -105,6 +105,25 @@ i18n
                         noMovesYet: "Sin movimientos aún.",
                         backToGames: "Volver a juegos"
                     },
+
+                    ranking: {
+                        currentSeason: "Temporada Actual",
+                        title: "Ranking Global",
+                        subtitle: "Asciende de liga en liga hasta alcanzar el nivel Ray-Tracing.",
+                        selectGame: "Selecciona un juego",
+                        unknownGame: "Juego Desconocido",
+                        noScoresTitle: "Aún no hay puntuaciones",
+                        noScoresDesc: "¡Sé el primero en jugar y corona el Top 1!",
+                        you: "(Tú)",
+                        colPos: "Pos",
+                        colPlayer: "Jugador",
+                        colTier: "Liga / Rango",
+                        colScore: "Puntuación",
+                        yourPosition: "Tu posición actual",
+                        keepPlaying: "Sigue jugando para subir de liga"
+                    },
+
+
                     chat: {
                         unauthorizedTitle: "¡Alto ahí!",
                         unauthorizedDesc: "Para poder chatear con otros usuarios y acceder a tus mensajes privados, necesitas iniciar sesión en tu cuenta.",
@@ -180,6 +199,23 @@ i18n
                             privacy: "Privacy",
                             terms: "Terms"
                         }
+                    },
+
+                    ranking: {
+                        currentSeason: "Current Season",
+                        title: "Global ranking",
+                        subtitle: "Climb from tier to tier until you reach Ray-Tracing level.",
+                        selectGame: "Select a game",
+                        unknownGame: "Unknown Game",
+                        noScoresTitle: "No scores yet",
+                        noScoresDesc: "Be the first to play and claim the Top 1!",
+                        you: "(You)",
+                        colPos: "Pos",
+                        colPlayer: "Player",
+                        colTier: "Tier / League",
+                        colScore: "Score",
+                        yourPosition: "Your current position",
+                        keepPlaying: "Keep playing to rank up"
                     },
                     auth: {
                         login: "Sign In",
@@ -392,6 +428,23 @@ i18n
                         noMovesRequired: "该游戏不需要操作历史。",
                         noMovesYet: "暂无操作记录。",
                         backToGames: "返回游戏列表"
+                    },
+
+                    ranking: {
+                        currentSeason: "当前赛季",
+                        title: "全球排名",
+                        subtitle: "在各个级别中攀升，直到达到光线追踪级别。",
+                        selectGame: "选择一个游戏",
+                        unknownGame: "未知游戏",
+                        noScoresTitle: "暂无分数",
+                        noScoresDesc: "成为第一个玩并占据榜首的人！",
+                        you: "(你)",
+                        colPos: "排名",
+                        colPlayer: "玩家",
+                        colTier: "段位 / 联赛",
+                        colScore: "分数",
+                        yourPosition: "你当前的位置",
+                        keepPlaying: "继续游戏以提升排名"
                     },
                     chat: {
                         unauthorizedTitle: "请等一下！",
