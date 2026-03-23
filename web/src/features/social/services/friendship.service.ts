@@ -9,6 +9,10 @@ export const friendshipService = {
       .eq('user_id', receiverId)
       .single();
 
+    if (settingsError && settingsError.code !== 'PGRST116') {
+      throw settingsError;
+    }
+
     if (settings?.extra_config && settings.extra_config.allow_stranger_requests === false) {
        throw new Error('Este perfil tiene las solicitudes de desconocidos desactivadas.');
     }

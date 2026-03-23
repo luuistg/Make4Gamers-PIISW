@@ -4,6 +4,7 @@ import { Send } from 'lucide-react';
 import { useChatMessages } from '../hooks/useChatMessages';
 import { sendMessage } from '../services/chat.service';
 import type { ChatProfile } from '../types/chat.types';
+import { useTranslation } from 'react-i18next';
 
 
 interface ChatAreaProps {
@@ -13,7 +14,8 @@ interface ChatAreaProps {
 }
 
 export default function ChatArea({ roomId, currentUserId, friendProfile }: ChatAreaProps) {
-const [newMessage, setNewMessage] = useState('');
+  const { t } = useTranslation();
+  const [newMessage, setNewMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   
 
@@ -87,7 +89,10 @@ const [newMessage, setNewMessage] = useState('');
                 }`}></span> 
                 
               
-                {friendProfile.status === 'Invisible' ? 'Desconectado' : (friendProfile.status || 'Disponible')}
+                {friendProfile.status === 'Invisible' ? t('chat.status.disconnected') : 
+                 friendProfile.status === 'Ocupado' ? t('chat.status.busy') : 
+                 friendProfile.status === 'Ausente' ? t('chat.status.away') : 
+                 t('chat.status.online')}
               </span>
             </div>
       </div>
@@ -95,9 +100,9 @@ const [newMessage, setNewMessage] = useState('');
       <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-6 hide-scrollbar">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-slate-500 space-y-2">
-            <p className="text-lg">¡Rompe el hielo!</p>
+            <p className="text-lg">{t('chat.breakIce')}</p>
             <p className="text-sm">
-              Envía el primer mensaje a {friendProfile.username}.
+              {t('chat.firstMessage', { name: friendProfile.username })}
             </p>
           </div>
         ) : (
@@ -151,7 +156,7 @@ const [newMessage, setNewMessage] = useState('');
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder={`Escribe un mensaje a ${friendProfile.username}...`}
+            placeholder={t('chat.placeholder', { name: friendProfile.username })}
             className="flex-1 bg-slate-900 border border-slate-600 rounded-full px-5 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
             disabled={isSending}
           />
