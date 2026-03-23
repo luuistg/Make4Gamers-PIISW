@@ -195,8 +195,8 @@ i18n
                             },
                             three: {
                                 imageAlt: "Producto",
-                                highlight: "EVOLUCIONA",
-                                suffix: " y te convertirás en el mejor."
+                                highlight: "COMPITE, PRACTICA",
+                                suffix: " y llegarás a ser el mejor."
                             }
                         },
                         ranks: {
@@ -392,7 +392,7 @@ i18n
                             },
                             three: {
                                 imageAlt: "Product",
-                                highlight: "EVOLVE",
+                                highlight: "COMPETE, PRACTICE",
                                 suffix: " and you will become the best."
                             }
                         },
