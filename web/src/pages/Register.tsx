@@ -92,9 +92,9 @@ export default function Register() {
     
 
         if (authData.user) {
-            setIsSuccess(true);
-            setTimeout(() => navigate('/login'), 3000);
-        }
+                setIsSuccess(true);
+                navigate('/cuenta');
+            }
 
     } catch (error: any) {
         console.error("Error completo:", error);
@@ -112,10 +112,10 @@ export default function Register() {
 };
 
     const handleGoogleLogin = async () => {
-            try {
-                const { error } = await loginWithGoogle('http://localhost:5173/');
+        try {
+            const { error } = await loginWithGoogle('http://localhost:5173/#/cuenta');
 
-                if (error) throw error;
+            if (error) throw error;
                 
             } catch (err: any) {
                 setErrors({ form: "Error al intentar conectar con Google: " + err.message });

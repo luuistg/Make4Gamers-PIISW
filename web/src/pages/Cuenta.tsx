@@ -36,6 +36,10 @@ export default function Cuenta() {
           setProfile(data);
           setAllowRequests(data.allow_requests !== false); 
           setEditNameValue(data.username || ""); 
+
+          if (!data.username || data.username.trim() === '') {
+            setIsEditingName(true);
+          }
         }
       } catch (error) {
         console.error("Error cargando el perfil:", error);
@@ -78,18 +82,29 @@ export default function Cuenta() {
     
     setSavingName(true);
     try {
-      const { error } = await supabase
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) throw new Error("Usuario no autenticado");
+
+      const { data, error } = await supabase
         .from('profiles')
         .update({ username: newName })
-        .eq('id', profile.id);
+        .eq('id', user.id)
+        .select();
 
       if (error) throw error;
+
+      if (!data || data.length === 0) {
+        console.error("Supabase no aplicó el cambio. Posible bloqueo RLS.");
+        alert("Error de permisos: Revisa que la tabla 'profiles' tenga una política UPDATE permitida para los usuarios.");
+        return;
+      }
 
       setProfile({ ...profile, username: newName });
       setIsEditingName(false);
     } catch (error) {
       console.error("Error actualizando el nombre:", error);
-      alert("Hubo un error al guardar. Es posible que ese nombre de usuario ya esté en uso.");
+      alert("Hubo un error al guardar. Es posible que ese nombre de usuario ya esté en uso, pruebe otro.");
     } finally {
       setSavingName(false);
     }
