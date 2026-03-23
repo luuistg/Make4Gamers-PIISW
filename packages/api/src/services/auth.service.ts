@@ -1,5 +1,6 @@
 import type {
   AuthChangeEvent,
+  EmailOtpType,
   Session,
   SupabaseClient,
 } from "@supabase/supabase-js";
@@ -8,10 +9,13 @@ import {
   getCurrentUserId,
   onAuthStateChanged,
   sendPasswordResetEmail,
+  setSessionFromRecoveryTokens,
   signInWithGoogle,
   signInWithPassword,
   signOut,
   signUpWithPassword,
+  updatePassword as updateUserPassword,
+  verifyOtpRecoveryToken,
 } from "../repositories/auth.repository";
 
 export function loginWithEmail(client: SupabaseClient, email: string, password: string) {
@@ -36,6 +40,26 @@ export function loginWithGoogle(client: SupabaseClient, redirectTo: string) {
 
 export function requestPasswordReset(client: SupabaseClient, email: string, redirectTo: string) {
   return sendPasswordResetEmail(client, email, redirectTo);
+}
+
+export function recoverSessionWithOtpToken(
+  client: SupabaseClient,
+  tokenHash: string,
+  type: EmailOtpType = "recovery",
+) {
+  return verifyOtpRecoveryToken(client, tokenHash, type);
+}
+
+export function recoverSessionWithTokens(
+  client: SupabaseClient,
+  accessToken: string,
+  refreshToken: string,
+) {
+  return setSessionFromRecoveryTokens(client, accessToken, refreshToken);
+}
+
+export function updatePassword(client: SupabaseClient, newPassword: string) {
+  return updateUserPassword(client, newPassword);
 }
 
 export async function logout(client: SupabaseClient): Promise<void> {

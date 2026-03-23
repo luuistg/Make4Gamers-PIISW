@@ -1,5 +1,6 @@
 import type {
   AuthChangeEvent,
+  EmailOtpType,
   Session,
   SupabaseClient,
   User,
@@ -47,6 +48,29 @@ export function sendPasswordResetEmail(
   redirectTo: string,
 ) {
   return client.auth.resetPasswordForEmail(email, { redirectTo });
+}
+
+export function verifyOtpRecoveryToken(
+  client: SupabaseClient,
+  tokenHash: string,
+  type: EmailOtpType = "recovery",
+) {
+  return client.auth.verifyOtp({ token_hash: tokenHash, type });
+}
+
+export function setSessionFromRecoveryTokens(
+  client: SupabaseClient,
+  accessToken: string,
+  refreshToken: string,
+) {
+  return client.auth.setSession({
+    access_token: accessToken,
+    refresh_token: refreshToken,
+  });
+}
+
+export function updatePassword(client: SupabaseClient, newPassword: string) {
+  return client.auth.updateUser({ password: newPassword });
 }
 
 export function signOut(client: SupabaseClient) {

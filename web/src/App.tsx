@@ -8,6 +8,7 @@ import Juegos from "./pages/Juegos";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import RecuperarPassword from "./pages/RecuperarPassword";
+import ActualizarPassword from "./pages/ActualizarPassword";
 import GameplayPage from "./pages/GamePlay";
 import PerfilUsuario from './pages/PerfilUsuario';
 import Cuenta from './pages/Cuenta'; 
@@ -34,6 +35,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/recuperar-password" element={<RecuperarPassword />} />
+          <Route path="/actualizar-password" element={<ActualizarPassword />} />
 
           {/* Main */}
           <Route element={<Layout />}>

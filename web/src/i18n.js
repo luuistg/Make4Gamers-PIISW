@@ -65,7 +65,38 @@ i18n
                             usernameRequired: "El nombre de usuario es obligatorio"
                         },
                         loginRequiredTitle: "Inicia sesión",
-                        loginRequired: "Inicia sesión para guardar progreso y acceder a todas las funciones."
+                        loginRequired: "Inicia sesión para guardar progreso y acceder a todas las funciones.",
+                        recoverPassword: {
+                            title: "Recuperar contraseña",
+                            subtitle: "Introduce tu correo y te enviaremos un enlace para restablecerla.",
+                            emailLabel: "Correo electrónico",
+                            emailPlaceholder: "tu@email.com",
+                            invalidEmail: "Por favor, introduce un email válido.",
+                            success: "¡Correo enviado! Revisa tu bandeja de entrada o spam para restablecer tu contraseña.",
+                            sending: "Enviando...",
+                            send: "Enviar enlace",
+                            remembered: "¿Recordaste tu contraseña?",
+                            backToLogin: "Volver al login"
+                        },
+                        updatePassword: {
+                            title: "Actualizar contraseña",
+                            subtitle: "Define una nueva contraseña segura para tu cuenta.",
+                            newPasswordLabel: "Nueva contraseña",
+                            newPasswordPlaceholder: "Mínimo 8 caracteres",
+                            confirmPasswordLabel: "Confirmar contraseña",
+                            confirmPasswordPlaceholder: "Repite la contraseña",
+                            invalidOrExpiredLink: "Este enlace de recuperación no es válido o ha expirado. Solicita uno nuevo.",
+                            validateLinkError: "No se pudo validar el enlace de recuperación.",
+                            minLength: "La contraseña debe tener al menos 8 caracteres.",
+                            mismatch: "Las contraseñas no coinciden.",
+                            sessionNotActive: "Tu sesión de recuperación no está activa. Vuelve a solicitar el enlace.",
+                            success: "Contraseña actualizada correctamente. Te redirigimos al login.",
+                            validating: "Validando enlace...",
+                            updating: "Actualizando...",
+                            save: "Guardar nueva contraseña",
+                            needAnotherLink: "¿Necesitas solicitar otro enlace?",
+                            backToRecover: "Volver a recuperar contraseña"
+                        }
                     },
                     game: {
                         popular: "Juegos Populares",
@@ -245,7 +276,38 @@ i18n
                             usernameRequired: "Username is required"
                         },
                         loginRequiredTitle: "Sign in",
-                        loginRequired: "Sign in to save progress and access all features."
+                        loginRequired: "Sign in to save progress and access all features.",
+                        recoverPassword: {
+                            title: "Recover password",
+                            subtitle: "Enter your email and we will send you a link to reset it.",
+                            emailLabel: "Email",
+                            emailPlaceholder: "you@email.com",
+                            invalidEmail: "Please enter a valid email.",
+                            success: "Email sent! Check your inbox or spam folder to reset your password.",
+                            sending: "Sending...",
+                            send: "Send link",
+                            remembered: "Remembered your password?",
+                            backToLogin: "Back to login"
+                        },
+                        updatePassword: {
+                            title: "Update password",
+                            subtitle: "Set a new secure password for your account.",
+                            newPasswordLabel: "New password",
+                            newPasswordPlaceholder: "At least 8 characters",
+                            confirmPasswordLabel: "Confirm password",
+                            confirmPasswordPlaceholder: "Repeat your password",
+                            invalidOrExpiredLink: "This recovery link is invalid or has expired. Please request a new one.",
+                            validateLinkError: "The recovery link could not be validated.",
+                            minLength: "Password must be at least 8 characters long.",
+                            mismatch: "Passwords do not match.",
+                            sessionNotActive: "Your recovery session is not active. Request a new link.",
+                            success: "Password updated successfully. Redirecting you to login.",
+                            validating: "Validating link...",
+                            updating: "Updating...",
+                            save: "Save new password",
+                            needAnotherLink: "Need another link?",
+                            backToRecover: "Back to recover password"
+                        }
                     },
                     game: {
                         popular: "Popular Games",
@@ -389,7 +451,38 @@ i18n
                             usernameRequired: "用户名是必需的"
                         },
                         loginRequiredTitle: "请登录",
-                        loginRequired: "登录后可保存进度并访问所有功能。"
+                        loginRequired: "登录后可保存进度并访问所有功能。",
+                        recoverPassword: {
+                            title: "找回密码",
+                            subtitle: "输入你的邮箱，我们会发送一个重置链接。",
+                            emailLabel: "电子邮箱",
+                            emailPlaceholder: "you@email.com",
+                            invalidEmail: "请输入有效的邮箱地址。",
+                            success: "邮件已发送！请检查收件箱或垃圾邮件以重置密码。",
+                            sending: "发送中...",
+                            send: "发送链接",
+                            remembered: "想起密码了？",
+                            backToLogin: "返回登录"
+                        },
+                        updatePassword: {
+                            title: "更新密码",
+                            subtitle: "为你的账户设置一个新的安全密码。",
+                            newPasswordLabel: "新密码",
+                            newPasswordPlaceholder: "至少 8 个字符",
+                            confirmPasswordLabel: "确认密码",
+                            confirmPasswordPlaceholder: "再次输入密码",
+                            invalidOrExpiredLink: "该恢复链接无效或已过期，请重新申请。",
+                            validateLinkError: "无法验证恢复链接。",
+                            minLength: "密码至少需要 8 个字符。",
+                            mismatch: "两次输入的密码不一致。",
+                            sessionNotActive: "恢复会话未激活，请重新申请链接。",
+                            success: "密码更新成功，正在跳转到登录页。",
+                            validating: "正在验证链接...",
+                            updating: "正在更新...",
+                            save: "保存新密码",
+                            needAnotherLink: "需要新的恢复链接？",
+                            backToRecover: "返回找回密码"
+                        }
                     },
                     game: {
                         popular: "热门游戏",

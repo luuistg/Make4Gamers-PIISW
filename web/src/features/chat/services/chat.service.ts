@@ -1,6 +1,6 @@
 
 import { supabase } from '../../../supabase';
-import type { ChatProfile, Friendship, Message } from '../types/chat.types';
+import type { ChatProfile } from '../types/chat.types';
 
 
 
