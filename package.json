@@ -2,6 +2,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.99.3",
     "framer-motion": "^12.36.0",
+    "react-hot-toast": "^2.6.0",
     "typewriter-effect": "^2.22.0"
   }
 }
