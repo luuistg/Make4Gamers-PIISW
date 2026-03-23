@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useTranslation } from 'react-i18next';
 
 interface GameRulesProps {
   markdownUrl: string;
 }
 
 const GameRules = ({ markdownUrl }: GameRulesProps) => {
+  const { t } = useTranslation();
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,11 +35,11 @@ const GameRules = ({ markdownUrl }: GameRulesProps) => {
   }, [markdownUrl]);
 
   if (loading) {
-    return <p className="text-slate-300">Cargando reglas...</p>;
+    return <p className="text-slate-300">{t("gameplay.rulesLoading")}</p>;
   }
 
   if (error) {
-    return <p className="text-rose-300">{error}</p>;
+    return <p className="text-rose-300">{t("gameplay.rulesError")}</p>;
   }
 
   return (

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import GameRules from '../features/games/components/GameRules';
 import { getGameById } from '../features/games/services/getGameById.service'; // ajusta ruta/nombre real
+import { useTranslation } from 'react-i18next';
 
 type RulesNavState = {
   game?: {
@@ -15,11 +16,12 @@ export default function GameRulesPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const navState = (location.state as RulesNavState | null)?.game;
 
   const [rulesUrl, setRulesUrl] = useState(navState?.rules_markdown_url ?? '');
-  const [title, setTitle] = useState(navState?.title ?? 'Reglas del juego');
+  const [title, setTitle] = useState(t("gameplay.rulesTitle"));
   const [loadingMeta, setLoadingMeta] = useState(!navState?.rules_markdown_url);
   const [metaError, setMetaError] = useState<string | null>(null);
 
@@ -58,7 +60,7 @@ export default function GameRulesPage() {
             onClick={() => navigate(-1)}
             className="rounded-lg border border-violet-400/35 bg-violet-500/15 px-4 py-2 text-sm font-semibold text-violet-200"
           >
-            Volver
+            {t("gameplay.backButton")}
           </button>
         </div>
 

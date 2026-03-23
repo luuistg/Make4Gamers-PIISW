@@ -169,7 +169,7 @@ export default function Gameplay() {
             }
             className="shrink-0 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium"
           >
-            Reglas
+            {t("gameplay.rules")}
           </button>
         </div>
       </div>
