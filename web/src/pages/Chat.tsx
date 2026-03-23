@@ -1,6 +1,6 @@
 // src/pages/Chat.tsx
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link, useLocation } from 'react-router-dom';
 import { supabase } from '../supabase';
 import FriendList from '../features/chat/components/FriendList';
 import ChatArea from '../features/chat/components/ChatArea';
@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Chat() {
     const { t } = useTranslation();
+    const location = useLocation();
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const [myStatus, setMyStatus] = useState('Disponible');
     const [selectedFriend, setSelectedFriend] = useState<ChatProfile | null>(null);
@@ -20,6 +21,7 @@ export default function Chat() {
     const [isCheckingAuth, setIsCheckingAuth] = useState(true); 
     const [isAddFriendOpen, setIsAddFriendOpen] = useState(false);
     const [refreshFriends, setRefreshFriends] = useState(0); 
+
 
 
     useEffect(() => {
@@ -47,38 +49,6 @@ export default function Chat() {
     }, []);
 
    
-    useEffect(() => {
-        if (!currentUserId) return;
-
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === 'hidden') {
-              
-                supabase.from('profiles').update({ status: 'Invisible' }).eq('id', currentUserId).then();
-            } else if (document.visibilityState === 'visible') {
-            
-                const savedStatus = localStorage.getItem(`chat_status_${currentUserId}`) || 'Disponible';
-                supabase.from('profiles').update({ status: savedStatus }).eq('id', currentUserId).then();
-                setMyStatus(savedStatus);
-            }
-        };
-
-        const handleClose = () => {
-         
-            supabase.from('profiles').update({ status: 'Invisible' }).eq('id', currentUserId).then();
-        };
-
-    
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-        window.addEventListener('beforeunload', handleClose);
-        window.addEventListener('pagehide', handleClose);
-
-        return () => {
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
-            window.removeEventListener('beforeunload', handleClose);
-            window.removeEventListener('pagehide', handleClose);
-            handleClose(); 
-        };
-    }, [currentUserId]);
 
 
     useEffect(() => {
@@ -135,6 +105,31 @@ export default function Chat() {
         setLoadingRoom(false);
     };
 
+
+    useEffect(() => {
+        const autoOpenChat = async () => {
+     
+            const targetUserId = location.state?.openChatWith;
+            
+            if (targetUserId && currentUserId) {
+               
+                const { data: friendProfile } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', targetUserId)
+                    .single();
+                
+                if (friendProfile) {
+                
+                    handleSelectFriend(friendProfile);
+                }
+                
+                window.history.replaceState({}, document.title);
+            }
+        };
+
+        autoOpenChat();
+    }, [location.state, currentUserId]);
     if (isCheckingAuth) {
         return (
             <section className="flex items-center justify-center min-h-[70vh]">
