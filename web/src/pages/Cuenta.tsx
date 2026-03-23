@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-// 1. NUEVO: Importamos icons y useRef
 import { User as UserIcon, Mail, Activity, Shield, ShieldAlert, Edit2, Check, X, Camera, AlertTriangle } from 'lucide-react'; 
 import { supabase } from '../supabase';
 import FriendManager from '../features/social/components/FriendManager';
@@ -10,15 +9,13 @@ export default function Cuenta() {
   const [allowRequests, setAllowRequests] = useState(true);
   const [savingPrivacy, setSavingPrivacy] = useState(false);
 
-  // Estados para controlar la edición del nombre
   const [isEditingName, setIsEditingName] = useState(false);
   const [editNameValue, setEditNameValue] = useState("");
   const [savingName, setSavingName] = useState(false);
 
-  // 2. NUEVO: Estados para la foto de perfil y el Modal
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [showAvatarPolicyModal, setShowAvatarPolicyModal] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null); // Ref para el input file oculto
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -131,7 +128,6 @@ export default function Cuenta() {
     }
   };
 
-  // 3. NUEVO: Función para subir la imagen a Supabase
   const uploadAvatar = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setUploadingAvatar(true);
@@ -142,22 +138,18 @@ export default function Cuenta() {
 
       const file = event.target.files[0];
       const fileExt = file.name.split('.').pop();
-      // Creamos un path único: user_id/avatar_timestamp.ext
       const filePath = `${profile.id}/avatar_${Date.now()}.${fileExt}`;
 
-      // A. Subimos al Bucket 'avatars'
       const { error: uploadError } = await supabase.storage
         .from('avatars')
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
-      // B. Obtenemos la URL Pública
       const { data: { publicUrl } } = supabase.storage
         .from('avatars')
         .getPublicUrl(filePath);
 
-      // C. Actualizamos la tabla 'profiles'
       const { error: updateError } = await supabase
         .from('profiles')
         .update({ avatar_url: publicUrl })
@@ -219,7 +211,7 @@ export default function Cuenta() {
               {/* Overlay con icono de cámara (aparece en hover) */}
               <button
                 title='Cambiar foto de perfil'
-                onClick={() => setShowAvatarPolicyModal(true)} // Primero el Modal, luego la selección
+                onClick={() => setShowAvatarPolicyModal(true)}
                 disabled={uploadingAvatar}
                 className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer border border-indigo-500"
               >
@@ -242,7 +234,7 @@ export default function Cuenta() {
             <div className="text-center md:text-left flex-1">
               {/* Lógica condicional para mostrar el input o el texto */}
               {isEditingName ? (
-                // Modo edicion
+                //Modo edicion
                 <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
                   <input
                     type="text"
@@ -374,7 +366,7 @@ export default function Cuenta() {
               <button 
                 onClick={() => {
                   setShowAvatarPolicyModal(false);
-                  fileInputRef.current?.click(); //Selector de archivos
+                  fileInputRef.current?.click();
                 }}
                 className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
               >
