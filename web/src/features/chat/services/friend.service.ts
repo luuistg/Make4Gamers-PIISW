@@ -1,4 +1,3 @@
-
 import { supabase } from '../../../supabase';
 import type { ChatProfile } from '../types/chat.types';
 
@@ -30,7 +29,6 @@ export const searchUsers = async (currentUserId: string, searchTerm: string): Pr
 
 export const addFriend = async (currentUserId: string, targetUserId: string): Promise<boolean> => {
     try {
-   
         const { data: existing } = await supabase
             .from('friendships')
             .select('id')
@@ -42,13 +40,13 @@ export const addFriend = async (currentUserId: string, targetUserId: string): Pr
             return true; 
         }
 
-     
+        //Se crea solicitud
         const { error } = await supabase
             .from('friendships')
             .insert({
                 user_a: currentUserId,
                 user_b: targetUserId,
-                status: 'accepted'
+                status: 'pending'
             });
 
         if (error) throw error;
