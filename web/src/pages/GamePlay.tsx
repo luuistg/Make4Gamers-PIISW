@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { getGameById, type Game } from "../features/games/services/getGameById.service";
-import { createMatch } from "../features/gameplay/services/createMatch.service";
 import { getUserGameScore } from "../features/gameplay/services/getUserGameScore.service";
 import { getAuthenticatedUserId } from "../features/auth/services/auth.service";
 
@@ -19,7 +18,6 @@ export default function Gameplay() {
   const [game, setGame] = useState<Game | null>(null);
 
   const [userId, setUserId] = useState<string | null>(null);
-  const [matchId, setMatchId] = useState<string | null>(null);
 
   const [myScore, setMyScore] = useState<number | null>(null);
   const [scoreLoading, setScoreLoading] = useState(false);
@@ -51,35 +49,22 @@ export default function Gameplay() {
     fetchUser();
   }, []);
 
-  useEffect(() => {
-    const initMatch = async () => {
-      if (!game?.id || !userId || matchId) return;
-
-      try {
-        const newMatchId = await createMatch({ gameId: game.id });
-        setMatchId(newMatchId);
-      } catch (error) {
-        console.error("Error creando match:", error);
-      }
-    };
-
-    initMatch();
-  }, [game?.id, userId, matchId]);
+  // Eliminado: useEffect que creaba partida y gestionaba matchId
 
   const finalGameUrl = useMemo(() => {
     if (!game?.game_url) return "";
 
     const playerName = userId || "anonimo";
-    const currentMatchId = matchId || "";
+    // Eliminado: const currentMatchId = matchId || "";
     const currentGameId = game.id || id || "";
 
     const url = new URL(game.game_url);
     url.searchParams.set("player", playerName);
-    url.searchParams.set("matchId", currentMatchId);
+    // Eliminado: url.searchParams.set("matchId", currentMatchId);
     url.searchParams.set("gameId", currentGameId);
 
     return url.toString();
-  }, [game, id, userId, matchId]);
+  }, [game, id, userId /*, matchId */]);
 
   useEffect(() => {
     const loadMyScore = async () => {
