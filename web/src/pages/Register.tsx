@@ -100,15 +100,17 @@ export default function Register() {
             setTimeout(() => navigate('/login'), 3000);
         }
 
-    } catch (error: any) {
-        console.error("Error completo:", error);
-        
-        if (error.message.includes("profiles_pkey")) {
+    } catch (caughtError) {
+        console.error("Error completo:", caughtError);
+
+        const errorMessage = caughtError instanceof Error ? caughtError.message : 'Ocurrió un error inesperado';
+
+        if (caughtError instanceof Error && caughtError.message.includes("profiles_pkey")) {
             setErrors({ form: "Este usuario ya tiene un perfil creado. Intenta con otro correo." });
-        } else if (error.message.includes("username")) {
+        } else if (caughtError instanceof Error && caughtError.message.includes("username")) {
             setErrors({ username: "Este nombre de usuario ya está en uso." });
         } else {
-            setErrors({ form: error.message || 'Ocurrió un error inesperado' });
+            setErrors({ form: errorMessage });
         }
     } finally {
         setLoading(false);
@@ -126,8 +128,9 @@ export default function Register() {
 
                 if (error) throw error;
                 
-            } catch (err: any) {
-                setErrors({ form: "Error al intentar conectar con Google: " + err.message });
+            } catch (err) {
+                const errorMessage = err instanceof Error ? err.message : "Error desconocido";
+                setErrors({ form: "Error al intentar conectar con Google: " + errorMessage });
             }
         };
 

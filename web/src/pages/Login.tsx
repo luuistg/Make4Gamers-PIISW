@@ -67,7 +67,7 @@ export default function Login() {
       if (data.user) {
         navigate("/"); //Ruta de exito
       }
-    } catch (err) {
+    } catch {
       setErrors({ auth: "Ocurrió un error inesperado" });
     } finally {
       setLoading(false);
@@ -93,8 +93,9 @@ export default function Login() {
 
       if (error) throw error;
       
-    } catch (err: any) {
-      setErrors({ auth: "Error al intentar conectar con Google: " + err.message });
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Error desconocido";
+      setErrors({ auth: "Error al intentar conectar con Google: " + errorMessage });
     }
   };
 
