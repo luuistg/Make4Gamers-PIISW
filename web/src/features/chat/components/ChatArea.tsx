@@ -1,6 +1,6 @@
 
 import { useState, useRef, useEffect } from 'react';
-import { Send } from 'lucide-react';
+import { Send, Check, CheckCheck } from 'lucide-react';
 import { useChatMessages } from '../hooks/useChatMessages';
 import { sendMessage } from '../services/chat.service';
 import type { ChatProfile } from '../types/chat.types';
@@ -18,11 +18,12 @@ export default function ChatArea({ roomId, currentUserId, friendProfile }: ChatA
   const { t } = useTranslation();
   const [newMessage, setNewMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
   
-  const { messages, loading } = useChatMessages(roomId);
+  const { messages, loading } = useChatMessages(roomId, currentUserId);
 
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export default function ChatArea({ roomId, currentUserId, friendProfile }: ChatA
     }
   }, [messages]);
 
-  const handleSendMessage = async (e: React.FormEvent) => {
+const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim() || isSending) return;
 
@@ -43,9 +44,10 @@ export default function ChatArea({ roomId, currentUserId, friendProfile }: ChatA
     try {
       await sendMessage(roomId, currentUserId, newMessage.trim());
       setNewMessage(''); 
+    
+      setTimeout(() => inputRef.current?.focus(), 10);
     } catch (error) {
       console.error('Error al enviar el mensaje', error);
-   
     } finally {
       setIsSending(false);
     }
@@ -151,9 +153,23 @@ export default function ChatArea({ roomId, currentUserId, friendProfile }: ChatA
                   </div>
 
           
-                  <span className="text-[11px] font-medium text-slate-500 mt-1.5 px-1">
-                    {timeString}
-                  </span>
+                <div className="flex items-center gap-1 mt-1.5 px-1">
+                    <span className="text-[11px] font-medium text-slate-500">
+                      {timeString}
+                    </span>
+                  
+                    {msg.sender_id === currentUserId && (
+                      msg.is_read ? (
+                        <span title="Leído" className="flex items-center">
+                          <CheckCheck size={14} className="text-blue-400 drop-shadow-[0_0_2px_rgba(96,165,250,0.5)]" />
+                        </span>
+                      ) : (
+                        <span title="Enviado" className="flex items-center">
+                          <Check size={14} className="text-slate-500" />
+                        </span>
+                      )
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -166,6 +182,8 @@ export default function ChatArea({ roomId, currentUserId, friendProfile }: ChatA
       <form onSubmit={handleSendMessage} className="p-4 bg-slate-800/80 border-t border-slate-700/50">
         <div className="flex items-center gap-2">
           <input
+            ref={inputRef} 
+            autoFocus
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}

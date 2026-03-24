@@ -115,3 +115,16 @@ export const updateUserStatus = async (userId: string, newStatus: string): Promi
         return false;
     }
 };
+
+export const markMessagesAsRead = async (roomId: string, currentUserId: string) => {
+    const { error } = await supabase
+        .from('messages')
+        .update({ is_read: true })
+        .eq('room_id', roomId)
+        .neq('sender_id', currentUserId) 
+        .eq('is_read', false); 
+
+    if (error) {
+        console.error("Error marcando mensajes como leídos:", error);
+    }
+};

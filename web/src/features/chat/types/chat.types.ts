@@ -24,6 +24,7 @@ export interface Message {
   content: string;
   created_at: string;
   profiles?: ChatProfile; 
+  is_read?: boolean;
 }
 
 
