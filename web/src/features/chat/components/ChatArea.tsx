@@ -5,6 +5,7 @@ import { useChatMessages } from '../hooks/useChatMessages';
 import { sendMessage } from '../services/chat.service';
 import type { ChatProfile } from '../types/chat.types';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 
 interface ChatAreaProps {
@@ -60,9 +61,14 @@ export default function ChatArea({ roomId, currentUserId, friendProfile }: ChatA
 
   return (
     <div className="flex flex-col h-full bg-slate-900/50 rounded-xl overflow-hidden border border-slate-700/50 shadow-inner">
-    {/* Cabecera del chat */}
-          <div className="px-6 py-4 bg-slate-800/80 border-b border-slate-700/50 flex items-center gap-3 shadow-sm z-10">
-            <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-700">
+{/* Cabecera del chat */}
+      <div className="px-6 py-4 bg-slate-800/80 border-b border-slate-700/50 flex items-center gap-3 shadow-sm z-10">
+          
+            <Link 
+              to={`/usuario/${friendProfile.username}`} 
+              className="w-10 h-10 rounded-full overflow-hidden bg-slate-700 hover:opacity-80 transition-opacity cursor-pointer shadow-md"
+              title={`Ver perfil de ${friendProfile.username}`}
+            >
               {friendProfile.avatar_url ? (
                 <img src={friendProfile.avatar_url} alt={friendProfile.username} className="w-full h-full object-cover" />
               ) : (
@@ -70,11 +76,18 @@ export default function ChatArea({ roomId, currentUserId, friendProfile }: ChatA
                     {friendProfile.username.charAt(0).toUpperCase()}
                 </div>
               )}
-            </div>
+            </Link>
+
             <div>
-              <h2 className="font-semibold text-slate-100">{friendProfile.username}</h2>
+          
+              <Link 
+                to={`/usuario/${friendProfile.username}`}
+                className="font-semibold text-slate-100 hover:text-indigo-400 transition-colors cursor-pointer"
+                title={`Ver perfil de ${friendProfile.username}`}
+              >
+                {friendProfile.username}
+              </Link>
               
-            
               <span className={`text-xs flex items-center gap-1.5 mt-0.5 ${
                   friendProfile.status === 'Ocupado' ? 'text-red-400' :
                   friendProfile.status === 'Ausente' ? 'text-yellow-400' :
