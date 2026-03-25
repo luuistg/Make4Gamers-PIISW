@@ -4,11 +4,15 @@ import { insertMatch } from "../repositories/matches.repository";
 
 type CreateMatchInput = {
   gameId: string;
+  sessionTimerSeconds?: number | null;
 };
 
-export async function createMatch(client: SupabaseClient, { gameId }: CreateMatchInput): Promise<string> {
+export async function createMatch(
+  client: SupabaseClient,
+  { gameId, sessionTimerSeconds }: CreateMatchInput,
+): Promise<string> {
   const userId = await getCurrentUserId(client);
   if (!userId) throw new Error("Usuario no autenticado");
 
-  return insertMatch(client, { gameId, userId });
+  return insertMatch(client, { gameId, userId, sessionTimerSeconds: sessionTimerSeconds ?? null });
 }

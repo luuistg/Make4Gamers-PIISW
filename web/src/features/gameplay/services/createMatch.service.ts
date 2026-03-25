@@ -3,8 +3,9 @@ import { supabase } from "../../../supabase";
 
 type CreateMatchInput = {
   gameId: string;
+  sessionTimerSeconds?: number | null;
 };
 
-export async function createMatch({ gameId }: CreateMatchInput): Promise<string> {
-  return createMatchFromApi(supabase, { gameId });
+export async function createMatch({ gameId, sessionTimerSeconds }: CreateMatchInput): Promise<string> {
+  return createMatchFromApi(supabase, { gameId, sessionTimerSeconds });
 }
