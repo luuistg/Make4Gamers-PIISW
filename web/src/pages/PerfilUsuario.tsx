@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { User as UserIcon, Activity, ArrowLeft, Trophy, Calendar, Gamepad2 } from 'lucide-react';
 import { supabase } from '../supabase';
+import { removeFriend } from '../features/chat/services/friend.service';
 
 export default function PerfilUsuario() {
   const { username } = useParams(); 
   const [profile, setProfile] = useState<any>(null);
   const [recentActivity, setRecentActivity] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfileAndActivity = async () => {
@@ -21,6 +23,11 @@ export default function PerfilUsuario() {
 
         if (profileError) throw profileError;
         setProfile(profileData);
+
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            setCurrentUserId(user.id);
+        }
 
         //Buscar su actividad reciente (ultimas 5)
         if (profileData) {
@@ -82,6 +89,20 @@ export default function PerfilUsuario() {
     );
   }
 
+  const handleRemoveFriend = async () => {
+    if (!currentUserId || !profile?.id) return;
+    
+    if (window.confirm(`¿Estás seguro de que quieres eliminar a ${profile.username} de tus amigos?`)) {
+        const success = await removeFriend(currentUserId, profile.id);
+        if (success) {
+            alert("Amigo eliminado correctamente");
+            window.location.reload(); 
+        } else {
+            alert("Hubo un error al eliminar al amigo");
+        }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-300 py-10 px-4">
       <div className="max-w-4xl mx-auto space-y-8">
@@ -108,6 +129,20 @@ export default function PerfilUsuario() {
               <h1 className="text-3xl font-bold text-white mb-2">
                 {profile.username}
               </h1>
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold text-white">{profile?.username}</h1>
+                </div>
+                {currentUserId && profile?.id && currentUserId !== profile.id && (
+                    <button 
+                        onClick={handleRemoveFriend}
+                        className="flex items-center gap-2 bg-red-500/10 text-red-500 hover:bg-red-500/20 px-4 py-2 rounded-lg font-medium transition-colors border border-red-500/20"
+                    >
+                        <UserIcon size={18} />
+                        Eliminar amigo
+                    </button>
+                )}
+            </div>
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm text-slate-400">
                 <span className="flex items-center gap-1.5">
                   <Activity size={16} /> 
