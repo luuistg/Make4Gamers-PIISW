@@ -126,9 +126,7 @@ export default function PerfilUsuario() {
             </div>
             
             <div className="text-center md:text-left flex-1">
-              <h1 className="text-3xl font-bold text-white mb-2">
-                {profile.username}
-              </h1>
+  
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-3xl font-bold text-white">{profile?.username}</h1>
