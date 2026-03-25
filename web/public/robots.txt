@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /chat
+Disallow: /cuenta
+Disallow: /login
+Disallow: /register
+Disallow: /recuperar-password
+Disallow: /game/
+
+Sitemap: https://make4gamers.com/sitemap.xml

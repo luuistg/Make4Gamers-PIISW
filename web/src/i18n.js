@@ -203,6 +203,48 @@ i18n
                             title: "Escala en nuestra clasificación",
                             firstButton: "Comenzar  ➜"
                         }
+                    },
+                    seo: {
+                        default: {
+                            title: "Plataforma de videojuegos",
+                            description: "Make4Gamers es tu plataforma para descubrir juegos, competir en rankings y conectar con la comunidad gamer."
+                        },
+                        home: {
+                            title: "Inicio",
+                            description: "Descubre Make4Gamers, mejora tus habilidades y conecta con jugadores de tu nivel."
+                        },
+                        games: {
+                            title: "Juegos",
+                            description: "Explora el catalogo de juegos, aplica filtros y encuentra tu proximo reto en Make4Gamers."
+                        },
+                        ranking: {
+                            title: "Ranking",
+                            description: "Consulta la clasificacion y sube posiciones compitiendo en Make4Gamers."
+                        },
+                        login: {
+                            title: "Iniciar sesion",
+                            description: "Accede a tu cuenta de Make4Gamers para guardar progreso y usar funciones sociales."
+                        },
+                        register: {
+                            title: "Registro",
+                            description: "Crea tu cuenta en Make4Gamers y empieza a competir con la comunidad."
+                        },
+                        recoverPassword: {
+                            title: "Recuperar contrasena",
+                            description: "Restablece tu contrasena de forma segura para volver a tu cuenta Make4Gamers."
+                        },
+                        chat: {
+                            title: "Chat",
+                            description: "Habla con tus amigos y coordina partidas desde el chat de Make4Gamers."
+                        },
+                        account: {
+                            title: "Cuenta",
+                            description: "Gestiona tu perfil, preferencias y datos de cuenta en Make4Gamers."
+                        },
+                        gameplay: {
+                            title: "Partida",
+                            description: "Juega y mejora tus resultados en Make4Gamers con seguimiento de puntuacion."
+                        }
                     }
                 }
             },
@@ -400,6 +442,48 @@ i18n
                             title: "Climb our ranking",
                             firstButton: "Start ➜"
                         }
+                    },
+                    seo: {
+                        default: {
+                            title: "Gaming platform",
+                            description: "Make4Gamers helps you discover games, climb rankings, and connect with the gaming community."
+                        },
+                        home: {
+                            title: "Home",
+                            description: "Discover Make4Gamers, level up your skills, and connect with players at your level."
+                        },
+                        games: {
+                            title: "Games",
+                            description: "Browse the game catalog, apply filters, and find your next challenge on Make4Gamers."
+                        },
+                        ranking: {
+                            title: "Ranking",
+                            description: "Check the leaderboard and climb positions by competing on Make4Gamers."
+                        },
+                        login: {
+                            title: "Sign in",
+                            description: "Access your Make4Gamers account to save progress and use social features."
+                        },
+                        register: {
+                            title: "Sign up",
+                            description: "Create your Make4Gamers account and start competing with the community."
+                        },
+                        recoverPassword: {
+                            title: "Recover password",
+                            description: "Reset your password securely to get back into your Make4Gamers account."
+                        },
+                        chat: {
+                            title: "Chat",
+                            description: "Talk with friends and coordinate matches in the Make4Gamers chat."
+                        },
+                        account: {
+                            title: "Account",
+                            description: "Manage your profile, preferences, and account data on Make4Gamers."
+                        },
+                        gameplay: {
+                            title: "Match",
+                            description: "Play and improve your scores with match tracking on Make4Gamers."
+                        }
                     }
                 }
             },
@@ -596,6 +680,48 @@ i18n
                         ranks: {
                             title: "提升我们的排名",
                             firstButton: "开始 ➜"
+                        }
+                    },
+                    seo: {
+                        default: {
+                            title: "游戏平台",
+                            description: "Make4Gamers 帮助你发现游戏、冲击排行榜并与玩家社区连接。"
+                        },
+                        home: {
+                            title: "首页",
+                            description: "探索 Make4Gamers，提升你的实力，并与同水平玩家互动。"
+                        },
+                        games: {
+                            title: "游戏",
+                            description: "浏览游戏目录，使用筛选功能，在 Make4Gamers 找到下一场挑战。"
+                        },
+                        ranking: {
+                            title: "排行榜",
+                            description: "查看排行榜并通过比赛在 Make4Gamers 提升名次。"
+                        },
+                        login: {
+                            title: "登录",
+                            description: "登录 Make4Gamers 账户以保存进度并使用社交功能。"
+                        },
+                        register: {
+                            title: "注册",
+                            description: "创建你的 Make4Gamers 账户并开始与社区一起竞技。"
+                        },
+                        recoverPassword: {
+                            title: "找回密码",
+                            description: "安全重置密码，重新进入你的 Make4Gamers 账户。"
+                        },
+                        chat: {
+                            title: "聊天",
+                            description: "在 Make4Gamers 聊天中与好友沟通并协调对局。"
+                        },
+                        account: {
+                            title: "账户",
+                            description: "在 Make4Gamers 管理你的个人资料、偏好设置和账户信息。"
+                        },
+                        gameplay: {
+                            title: "对局",
+                            description: "在 Make4Gamers 进行对局并通过成绩追踪持续提升。"
                         }
                     }
                 }
