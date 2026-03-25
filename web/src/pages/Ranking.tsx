@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Trophy, Medal, Crown, Gamepad2, TrendingUp, User } from 'lucide-react';
+import { Trophy, Medal, Crown, Gamepad2, TrendingUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next'; 
 import { supabase } from '../supabase';
 import { getRankingByGame, getUserRankPosition, getPlayerTier, type RankingEntry } from '../features/ranking/services/ranking.service';
