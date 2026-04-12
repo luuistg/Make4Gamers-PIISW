@@ -206,7 +206,13 @@ i18n
                     },
                     dashboard: {
                         welcomePrefix: "Bienvenido,",
-                        userFallback: "Jugador"
+                        userFallback: "Jugador",
+                        marquee: {
+                            play: "JUEGA",
+                            chat: "CHATEA",
+                            compete: "COMPITE",
+                            climb: "ESCALA"
+                        }
                     },
                     seo: {
                         default: {
@@ -449,7 +455,13 @@ i18n
                     },
                     dashboard: {
                         welcomePrefix: "Welcome,",
-                        userFallback: "Player"
+                        userFallback: "Player",
+                        marquee: {
+                            play: "PLAY",
+                            chat: "CHAT",
+                            compete: "COMPETE",
+                            climb: "CLIMB"
+                        }
                     },
                     seo: {
                         default: {
@@ -692,7 +704,13 @@ i18n
                     },
                     dashboard: {
                         welcomePrefix: "欢迎你，",
-                        userFallback: "玩家"
+                        userFallback: "玩家",
+                        marquee: {
+                            play: "游玩",
+                            chat: "聊天",
+                            compete: "竞技",
+                            climb: "攀升"
+                        }
                     },
                     seo: {
                         default: {

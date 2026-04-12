@@ -1,5 +1,8 @@
 import { NewsCarousel } from "./NewsCarousel";
 import { useAuthStatus } from '../../auth/hooks/useAuthStatus';
+import GameCardRecomendation from "./GameCardRecomendation";
+import { RecomendedGames } from "../constants/RecomendedGames";
+import { NeonMarquee } from "./NeonMarquee";
 import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
@@ -7,7 +10,7 @@ export default function Dashboard() {
   const { t } = useTranslation();
 
   const displayName =
-    user?.user_metadata?.fullName ||
+    user?.user_metadata?.username ||
     user?.user_metadata?.full_name ||
     user?.email ||
     t("dashboard.userFallback");
@@ -28,7 +31,27 @@ export default function Dashboard() {
         </div>
       </section>
 
+      <section className="relative mt-16"> 
       <NewsCarousel />
+      </section>
+      
+      <section className="relative mt-24">
+        <div className="w-full text-center">
+            <NeonMarquee />
+        </div>
+      </section>
+
+      <div className="min-h-screen p-6">
+      {RecomendedGames.map((game) => (
+        <GameCardRecomendation 
+          key={game.id} // Siempre añade una key única al iterar
+          title={game.title}
+          description={game.description}
+          videoSrc={game.videoSrc}
+          gameUrl={game.gameUrl}
+        />
+      ))}
+    </div>
     </>
   );
 }
