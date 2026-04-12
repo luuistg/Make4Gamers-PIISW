@@ -20,7 +20,7 @@ export default function PublicLanding() {
     button: slot.button
       ? {
           text: t(slot.button.textKey),
-          onClick: index === 0 ? () => navigate("/juegos") : slot.button.onClick,
+          onClick: index === 0 ? () => navigate("/login") : slot.button.onClick,
         }
       : undefined,
   }))
