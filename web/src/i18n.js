@@ -142,7 +142,6 @@ i18n
                         rulesError: "No se pudieron cargar las reglas.",
                         backButton: "Volver"
                     },
-
                     ranking: {
                         currentSeason: "Temporada Actual",
                         title: "Ranking Global",
@@ -159,8 +158,6 @@ i18n
                         yourPosition: "Tu posición actual",
                         keepPlaying: "Sigue jugando para subir de liga"
                     },
-
-
                     chat: {
                         unauthorizedTitle: "¡Alto ahí!",
                         unauthorizedDesc: "Para poder chatear con otros usuarios y acceder a tus mensajes privados, necesitas iniciar sesión en tu cuenta.",
@@ -178,7 +175,7 @@ i18n
                         selectFriend: "Selecciona un amigo de la lista para empezar a chatear.",
                         errorLoading: "Hubo un error al preparar el chat. Inténtalo de nuevo.",
                         breakIce: "¡Rompe el hielo!",
-                        firstMessage: "Envía el primer mensaje a {{name}}.", 
+                        firstMessage: "Envía el primer mensaje a {{name}}.",
                         placeholder: "Escribe un mensaje a {{name}}..."
                     },
                     home: {
@@ -293,6 +290,8 @@ i18n
                             rule2: "Prohibido material ofensivo, discriminatorio o de odio",
                             rule3: "Cualquier infracción resultará en la eliminación de la foto o de la cuenta",
                             accept: "He leído y acepto"
+                        }
+                    },
                     dashboard: {
                         welcomePrefix: "Bienvenido,",
                         userFallback: "Jugador",
@@ -377,7 +376,6 @@ i18n
                             terms: "Terms"
                         }
                     },
-
                     ranking: {
                         currentSeason: "Current Season",
                         title: "Global ranking",
@@ -631,6 +629,8 @@ i18n
                             rule2: "Offensive, discriminatory, or hateful material is forbidden",
                             rule3: "Any violation may result in profile image or account removal",
                             accept: "I have read and accept"
+                        }
+                    },
                     dashboard: {
                         welcomePrefix: "Welcome,",
                         userFallback: "Player",
@@ -820,7 +820,6 @@ i18n
                         rulesError: "无法加载规则。",
                         backButton: "返回"
                     },
-
                     ranking: {
                         currentSeason: "当前赛季",
                         title: "全球排名",
@@ -843,11 +842,11 @@ i18n
                         loginButton: "去登录",
                         myStatus: "我的状态：",
                         status: {
-                            online: "在线", 
-                            away: "离开", 
-                            busy: "忙碌", 
-                            offline: "隐身", 
-                            disconnected: "离线" 
+                            online: "在线",
+                            away: "离开",
+                            busy: "忙碌",
+                            offline: "隐身",
+                            disconnected: "离线"
                         },
                         messagesTitle: "消息",
                         addFriendTooltip: "添加好友",
@@ -969,6 +968,8 @@ i18n
                             rule2: "禁止上传冒犯、歧视或仇恨内容",
                             rule3: "违规可能导致头像或账户被移除",
                             accept: "我已阅读并同意"
+                        }
+                    },
                     dashboard: {
                         welcomePrefix: "欢迎你，",
                         userFallback: "玩家",
