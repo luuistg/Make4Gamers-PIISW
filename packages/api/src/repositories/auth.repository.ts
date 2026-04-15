@@ -49,6 +49,13 @@ export function sendPasswordResetEmail(
   return client.auth.resetPasswordForEmail(email, { redirectTo });
 }
 
+export function updateCurrentUserMetadata(
+  client: SupabaseClient,
+  data: Record<string, unknown>,
+) {
+  return client.auth.updateUser({ data });
+}
+
 export function signOut(client: SupabaseClient) {
   return client.auth.signOut();
 }
