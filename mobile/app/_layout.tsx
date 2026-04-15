@@ -18,6 +18,10 @@ export default function RootLayout() {
           animation: 'fade',
         }}>
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="achievements" />
+        <Stack.Screen name="game/[id]" />
+        <Stack.Screen name="gameclicker" />
+        <Stack.Screen name="chess" />
         <Stack.Screen name="login" />
         <Stack.Screen name="register" />
       </Stack>

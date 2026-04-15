@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 
-import type { RankingEntry } from '@/constants/mock-data'
+import type { RankingRow } from '@/constants/mock-data'
 import { m4gTheme } from '@/constants/theme'
 
 type LeaderboardRowProps = {
-  entry: RankingEntry
+  entry: RankingRow
   position: number
 }
 
@@ -17,13 +17,13 @@ export function LeaderboardRow({ entry, position }: LeaderboardRowProps) {
         </View>
         <View style={styles.textBlock}>
           <Text style={styles.name}>{entry.name}</Text>
-          <Text style={styles.streak}>{entry.streak}</Text>
+          <Text style={styles.meta}>{entry.meta}</Text>
         </View>
       </View>
 
       <View style={styles.rightBlock}>
         <Text style={styles.badge}>{entry.badge}</Text>
-        <Text style={styles.points}>{entry.points.toLocaleString()} pts</Text>
+        <Text style={styles.value}>{entry.value}</Text>
       </View>
     </View>
   )
@@ -52,10 +52,10 @@ const styles = StyleSheet.create({
     borderRadius: 19,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(190, 242, 100, 0.12)',
+    backgroundColor: 'rgba(99, 102, 241, 0.14)',
   },
   positionText: {
-    color: m4gTheme.colors.lime,
+    color: m4gTheme.colors.indigo,
     fontSize: 15,
     fontWeight: '900',
   },
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '800',
   },
-  streak: {
+  meta: {
     color: m4gTheme.colors.textMuted,
     fontSize: 12,
   },
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     letterSpacing: 1,
   },
-  points: {
+  value: {
     color: m4gTheme.colors.textSoft,
     fontSize: 13,
     fontWeight: '700',

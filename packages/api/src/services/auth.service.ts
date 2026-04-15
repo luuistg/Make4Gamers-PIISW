@@ -12,6 +12,7 @@ import {
   signInWithPassword,
   signOut,
   signUpWithPassword,
+  updateCurrentUserMetadata,
 } from "../repositories/auth.repository";
 
 export function loginWithEmail(client: SupabaseClient, email: string, password: string) {
@@ -36,6 +37,13 @@ export function loginWithGoogle(client: SupabaseClient, redirectTo: string) {
 
 export function requestPasswordReset(client: SupabaseClient, email: string, redirectTo: string) {
   return sendPasswordResetEmail(client, email, redirectTo);
+}
+
+export function updateAuthenticatedUserMetadata(
+  client: SupabaseClient,
+  data: Record<string, unknown>,
+) {
+  return updateCurrentUserMetadata(client, data);
 }
 
 export async function logout(client: SupabaseClient): Promise<void> {

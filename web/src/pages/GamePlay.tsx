@@ -147,28 +147,29 @@ export default function Gameplay() {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="border-b border-slate-800">
-        <div className="mx-auto w-full max-w-[1200px] px-8 lg:px-14 py-4 flex items-center justify-between">
-          <div className="max-w-[70%]">
+        <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-3 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-14">
+          <div className="min-w-0 lg:max-w-[70%]">
             <h1 className="text-xl font-semibold leading-tight">{game.title}</h1>
-            <p className="text-xs text-slate-400 mt-1">
-              {game.genre ?? t("gameplay.noGenre")} {game.rating ? `· ⭐ ${game.rating}` : ""}
+            <p className="mt-1 text-xs text-slate-400">
+              {game.genre ?? t("gameplay.noGenre")}
+              {game.rating ? ` | rating ${game.rating}` : ""}
             </p>
           </div>
 
           <button
             onClick={() => navigate(`/ranking?gameId=${game.id}`)}
-            className="shrink-0 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm font-medium"
+            className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium hover:bg-indigo-500 sm:w-auto lg:shrink-0"
           >
             {t("gameplay.viewRanking")}
           </button>
         </div>
       </div>
 
-      <div className="mt-6 mb-6">
-        <div className="mx-auto w-full max-w-[1200px] px-8 lg:px-14">
-          <div className="grid grid-cols-1 lg:grid-cols-[800px_280px] gap-4 justify-center items-stretch">
-            <section className="h-[600px] w-full max-w-[800px] rounded-xl overflow-hidden bg-black border border-indigo-500/50 shadow-xl shadow-indigo-500/10 transition-all duration-300">
-              <GameViewport src={finalGameUrl} title={`game-${game.id}`} ratio="4:3" />
+      <div className="mb-6 mt-6">
+        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-14">
+          <div className="grid grid-cols-1 items-stretch gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+            <section className="h-[68svh] min-h-[320px] w-full rounded-xl border border-indigo-500/50 bg-black shadow-xl shadow-indigo-500/10 transition-all duration-300 sm:min-h-[420px] lg:h-[72vh] lg:max-h-[760px]">
+              <GameViewport src={finalGameUrl} title={`game-${game.id}`} />
             </section>
 
             <GameplaySidebar
