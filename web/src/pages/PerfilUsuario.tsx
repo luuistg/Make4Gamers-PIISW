@@ -5,13 +5,15 @@ import { supabase } from '../supabase';
 import { removeFriend } from '../features/chat/services/friend.service';
 import { useParams, Link, useNavigate } from 'react-router-dom'; 
 
-import { User as UserIcon, Activity, ArrowLeft, Trophy, Calendar, Gamepad2, Check, AlertCircle, AlertTriangle } from 'lucide-react';
+import { User as UserIcon, Activity, ArrowLeft, Trophy, Calendar, Gamepad2, Check, AlertCircle, AlertTriangle, Medal } from 'lucide-react';
+import { getAccountHighScores } from '../features/account/services/account.service';
 
 
 export default function PerfilUsuario() {
   const { username } = useParams(); 
   const [profile, setProfile] = useState<any>(null);
   const [recentActivity, setRecentActivity] = useState<any[]>([]);
+  const [highScores, setHighScores] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -55,6 +57,10 @@ export default function PerfilUsuario() {
             setRecentActivity(activityData);
           }
         }
+
+        
+          const scores = await getAccountHighScores(profileData.id);
+          setHighScores(scores);
 
       } catch (error) {
         console.error("Error cargando el perfil público:", error);
@@ -196,6 +202,51 @@ export default function PerfilUsuario() {
             </div>
           </div>
         </div>
+
+
+  
+        {highScores.length > 0 && (
+          <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl relative overflow-hidden">
+            {/* Brillo de fondo sutil */}
+            <div className="absolute top-0 left-0 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl -ml-20 -mt-20 pointer-events-none"></div>
+            
+            <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2 relative z-10">
+              <Medal className="text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" /> 
+              Salón de la Fama
+            </h3>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-10">
+              {highScores.map((record, index) => (
+                <div 
+                  key={`record-${record.id}`} 
+                  className="p-5 bg-gradient-to-br from-slate-800/80 to-slate-800/30 border border-slate-700/50 hover:border-amber-500/40 rounded-2xl relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_-6px_rgba(245,158,11,0.15)]"
+                >
+                  {/* Número de Top y Medalla de fondo */}
+                  <div className="absolute -right-4 -bottom-4 p-3 opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:scale-110 duration-500">
+                    <Medal size={90} className="text-amber-400" />
+                  </div>
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="flex items-center justify-center w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/20">
+                        {index + 1}
+                      </span>
+                      <p className="text-sm text-slate-300 font-medium truncate">
+                        {record.displayTitle}
+                      </p>
+                    </div>
+                    <p className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 tracking-tight">
+                      {record.score}
+                    </p>
+                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
+                      Puntuación Máxima
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Actividad reciente */}
         <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl">

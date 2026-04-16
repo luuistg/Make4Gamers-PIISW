@@ -19,6 +19,7 @@ import {
   MessageCircle,
   MapPin,
   Gamepad2,
+  Medal
 } from 'lucide-react';
 import { supabase } from '../supabase';
 import { getAuthenticatedUser, subscribeToAuthState } from '../features/auth/services/auth.service';
@@ -27,6 +28,7 @@ import {
   getAccountProfile,
   getAccountRecentGames,
   updateAccountProfile,
+  getAccountHighScores
 } from '../features/account/services/account.service';
 
 type Profile = {
@@ -81,6 +83,7 @@ export default function Cuenta() {
   const [recentGames, setRecentGames] = useState<RecentGame[]>([]);
   const [friends, setFriends] = useState<FriendEntry[]>([]);
   const [friendsSearch, setFriendsSearch] = useState('');
+  const [highScores, setHighScores] = useState<any[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -126,9 +129,9 @@ export default function Cuenta() {
     setEditNameValue(mergedProfile.username || '');
     console.log('[CUENTA DEBUG] Profile set:', mergedProfile);
 
-    // Cargar en segundo plano sin bloquear
-    console.log('[CUENTA DEBUG] Loading games and friends in background...');
-    Promise.all([loadRecentGames(user.id), loadFriends(user.id)]).catch(err => {
+
+    console.log('[CUENTA DEBUG] Loading games, friends and scores in background...');
+    Promise.all([loadRecentGames(user.id), loadFriends(user.id), loadHighScores(user.id)]).catch(err => {
       console.error('[CUENTA DEBUG] Error cargando datos secundarios:', err);
     });
   }, []);
@@ -197,6 +200,17 @@ export default function Cuenta() {
     } catch (error) {
       console.warn('[CUENTA DEBUG] loadRecentGames: Error o timeout:', error);
       setRecentGames([]);
+    }
+  };
+
+  const loadHighScores = async (userId: string) => {
+    try {
+      console.log('[CUENTA DEBUG] loadHighScores: starting for user', userId);
+      const data = await getAccountHighScores(userId);
+      setHighScores(data);
+    } catch (error) {
+      console.warn('[CUENTA DEBUG] loadHighScores: Error:', error);
+      setHighScores([]);
     }
   };
 
@@ -430,6 +444,31 @@ export default function Cuenta() {
                     <p className="text-sm text-slate-400 flex items-center gap-1"><MapPin size={14} /> {profile.location || t('account.dashboard.noLocation')}</p>
                   </div>
                 </div>
+
+              
+                {highScores.length > 0 && (
+                  <div className="mb-8">
+                    <h3 className="text-lg text-white font-semibold mb-4 flex items-center gap-2">
+                      <Medal size={20} className="text-amber-400" />
+                      Mis Mejores Marcas
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      {highScores.map((record, index) => (
+                        <div key={`my-record-${index}`} className="group rounded-2xl border border-slate-700/60 bg-slate-800/40 p-4 relative overflow-hidden transition-all hover:bg-slate-800/80 hover:border-amber-500/30">
+                          <div className="absolute right-0 top-0 w-16 h-full bg-gradient-to-l from-amber-500/5 to-transparent pointer-events-none"></div>
+                          <div className="relative z-10 flex flex-col">
+                            <span className="text-xs text-amber-400/80 font-bold uppercase tracking-wider mb-1 truncate">
+                              {record.displayTitle}
+                            </span>
+                            <span className="text-2xl font-black text-white group-hover:text-amber-300 transition-colors">
+                              {record.score}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <h3 className="text-lg text-white font-semibold mb-3 flex items-center gap-2">

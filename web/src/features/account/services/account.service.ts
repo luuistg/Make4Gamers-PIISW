@@ -29,3 +29,31 @@ export function getAccountRecentGames(userId: string, limit = 5): Promise<Accoun
 export function getAccountFriends(userId: string): Promise<AccountFriend[]> {
   return getAccountFriendsFromApi(supabase, userId);
 }
+
+export async function getAccountHighScores(userId: string) {
+  const { data, error } = await supabase
+    .from('scores')
+    .select(`id, score, game:games(title)`)
+    .eq('user_id', userId)
+    .order('score', { ascending: false });
+
+  if (error || !data) {
+    console.error("Error obteniendo récords:", error);
+    return [];
+  }
+
+  const bestScores: any[] = [];
+  const seenGames = new Set();
+
+  data.forEach((item: any) => {
+    const gameData = item.game;
+    const gameTitle = (Array.isArray(gameData) ? gameData[0]?.title : gameData?.title) || 'Desconocido';
+
+    if (!seenGames.has(gameTitle)) {
+      seenGames.add(gameTitle);
+      bestScores.push({ ...item, displayTitle: gameTitle });
+    }
+  });
+
+  return bestScores.slice(0, 3);
+}
