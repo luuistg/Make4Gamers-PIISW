@@ -20,7 +20,6 @@ export default function AdminSugerencias() {
         try {
           setLoading(true);
           
-          // Usamos getSession en lugar de getUser() para evitar el error de CORS
           const { data: { session }, error: authError } = await supabase.auth.getSession();
           const user = session?.user;
 
