@@ -15,7 +15,10 @@ import PerfilUsuario from './pages/PerfilUsuario';
 import Cuenta from './pages/Cuenta'; 
 import GameRules from "./pages/GameRules";
 import Ayuda from './pages/Ayuda';
+import Contacto from './pages/Contacto';
+import AdminSugerencias from './pages/AdminSugerencias';
 import AdminTickets from './pages/AdminTickets';
+
 
 function App() {
   return (
@@ -40,6 +43,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/recuperar-password" element={<RecuperarPassword />} />
           <Route path="/actualizar-password" element={<ActualizarPassword />} />
+          <Route path="/admin/sugerencias" element={<AdminSugerencias />} />
           <Route path="/admin/tickets" element={<AdminTickets />} />
 
           {/* Main */}
@@ -50,6 +54,7 @@ function App() {
             <Route path="/chat" element={<Chat />} />
             <Route path="/game/:id" element={<GameplayPage />} />
             <Route path="/juegos/:id/reglas" element={<GameRules />} />
+            <Route path="/contacto" element={<Contacto />} />
             
             {/* Cuenta */}
             <Route path="/cuenta" element={<Cuenta />} /> 
