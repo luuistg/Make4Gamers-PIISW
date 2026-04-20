@@ -15,6 +15,7 @@ import PerfilUsuario from './pages/PerfilUsuario';
 import Cuenta from './pages/Cuenta'; 
 import GameRules from "./pages/GameRules";
 import Ayuda from './pages/Ayuda';
+import AdminTickets from './pages/AdminTickets';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/recuperar-password" element={<RecuperarPassword />} />
           <Route path="/actualizar-password" element={<ActualizarPassword />} />
+          <Route path="/admin/tickets" element={<AdminTickets />} />
 
           {/* Main */}
           <Route element={<Layout />}>
