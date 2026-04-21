@@ -6,7 +6,7 @@ import { sendMessage } from '../services/chat.service';
 import type { ChatProfile } from '../types/chat.types';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-
+import { useChatFilter } from '../hooks/useChatFilter';
 
 interface ChatAreaProps {
   roomId: string;
@@ -19,7 +19,7 @@ export default function ChatArea({ roomId, currentUserId, friendProfile }: ChatA
   const [newMessage, setNewMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  
+  const { censorMessage } = useChatFilter();
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
   
