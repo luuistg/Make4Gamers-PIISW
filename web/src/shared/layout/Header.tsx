@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, Globe, ChevronDown, User, LogOut } from 'lucide-react';
+import { Menu, Globe, ChevronDown, User, LogOut, Activity, BarChart2 } from 'lucide-react';
 import { Logo } from '../icons/Logo';
 import { logout } from '../../features/auth/services/logout.service';
 import { useAuthStatus } from '../../features/auth/hooks/useAuthStatus';
@@ -94,7 +94,17 @@ const Header = () => {
                 <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
                     <Link to="/juegos" className="hover:text-indigo-400 transition-colors">{t('nav.games')}</Link>
                     <Link to="/ranking" className="hover:text-indigo-400 transition-colors">{t('nav.ranking')}</Link>
-                    
+
+                    <Link 
+                        to="/estadisticas" 
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
+                            location.pathname === '/estadisticas' 
+                            ? 'bg-indigo-500/10 text-indigo-400' 
+                            : 'text-slate-300 hover:text-white hover:bg-white/5'
+                        }`}
+                    >
+                        <span className="font-medium">Estadísticas</span>
+                    </Link>
                   
                     <Link to="/chat" className="relative hover:text-indigo-400 transition-colors flex items-center">
                         {t('nav.chat')}
@@ -130,6 +140,10 @@ const Header = () => {
                                         <User size={16} />
                                         <span>{t('nav.account')}</span>
                                     </Link>
+
+                                  
+                   
+                                 
                                     <div className="h-px bg-slate-800 my-1"></div>
                                     <button
                                         className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-slate-800 hover:text-red-300 transition-colors"
