@@ -1,20 +1,31 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { AccountProfile, AccountRecentGameRaw } from "../types/account";
 
-const PROFILE_FIELDS =
-  "id, username, avatar_url, status, allow_requests, role";
+const PROFILE_FIELDS_CANDIDATES: string[] = [
+  "id, username, avatar_url, email, status, allow_requests, role, location, first_name, last_name, birth_date, created_at, updated_at, subscription_tier, subscription_end_date",
+  "id, username, avatar_url, email, status, allow_requests, role, first_name, last_name, birth_date, created_at, updated_at, subscription_tier, subscription_end_date",
+  "id, username, avatar_url, email, status, allow_requests, first_name, last_name, birth_date, created_at, updated_at, subscription_tier, subscription_end_date",
+];
 
 export async function findAccountProfile(
   client: SupabaseClient,
   userId: string,
 ): Promise<AccountProfile> {
-  const { data, error } = await client.from("profiles").select(PROFILE_FIELDS).eq("id", userId).single();
+  let lastError: Error | null = null;
 
-  if (error || !data) {
-    throw new Error(error?.message || "No se pudo recuperar el perfil");
+  for (const fields of PROFILE_FIELDS_CANDIDATES) {
+    const { data, error } = await client.from("profiles").select(fields).eq("id", userId).single();
+
+    if (!error && data) {
+      return data as unknown as AccountProfile;
+    }
+
+    if (error) {
+      lastError = new Error(error.message || "No se pudo recuperar el perfil");
+    }
   }
 
-  return data as AccountProfile;
+  throw lastError ?? new Error("No se pudo recuperar el perfil");
 }
 
 export async function patchAccountProfile(
@@ -22,7 +33,12 @@ export async function patchAccountProfile(
   userId: string,
   patch: Partial<Omit<AccountProfile, "id">>,
 ): Promise<void> {
-  const { error } = await client.from("profiles").update(patch).eq("id", userId);
+  const patchWithUpdatedAt: Partial<Omit<AccountProfile, "id">> = {
+    ...patch,
+    updated_at: new Date().toISOString(),
+  };
+
+  const { error } = await client.from("profiles").update(patchWithUpdatedAt).eq("id", userId);
 
   if (error) {
     throw new Error(error.message || "No se pudo actualizar el perfil");

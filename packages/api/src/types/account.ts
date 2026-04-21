@@ -2,6 +2,7 @@ export type AccountProfile = {
   id: string;
   username: string | null;
   avatar_url: string | null;
+  email: string | null;
   status: string | null;
   allow_requests: boolean | null;
   role: string | null;
@@ -10,7 +11,10 @@ export type AccountProfile = {
   last_name: string | null;
   birth_date: string | null;
   phone: string | null;
-  subscription_type: string | null;
+  created_at: string | null;
+  updated_at: string | null;
+  subscription_tier: string | null;
+  subscription_end_date: string | null;
 };
 
 export type AccountRecentGame = {

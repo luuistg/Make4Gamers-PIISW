@@ -51,10 +51,11 @@ export async function getAccountFriends(client: SupabaseClient, userId: string):
 
   return rows.map((row) => {
     const isUserA = row.user_a === userId;
+    const friendUserId = isUserA ? row.user_b : row.user_a;
     const profile = isUserA ? row.profile_b : row.profile_a;
 
     return {
-      id: row.id,
+      id: friendUserId,
       username: profile?.username || "Unknown",
       avatar_url: profile?.avatar_url || null,
       status: profile?.status || "Desconectado",

@@ -62,6 +62,20 @@ export function updatePassword(client: SupabaseClient, newPassword: string) {
   return updateUserPassword(client, newPassword);
 }
 
+export async function verifyCurrentPassword(client: SupabaseClient, currentPassword: string): Promise<void> {
+  const user = await getCurrentUser(client);
+
+  if (!user?.email) {
+    throw new Error("No se puede verificar la contraseña actual para esta cuenta");
+  }
+
+  const { error } = await signInWithPassword(client, user.email, currentPassword);
+
+  if (error) {
+    throw error;
+  }
+}
+
 export async function logout(client: SupabaseClient): Promise<void> {
   const { error } = await signOut(client);
   if (error) throw error;
