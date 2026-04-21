@@ -2,7 +2,7 @@
 import { supabase } from '../../../supabase';
 import type { ChatProfile } from '../types/chat.types';
 
-
+const { censorMessage } = useChatFilter();
 
 export const getFriendsList = async (currentUserId: string): Promise<ChatProfile[]> => {
 
@@ -20,8 +20,6 @@ export const getFriendsList = async (currentUserId: string): Promise<ChatProfile
     const friendIds = friendships.map(f => f.user_a === currentUserId ? f.user_b : f.user_a);
 
     if (friendIds.length === 0) return [];
-
-
 
     const { data: profiles, error: profileError } = await supabase
         .from('profiles')
@@ -83,7 +81,6 @@ export const getOrCreateChatRoom = async (myId: string, friendId: string): Promi
 
   return newRoom.id;
 };
-
 
 export const sendMessage = async (roomId: string, currentUserId: string, content: string) => {
     const { error } = await supabase
