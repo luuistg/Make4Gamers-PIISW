@@ -17,6 +17,7 @@ import GameRules from "./pages/GameRules";
 import Ayuda from './pages/Ayuda';
 import Contacto from './pages/Contacto';
 import AdminSugerencias from './pages/AdminSugerencias';
+import AdminTickets from './pages/AdminTickets';
 import Estadisticas from './pages/Estadisticas';
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
           <Route path="/recuperar-password" element={<RecuperarPassword />} />
           <Route path="/actualizar-password" element={<ActualizarPassword />} />
           <Route path="/admin/sugerencias" element={<AdminSugerencias />} />
+          <Route path="/admin/tickets" element={<AdminTickets />} />
 
           {/* Main */}
           <Route element={<Layout />}>

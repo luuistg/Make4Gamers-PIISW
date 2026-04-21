@@ -1,13 +1,19 @@
+import { supabase } from '../supabase';
 import { useState } from 'react';
-import { BookOpen, FileText, HelpCircle, ChevronDown, ChevronUp, User, Users, Gamepad2, Search, X } from 'lucide-react';
+import { BookOpen, FileText, HelpCircle, ChevronDown, ChevronUp, User, Users, Gamepad2, Search, X, Send, LifeBuoy } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function Ayuda() {
   const [activeTab, setActiveTab] = useState<'faq' | 'manuales'>('manuales');
   const [faqAbierta, setFaqAbierta] = useState<number | null>(null);
   const [manualAbierto, setManualAbierto] = useState<string | null>('cuenta');
-  
-
   const [busqueda, setBusqueda] = useState('');
+
+  // --- ESTADOS PARA EL TICKET DE SOPORTE ---
+  const [asunto, setAsunto] = useState('');
+  const [categoria, setCategoria] = useState('Técnico');
+  const [mensaje, setMensaje] = useState('');
+  const [enviandoTicket, setEnviandoTicket] = useState(false);
 
   const faqs = [
     { id: 1, pregunta: '¿Cómo puedo cambiar mi nombre de usuario?', respuesta: 'Ve a la sección "Cuenta" desde el menú de navegación. Allí verás tu tarjeta de perfil con un icono de un lápiz junto a tu nombre. Haz clic en él, escribe tu nuevo nombre y dale a guardar (puede que el nombre ya este ocupado).' },
@@ -56,7 +62,6 @@ export default function Ayuda() {
   ];
 
   const toggleFaq = (id: number) => setFaqAbierta(faqAbierta === id ? null : id);
-
   
   const term = busqueda.toLowerCase();
   
@@ -72,6 +77,62 @@ export default function Ayuda() {
   );
 
   const isSearching = busqueda.trim().length > 0;
+
+  //Enviar Ticket
+  // --- FUNCIÓN PARA ENVIAR EL TICKET REVISADA Y LIMPIA ---
+  const handleEnviarTicket = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!asunto.trim() || !mensaje.trim()) {
+      toast.error("Por favor, rellena todos los campos para poder ayudarte.");
+      return;
+    }
+
+    setEnviandoTicket(true);
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const user = session?.user;
+
+      if (!user) {
+        toast.error("Debes iniciar sesión para enviar un ticket.");
+        setEnviandoTicket(false);
+        return;
+      }
+
+      const numTicket = `TK-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
+      let prioridadInicial = 'Normal';
+      if (categoria === 'Pagos') prioridadInicial = 'Alta';
+      if (categoria === 'Denuncia') prioridadInicial = 'Urgente';
+
+      const { error } = await supabase
+        .from('support_tickets')
+        .insert([
+          {
+            user_id: user.id,
+            ticket_number: numTicket,
+            asunto,
+            categoria,
+            mensaje,
+            prioridad: prioridadInicial
+          }
+        ]);
+
+      if (error) throw error;
+
+      toast.success(`¡Ticket ${numTicket} enviado! Revisaremos tu caso pronto.`);
+      
+      setAsunto('');
+      setMensaje('');
+      setCategoria('Técnico');
+    } catch (error: any) {
+      console.error('Error al enviar ticket:', error);
+      toast.error("Hubo un error al enviar tu ticket. Inténtalo de nuevo.");
+    } finally {
+      setEnviandoTicket(false);
+    }
+  };
 
   return (
     <div className="min-h-[calc(100vh-64px)] bg-slate-950 text-slate-300 py-10 px-4">
@@ -149,7 +210,6 @@ export default function Ayuda() {
               </div>
             )}
 
-        
             {faqsFiltradas.length > 0 && (
               <div className="max-w-3xl mx-auto space-y-3">
                 <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4 px-2">Preguntas Frecuentes</h3>
@@ -172,7 +232,6 @@ export default function Ayuda() {
               </div>
             )}
 
-        
             {manualesFiltrados.length > 0 && (
               <div className="max-w-3xl mx-auto space-y-3">
                 <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4 px-2 mt-8">Manuales</h3>
@@ -201,7 +260,6 @@ export default function Ayuda() {
       
         {!isSearching && activeTab === 'manuales' && (
           <div className="grid md:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {/* Lista Izquierda */}
             <div className="md:col-span-1 space-y-3">
               {manuales.map((manual) => (
                 <button
@@ -225,7 +283,6 @@ export default function Ayuda() {
               ))}
             </div>
 
-            {/* Visor Derecha */}
             <div className="md:col-span-2 bg-slate-900/50 border border-slate-800 rounded-2xl p-6 md:p-8">
               {manuales.map((manual) => manualAbierto === manual.id && (
                 <div key={manual.id} className="animate-in fade-in duration-300">
@@ -276,6 +333,95 @@ export default function Ayuda() {
             ))}
           </div>
         )}
+
+        {/* Formulario de Soporte */}
+        <div className="mt-16 pt-16 border-t border-slate-800/50 animate-in fade-in duration-500">
+          <div className="max-w-3xl mx-auto bg-slate-900/50 border border-slate-800 rounded-2xl overflow-hidden relative shadow-lg">
+            {/* Decoración de fondo */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+            
+            <div className="p-6 md:p-8 relative z-10">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-3 bg-indigo-500/10 rounded-xl border border-indigo-500/20 text-indigo-400">
+                  <LifeBuoy size={28} />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-white">¿No has encontrado la solución?</h2>
+                  <p className="text-slate-400 text-sm mt-1">Abre un ticket y nuestro equipo de soporte te ayudará.</p>
+                </div>
+              </div>
+
+              <form onSubmit={handleEnviarTicket} className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div className="space-y-2">
+                    <label htmlFor="asunto" className="block text-sm font-medium text-slate-300">
+                      Asunto <span className="text-indigo-400">*</span>
+                    </label>
+                    <input
+                      id="asunto"
+                      type="text"
+                      value={asunto}
+                      onChange={(e) => setAsunto(e.target.value)}
+                      placeholder="Ej: Problema al iniciar partida..."
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="categoria" className="block text-sm font-medium text-slate-300">
+                      Categoría <span className="text-indigo-400">*</span>
+                    </label>
+                    <select
+                      id="categoria"
+                      value={categoria}
+                      onChange={(e) => setCategoria(e.target.value)}
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors appearance-none"
+                    >
+                      <option value="Técnico">Problema Técnico</option>
+                      <option value="Pagos">Pagos y Facturación</option>
+                      <option value="Denuncia">Denunciar un abuso</option>
+                      <option value="Otro">Otro</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="mensaje" className="block text-sm font-medium text-slate-300">
+                    Descripción detallada <span className="text-indigo-400">*</span>
+                  </label>
+                  <textarea
+                    id="mensaje"
+                    value={mensaje}
+                    onChange={(e) => setMensaje(e.target.value)}
+                    placeholder="Explícanos tu problema con el mayor detalle posible para que podamos ayudarte mejor..."
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors h-32 resize-none"
+                  ></textarea>
+                </div>
+
+                <div className="pt-2 flex justify-end">
+                  <button
+                    type="submit"
+                    disabled={enviandoTicket}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
+                      enviandoTicket 
+                        ? 'bg-indigo-500/50 text-indigo-200 cursor-not-allowed'
+                        : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.3)] hover:shadow-[0_0_25px_rgba(99,102,241,0.4)]'
+                    }`}
+                  >
+                    {enviandoTicket ? (
+                      <>Enviando...</>
+                    ) : (
+                      <>
+                        <Send size={18} />
+                        Enviar Ticket
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
