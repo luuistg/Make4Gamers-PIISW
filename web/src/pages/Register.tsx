@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Mail, Lock, Eye, EyeOff, User } from 'lucide-react';
-import AuthHeader from '../components/auth/AuthHeader';
-import { supabase } from '../supabase'; 
+import AuthHeader from '../features/auth/components/AuthHeader';
+import { loginWithGoogle, registerWithEmail } from '../features/auth/services/auth.service';
 
 export default function Register() {
     const { t } = useTranslation();
@@ -80,15 +80,11 @@ export default function Register() {
     setIsSuccess(false);
 
     try {
-        const { data: authData, error: authError } = await supabase.auth.signUp({
+        const { data: authData, error: authError } = await registerWithEmail({
             email: formData.email,
             password: formData.password,
-            options: {
-                data: {
-                    username: formData.username,
-                    full_name: formData.fullName, 
-                }
-            }
+            username: formData.username,
+            fullName: formData.fullName,
         });
 
         if (authError) throw authError;
@@ -117,12 +113,7 @@ export default function Register() {
 
     const handleGoogleLogin = async () => {
             try {
-                const { error } = await supabase.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                    redirectTo: 'http://localhost:5173/'
-                    }
-                });
+                const { error } = await loginWithGoogle('http://localhost:5173/');
 
                 if (error) throw error;
                 

@@ -47,6 +47,7 @@ i18n
                         username: "Nombre de usuario",
                         loginButton: "Iniciar sesión",
                         registerButton: "Crear cuenta",
+                        loading: "Cargando...",
                         noAccount: "¿No tienes cuenta?",
                         haveAccount: "¿Ya tienes cuenta?",
                         loginLink: "Inicia sesión",
@@ -65,9 +66,40 @@ i18n
                             usernameRequired: "El nombre de usuario es obligatorio"
                         },
                         loginRequiredTitle: "Inicia sesión",
-                        loginRequired: "Inicia sesión para guardar progreso y acceder a todas las funciones."
+                        loginRequired: "Inicia sesión para guardar progreso y acceder a todas las funciones.",
+                        recoverPassword: {
+                            title: "Recuperar contraseña",
+                            subtitle: "Introduce tu correo y te enviaremos un enlace para restablecerla.",
+                            emailLabel: "Correo electrónico",
+                            emailPlaceholder: "tu@email.com",
+                            invalidEmail: "Por favor, introduce un email válido.",
+                            success: "¡Correo enviado! Revisa tu bandeja de entrada o spam para restablecer tu contraseña.",
+                            sending: "Enviando...",
+                            send: "Enviar enlace",
+                            remembered: "¿Recordaste tu contraseña?",
+                            backToLogin: "Volver al login"
+                        },
+                        updatePassword: {
+                            title: "Actualizar contraseña",
+                            subtitle: "Define una nueva contraseña segura para tu cuenta.",
+                            newPasswordLabel: "Nueva contraseña",
+                            newPasswordPlaceholder: "Mínimo 8 caracteres",
+                            confirmPasswordLabel: "Confirmar contraseña",
+                            confirmPasswordPlaceholder: "Repite la contraseña",
+                            invalidOrExpiredLink: "Este enlace de recuperación no es válido o ha expirado. Solicita uno nuevo.",
+                            validateLinkError: "No se pudo validar el enlace de recuperación.",
+                            minLength: "La contraseña debe tener al menos 8 caracteres.",
+                            mismatch: "Las contraseñas no coinciden.",
+                            sessionNotActive: "Tu sesión de recuperación no está activa. Vuelve a solicitar el enlace.",
+                            success: "Contraseña actualizada correctamente. Te redirigimos al login.",
+                            validating: "Validando enlace...",
+                            updating: "Actualizando...",
+                            save: "Guardar nueva contraseña",
+                            needAnotherLink: "¿Necesitas solicitar otro enlace?",
+                            backToRecover: "Volver a recuperar contraseña"
+                        }
                     },
-                    home: {
+                    game: {
                         popular: "Juegos Populares",
                         search: "Buscar juegos...",
                         allGames: "Todos los Juegos",
@@ -103,7 +135,214 @@ i18n
                         send: "Enviar",
                         noMovesRequired: "Este juego no requiere historial de movimientos.",
                         noMovesYet: "Sin movimientos aún.",
-                        backToGames: "Volver a juegos"
+                        backToGames: "Volver a juegos",
+                        rules: "Reglas",
+                        rulesTitle: "Reglas del juego",
+                        rulesLoading: "Cargando reglas...",
+                        rulesError: "No se pudieron cargar las reglas.",
+                        backButton: "Volver"
+                    },
+                    ranking: {
+                        currentSeason: "Temporada Actual",
+                        title: "Ranking Global",
+                        subtitle: "Asciende de liga en liga hasta alcanzar el nivel Ray-Tracing.",
+                        selectGame: "Selecciona un juego",
+                        unknownGame: "Juego Desconocido",
+                        noScoresTitle: "Aún no hay puntuaciones",
+                        noScoresDesc: "¡Sé el primero en jugar y corona el Top 1!",
+                        you: "(Tú)",
+                        colPos: "Pos",
+                        colPlayer: "Jugador",
+                        colTier: "Liga / Rango",
+                        colScore: "Puntuación",
+                        yourPosition: "Tu posición actual",
+                        keepPlaying: "Sigue jugando para subir de liga"
+                    },
+                    chat: {
+                        unauthorizedTitle: "¡Alto ahí!",
+                        unauthorizedDesc: "Para poder chatear con otros usuarios y acceder a tus mensajes privados, necesitas iniciar sesión en tu cuenta.",
+                        loginButton: "Ir a Iniciar Sesión",
+                        myStatus: "Mi estado:",
+                        status: {
+                            online: "Disponible",
+                            away: "Ausente",
+                            busy: "Ocupado",
+                            offline: "Invisible",
+                            disconnected: "Desconectado"
+                        },
+                        messagesTitle: "Mensajes",
+                        addFriendTooltip: "Añadir amigo",
+                        selectFriend: "Selecciona un amigo de la lista para empezar a chatear.",
+                        errorLoading: "Hubo un error al preparar el chat. Inténtalo de nuevo.",
+                        breakIce: "¡Rompe el hielo!",
+                        firstMessage: "Envía el primer mensaje a {{name}}.",
+                        placeholder: "Escribe un mensaje a {{name}}..."
+                    },
+                    home: {
+                        splitHero: {
+                            one: {
+                                imageAlt: "Producto",
+                                prefix: "As el mundo gaming evoluciona, en",
+                                brand: "Made",
+                                suffix: "4Gamers tú también puedes hacerlo."
+                            },
+                            two: {
+                                imageAlt: "Producto",
+                                prefix: "Empieza desde abajo, compite con jugadores de tu nivel y alcanza la",
+                                highlight: "Cima"
+                            },
+                            three: {
+                                imageAlt: "Producto",
+                                highlight: "COMPITE, PRACTICA",
+                                suffix: " y llegarás a ser el mejor."
+                            }
+                        },
+                        ranks: {
+                            title: "Escala en nuestra clasificación",
+                            firstButton: "Comenzar  ➜"
+                        }
+                    },
+                    account: {
+                        locale: "es-ES",
+                        common: {
+                            cancel: "Cancelar"
+                        },
+                        alerts: {
+                            saveConfigError: "Hubo un error al guardar la configuración.",
+                            emptyUsername: "El nombre de usuario no puede estar vacío.",
+                            saveUsernameError: "Hubo un error al guardar. Es posible que ese nombre de usuario ya esté en uso.",
+                            avatarUpdated: "Foto de perfil actualizada con éxito.",
+                            avatarUploadError: "Error al subir la imagen"
+                        },
+                        states: {
+                            profileLoadError: "No se pudo cargar el perfil. Asegúrate de haber iniciado sesión."
+                        },
+                        sidebar: {
+                            title: "Mi Cuenta",
+                            dashboard: "Panel",
+                            personal: "Personal",
+                            friends: "Amigos",
+                            payments: "Pagos",
+                            security: "Seguridad"
+                        },
+                        dashboard: {
+                            defaultUser: "Usuario",
+                            role: "Rol",
+                            defaultRole: "Jugador",
+                            noLocation: "Sin localización",
+                            lastGames: "Últimas partidas",
+                            unknownGame: "Juego desconocido",
+                            vs: "Vs.",
+                            defaultOpponent: "OpponentName",
+                            status: "Estado",
+                            finished: "Finalizado"
+                        },
+                        personal: {
+                            noUsername: "Usuario Sin Nombre",
+                            name: "Nombre",
+                            lastName: "Apellido",
+                            username: "Usuario",
+                            email: "Correo",
+                            birthDate: "Fecha de nacimiento",
+                            phone: "Teléfono",
+                            notDefined: "No definido"
+                        },
+                        friends: {
+                            title: "Amigos",
+                            searchPlaceholder: "Buscar amigo...",
+                            sendMessage: "Enviar mensaje",
+                            noResults: "No se encontraron amigos con ese filtro."
+                        },
+                        payments: {
+                            title: "Payments",
+                            subscriptionType: "Tipo de suscripción",
+                            defaultSubscription: "Pro Gamer Monthly",
+                            paymentMethods: "Métodos de pago",
+                            defaultMethod: "Predeterminado",
+                            addMethod: "Agregar nuevo método",
+                            subscriptionInfo: "Info de la suscripción",
+                            benefitEarlyAccess: "Permite acceso temprano a juegos",
+                            benefitLeagues: "Permite crear ligas",
+                            renewalNote: "La suscripción se renueva automáticamente al final de cada periodo."
+                        },
+                        security: {
+                            title: "Security",
+                            personalSection: "Cuenta personal",
+                            changePassword: "Cambiar contraseña",
+                            accountInfo: "Información de la cuenta",
+                            deactivateAccount: "Desactivar cuenta",
+                            accountSecuritySection: "Seguridad de la cuenta",
+                            enable2fa: "Activar doble factor",
+                            changePaymentMethod: "Cambiar método de pago",
+                            verifyEmail: "Verificar correo electrónico",
+                            socialSupportSection: "Social and support",
+                            reportPlayer: "Report jugador",
+                            reportGame: "Report game",
+                            reportIncident: "Report incident",
+                            friendPrivacy: "Privacidad de amistad",
+                            requestsEnabled: "Recibiendo solicitudes",
+                            requestsBlocked: "Solicitudes bloqueadas"
+                        },
+                        avatarPolicy: {
+                            title: "Normativa de imágenes",
+                            description: "Antes de subir una nueva foto de perfil, por favor recuerda las normas de la comunidad para asegurar un entorno agradable para todos:",
+                            rule1: "No se permiten imágenes con contenido adulto o violento",
+                            rule2: "Prohibido material ofensivo, discriminatorio o de odio",
+                            rule3: "Cualquier infracción resultará en la eliminación de la foto o de la cuenta",
+                            accept: "He leído y acepto"
+                        }
+                    },
+                    dashboard: {
+                        welcomePrefix: "Bienvenido,",
+                        userFallback: "Jugador",
+                        marquee: {
+                            play: "JUEGA",
+                            chat: "CHATEA",
+                            compete: "COMPITE",
+                            climb: "ESCALA"
+                        }
+                    },
+                    seo: {
+                        default: {
+                            title: "Plataforma de videojuegos",
+                            description: "Make4Gamers es tu plataforma para descubrir juegos, competir en rankings y conectar con la comunidad gamer."
+                        },
+                        home: {
+                            title: "Inicio",
+                            description: "Descubre Make4Gamers, mejora tus habilidades y conecta con jugadores de tu nivel."
+                        },
+                        games: {
+                            title: "Juegos",
+                            description: "Explora el catalogo de juegos, aplica filtros y encuentra tu proximo reto en Make4Gamers."
+                        },
+                        ranking: {
+                            title: "Ranking",
+                            description: "Consulta la clasificacion y sube posiciones compitiendo en Make4Gamers."
+                        },
+                        login: {
+                            title: "Iniciar sesion",
+                            description: "Accede a tu cuenta de Make4Gamers para guardar progreso y usar funciones sociales."
+                        },
+                        register: {
+                            title: "Registro",
+                            description: "Crea tu cuenta en Make4Gamers y empieza a competir con la comunidad."
+                        },
+                        recoverPassword: {
+                            title: "Recuperar contrasena",
+                            description: "Restablece tu contrasena de forma segura para volver a tu cuenta Make4Gamers."
+                        },
+                        chat: {
+                            title: "Chat",
+                            description: "Habla con tus amigos y coordina partidas desde el chat de Make4Gamers."
+                        },
+                        account: {
+                            title: "Cuenta",
+                            description: "Gestiona tu perfil, preferencias y datos de cuenta en Make4Gamers."
+                        },
+                        gameplay: {
+                            title: "Partida",
+                            description: "Juega y mejora tus resultados en Make4Gamers con seguimiento de puntuacion."
+                        }
                     }
                 }
             },
@@ -137,6 +376,22 @@ i18n
                             terms: "Terms"
                         }
                     },
+                    ranking: {
+                        currentSeason: "Current Season",
+                        title: "Global ranking",
+                        subtitle: "Climb from tier to tier until you reach Ray-Tracing level.",
+                        selectGame: "Select a game",
+                        unknownGame: "Unknown Game",
+                        noScoresTitle: "No scores yet",
+                        noScoresDesc: "Be the first to play and claim the Top 1!",
+                        you: "(You)",
+                        colPos: "Pos",
+                        colPlayer: "Player",
+                        colTier: "Tier / League",
+                        colScore: "Score",
+                        yourPosition: "Your current position",
+                        keepPlaying: "Keep playing to rank up"
+                    },
                     auth: {
                         login: "Sign In",
                         register: "Sign Up",
@@ -147,6 +402,7 @@ i18n
                         username: "Username",
                         loginButton: "Sign In",
                         registerButton: "Create Account",
+                        loading: "Loading...",
                         noAccount: "Don't have an account?",
                         haveAccount: "Already have an account?",
                         loginLink: "Sign in here",
@@ -165,9 +421,40 @@ i18n
                             usernameRequired: "Username is required"
                         },
                         loginRequiredTitle: "Sign in",
-                        loginRequired: "Sign in to save progress and access all features."
+                        loginRequired: "Sign in to save progress and access all features.",
+                        recoverPassword: {
+                            title: "Recover password",
+                            subtitle: "Enter your email and we will send you a link to reset it.",
+                            emailLabel: "Email",
+                            emailPlaceholder: "you@email.com",
+                            invalidEmail: "Please enter a valid email.",
+                            success: "Email sent! Check your inbox or spam folder to reset your password.",
+                            sending: "Sending...",
+                            send: "Send link",
+                            remembered: "Remembered your password?",
+                            backToLogin: "Back to login"
+                        },
+                        updatePassword: {
+                            title: "Update password",
+                            subtitle: "Set a new secure password for your account.",
+                            newPasswordLabel: "New password",
+                            newPasswordPlaceholder: "At least 8 characters",
+                            confirmPasswordLabel: "Confirm password",
+                            confirmPasswordPlaceholder: "Repeat your password",
+                            invalidOrExpiredLink: "This recovery link is invalid or has expired. Please request a new one.",
+                            validateLinkError: "The recovery link could not be validated.",
+                            minLength: "Password must be at least 8 characters long.",
+                            mismatch: "Passwords do not match.",
+                            sessionNotActive: "Your recovery session is not active. Request a new link.",
+                            success: "Password updated successfully. Redirecting you to login.",
+                            validating: "Validating link...",
+                            updating: "Updating...",
+                            save: "Save new password",
+                            needAnotherLink: "Need another link?",
+                            backToRecover: "Back to recover password"
+                        }
                     },
-                    home: {
+                    game: {
                         popular: "Popular Games",
                         search: "Search games...",
                         allGames: "All Games",
@@ -203,11 +490,202 @@ i18n
                         send: "Send",
                         noMovesRequired: "This game does not require move history.",
                         noMovesYet: "No moves yet.",
-                        backToGames: "Back to games"
+                        backToGames: "Back to games",
+                        rules: "Rules",
+                        rulesTitle: "Game Rules",
+                        rulesLoading: "Loading rules...",
+                        rulesError: "Could not load rules.",
+                        backButton: "Back"
+                    },
+                    chat: {
+                        unauthorizedTitle: "Hold on!",
+                        unauthorizedDesc: "To chat with other users and access your private messages, you need to sign in to your account.",
+                        loginButton: "Go to Sign In",
+                        myStatus: "My status:",
+                        status: {
+                            online: "Online",
+                            away: "Away",
+                            busy: "Busy",
+                            offline: "Invisible",
+                            disconnected: "Offline"
+                        },
+                        messagesTitle: "Messages",
+                        addFriendTooltip: "Add friend",
+                        selectFriend: "Select a friend from the list to start chatting.",
+                        errorLoading: "There was an error setting up the chat. Please try again.",
+                        breakIce: "Break the ice!",
+                        firstMessage: "Send the first message to {{name}}.",
+                        placeholder: "Write a message to {{name}}..."
+                    },
+                    home: {
+                        splitHero: {
+                            one: {
+                                imageAlt: "Product",
+                                prefix: "As the gaming world evolves, in",
+                                brand: "Made",
+                                suffix: "4Gamers you can do it too."
+                            },
+                            two: {
+                                imageAlt: "Product",
+                                prefix: "Start from the bottom, compete with players at your level and reach the",
+                                highlight: "Top"
+                            },
+                            three: {
+                                imageAlt: "Product",
+                                highlight: "COMPETE, PRACTICE",
+                                suffix: " and you will become the best."
+                            }
+                        },
+                        ranks: {
+                            title: "Climb our ranking",
+                            firstButton: "Start ➜"
+                        }
+                    },
+                    account: {
+                        locale: "en-US",
+                        common: {
+                            cancel: "Cancel"
+                        },
+                        alerts: {
+                            saveConfigError: "There was an error saving the settings.",
+                            emptyUsername: "Username cannot be empty.",
+                            saveUsernameError: "There was an error saving. That username may already be in use.",
+                            avatarUpdated: "Profile picture updated successfully.",
+                            avatarUploadError: "Error uploading image"
+                        },
+                        states: {
+                            profileLoadError: "Profile could not be loaded. Make sure you are signed in."
+                        },
+                        sidebar: {
+                            title: "My Account",
+                            dashboard: "Dashboard",
+                            personal: "Personal",
+                            friends: "Friends",
+                            payments: "Payments",
+                            security: "Security"
+                        },
+                        dashboard: {
+                            defaultUser: "User",
+                            role: "Role",
+                            defaultRole: "Player",
+                            noLocation: "No location",
+                            lastGames: "Last games",
+                            unknownGame: "Unknown game",
+                            vs: "Vs.",
+                            defaultOpponent: "OpponentName",
+                            status: "Status",
+                            finished: "Finished"
+                        },
+                        personal: {
+                            noUsername: "Unnamed user",
+                            name: "Name",
+                            lastName: "Last name",
+                            username: "Username",
+                            email: "Email",
+                            birthDate: "Birth date",
+                            phone: "Phone",
+                            notDefined: "Not defined"
+                        },
+                        friends: {
+                            title: "Friends",
+                            searchPlaceholder: "Search friend...",
+                            sendMessage: "Send message",
+                            noResults: "No friends found for that filter."
+                        },
+                        payments: {
+                            title: "Payments",
+                            subscriptionType: "Subscription type",
+                            defaultSubscription: "Pro Gamer Monthly",
+                            paymentMethods: "Payment methods",
+                            defaultMethod: "Default",
+                            addMethod: "Add new method",
+                            subscriptionInfo: "Subscription info",
+                            benefitEarlyAccess: "Early access to games",
+                            benefitLeagues: "Create leagues",
+                            renewalNote: "Subscription renews automatically at the end of each billing period."
+                        },
+                        security: {
+                            title: "Security",
+                            personalSection: "Personal account",
+                            changePassword: "Change password",
+                            accountInfo: "Account information",
+                            deactivateAccount: "Deactivate account",
+                            accountSecuritySection: "Account security",
+                            enable2fa: "Enable two-factor authentication",
+                            changePaymentMethod: "Change payment method",
+                            verifyEmail: "Verify email",
+                            socialSupportSection: "Social and support",
+                            reportPlayer: "Report player",
+                            reportGame: "Report game",
+                            reportIncident: "Report incident",
+                            friendPrivacy: "Friend request privacy",
+                            requestsEnabled: "Receiving requests",
+                            requestsBlocked: "Requests blocked"
+                        },
+                        avatarPolicy: {
+                            title: "Image policy",
+                            description: "Before uploading a new profile photo, please keep these community guidelines in mind to maintain a friendly environment:",
+                            rule1: "Images with adult or violent content are not allowed",
+                            rule2: "Offensive, discriminatory, or hateful material is forbidden",
+                            rule3: "Any violation may result in profile image or account removal",
+                            accept: "I have read and accept"
+                        }
+                    },
+                    dashboard: {
+                        welcomePrefix: "Welcome,",
+                        userFallback: "Player",
+                        marquee: {
+                            play: "PLAY",
+                            chat: "CHAT",
+                            compete: "COMPETE",
+                            climb: "CLIMB"
+                        }
+                    },
+                    seo: {
+                        default: {
+                            title: "Gaming platform",
+                            description: "Make4Gamers helps you discover games, climb rankings, and connect with the gaming community."
+                        },
+                        home: {
+                            title: "Home",
+                            description: "Discover Make4Gamers, level up your skills, and connect with players at your level."
+                        },
+                        games: {
+                            title: "Games",
+                            description: "Browse the game catalog, apply filters, and find your next challenge on Make4Gamers."
+                        },
+                        ranking: {
+                            title: "Ranking",
+                            description: "Check the leaderboard and climb positions by competing on Make4Gamers."
+                        },
+                        login: {
+                            title: "Sign in",
+                            description: "Access your Make4Gamers account to save progress and use social features."
+                        },
+                        register: {
+                            title: "Sign up",
+                            description: "Create your Make4Gamers account and start competing with the community."
+                        },
+                        recoverPassword: {
+                            title: "Recover password",
+                            description: "Reset your password securely to get back into your Make4Gamers account."
+                        },
+                        chat: {
+                            title: "Chat",
+                            description: "Talk with friends and coordinate matches in the Make4Gamers chat."
+                        },
+                        account: {
+                            title: "Account",
+                            description: "Manage your profile, preferences, and account data on Make4Gamers."
+                        },
+                        gameplay: {
+                            title: "Match",
+                            description: "Play and improve your scores with match tracking on Make4Gamers."
+                        }
                     }
                 }
             },
-            cn: {
+            zh: {
                 translation: {
                     nav: {
                         games: "游戏",
@@ -247,6 +725,7 @@ i18n
                         username: "用户名",
                         loginButton: "登录",
                         registerButton: "创建账户",
+                        loading: "加载中...",
                         noAccount: "没有账户？",
                         haveAccount: "已有账户？",
                         loginLink: "在这里登录",
@@ -265,9 +744,40 @@ i18n
                             usernameRequired: "用户名是必需的"
                         },
                         loginRequiredTitle: "请登录",
-                        loginRequired: "登录后可保存进度并访问所有功能。"
+                        loginRequired: "登录后可保存进度并访问所有功能。",
+                        recoverPassword: {
+                            title: "找回密码",
+                            subtitle: "输入你的邮箱，我们会发送一个重置链接。",
+                            emailLabel: "电子邮箱",
+                            emailPlaceholder: "you@email.com",
+                            invalidEmail: "请输入有效的邮箱地址。",
+                            success: "邮件已发送！请检查收件箱或垃圾邮件以重置密码。",
+                            sending: "发送中...",
+                            send: "发送链接",
+                            remembered: "想起密码了？",
+                            backToLogin: "返回登录"
+                        },
+                        updatePassword: {
+                            title: "更新密码",
+                            subtitle: "为你的账户设置一个新的安全密码。",
+                            newPasswordLabel: "新密码",
+                            newPasswordPlaceholder: "至少 8 个字符",
+                            confirmPasswordLabel: "确认密码",
+                            confirmPasswordPlaceholder: "再次输入密码",
+                            invalidOrExpiredLink: "该恢复链接无效或已过期，请重新申请。",
+                            validateLinkError: "无法验证恢复链接。",
+                            minLength: "密码至少需要 8 个字符。",
+                            mismatch: "两次输入的密码不一致。",
+                            sessionNotActive: "恢复会话未激活，请重新申请链接。",
+                            success: "密码更新成功，正在跳转到登录页。",
+                            validating: "正在验证链接...",
+                            updating: "正在更新...",
+                            save: "保存新密码",
+                            needAnotherLink: "需要新的恢复链接？",
+                            backToRecover: "返回找回密码"
+                        }
                     },
-                    home: {
+                    game: {
                         popular: "热门游戏",
                         search: "搜索游戏...",
                         allGames: "所有游戏",
@@ -303,7 +813,214 @@ i18n
                         send: "发送",
                         noMovesRequired: "该游戏不需要操作历史。",
                         noMovesYet: "暂无操作记录。",
-                        backToGames: "返回游戏列表"
+                        backToGames: "返回游戏列表",
+                        rules: "规则",
+                        rulesTitle: "游戏规则",
+                        rulesLoading: "正在加载规则...",
+                        rulesError: "无法加载规则。",
+                        backButton: "返回"
+                    },
+                    ranking: {
+                        currentSeason: "当前赛季",
+                        title: "全球排名",
+                        subtitle: "在各个级别中攀升，直到达到光线追踪级别。",
+                        selectGame: "选择一个游戏",
+                        unknownGame: "未知游戏",
+                        noScoresTitle: "暂无分数",
+                        noScoresDesc: "成为第一个玩并占据榜首的人！",
+                        you: "(你)",
+                        colPos: "排名",
+                        colPlayer: "玩家",
+                        colTier: "段位 / 联赛",
+                        colScore: "分数",
+                        yourPosition: "你当前的位置",
+                        keepPlaying: "继续游戏以提升排名"
+                    },
+                    chat: {
+                        unauthorizedTitle: "请等一下！",
+                        unauthorizedDesc: "要与其他用户聊天并访问您的私人消息，您需要登录您的账户。",
+                        loginButton: "去登录",
+                        myStatus: "我的状态：",
+                        status: {
+                            online: "在线",
+                            away: "离开",
+                            busy: "忙碌",
+                            offline: "隐身",
+                            disconnected: "离线"
+                        },
+                        messagesTitle: "消息",
+                        addFriendTooltip: "添加好友",
+                        selectFriend: "从列表中选择一个好友开始聊天。",
+                        errorLoading: "准备聊天时出错，请重试。",
+                        breakIce: "打破僵局！",
+                        firstMessage: "给 {{name}} 发送第一条消息。",
+                        placeholder: "给 {{name}} 发送消息..."
+                    },
+                    home: {
+                        splitHero: {
+                            one: {
+                                imageAlt: "产品",
+                                prefix: "正如游戏世界不断进化，在",
+                                brand: "Made",
+                                suffix: "4Gamers 你也可以做到。"
+                            },
+                            two: {
+                                imageAlt: "产品",
+                                prefix: "从底部开始，与同级玩家竞争并冲向",
+                                highlight: "巅峰"
+                            },
+                            three: {
+                                imageAlt: "产品",
+                                highlight: "进化",
+                                suffix: "，你将成为最强。"
+                            }
+                        },
+                        ranks: {
+                            title: "提升我们的排名",
+                            firstButton: "开始 ➜"
+                        }
+                    },
+                    account: {
+                        locale: "zh-CN",
+                        common: {
+                            cancel: "取消"
+                        },
+                        alerts: {
+                            saveConfigError: "保存设置时出错。",
+                            emptyUsername: "用户名不能为空。",
+                            saveUsernameError: "保存时出错，该用户名可能已被占用。",
+                            avatarUpdated: "头像更新成功。",
+                            avatarUploadError: "上传图片时出错"
+                        },
+                        states: {
+                            profileLoadError: "无法加载个人资料，请确认你已登录。"
+                        },
+                        sidebar: {
+                            title: "我的账户",
+                            dashboard: "概览",
+                            personal: "个人信息",
+                            friends: "好友",
+                            payments: "支付",
+                            security: "安全"
+                        },
+                        dashboard: {
+                            defaultUser: "用户",
+                            role: "角色",
+                            defaultRole: "玩家",
+                            noLocation: "未设置位置",
+                            lastGames: "最近对局",
+                            unknownGame: "未知游戏",
+                            vs: "对战",
+                            defaultOpponent: "未知对手",
+                            status: "状态",
+                            finished: "已结束"
+                        },
+                        personal: {
+                            noUsername: "未命名用户",
+                            name: "名字",
+                            lastName: "姓氏",
+                            username: "用户名",
+                            email: "邮箱",
+                            birthDate: "出生日期",
+                            phone: "电话",
+                            notDefined: "未定义"
+                        },
+                        friends: {
+                            title: "好友",
+                            searchPlaceholder: "搜索好友...",
+                            sendMessage: "发送消息",
+                            noResults: "没有符合筛选条件的好友。"
+                        },
+                        payments: {
+                            title: "支付",
+                            subscriptionType: "订阅类型",
+                            defaultSubscription: "Pro Gamer 月度",
+                            paymentMethods: "支付方式",
+                            defaultMethod: "默认",
+                            addMethod: "添加新方式",
+                            subscriptionInfo: "订阅信息",
+                            benefitEarlyAccess: "可提前体验游戏",
+                            benefitLeagues: "可创建联赛",
+                            renewalNote: "订阅将在每个计费周期结束时自动续费。"
+                        },
+                        security: {
+                            title: "安全",
+                            personalSection: "个人账户",
+                            changePassword: "更改密码",
+                            accountInfo: "账户信息",
+                            deactivateAccount: "停用账户",
+                            accountSecuritySection: "账户安全",
+                            enable2fa: "启用双重验证",
+                            changePaymentMethod: "更改支付方式",
+                            verifyEmail: "验证邮箱",
+                            socialSupportSection: "社交与支持",
+                            reportPlayer: "举报玩家",
+                            reportGame: "举报游戏",
+                            reportIncident: "举报事件",
+                            friendPrivacy: "好友申请隐私",
+                            requestsEnabled: "接收申请中",
+                            requestsBlocked: "已屏蔽申请"
+                        },
+                        avatarPolicy: {
+                            title: "图片规范",
+                            description: "上传新头像前，请遵守社区规范以维护良好环境：",
+                            rule1: "禁止上传成人或暴力内容",
+                            rule2: "禁止上传冒犯、歧视或仇恨内容",
+                            rule3: "违规可能导致头像或账户被移除",
+                            accept: "我已阅读并同意"
+                        }
+                    },
+                    dashboard: {
+                        welcomePrefix: "欢迎你，",
+                        userFallback: "玩家",
+                        marquee: {
+                            play: "游玩",
+                            chat: "聊天",
+                            compete: "竞技",
+                            climb: "攀升"
+                        }
+                    },
+                    seo: {
+                        default: {
+                            title: "游戏平台",
+                            description: "Make4Gamers 帮助你发现游戏、冲击排行榜并与玩家社区连接。"
+                        },
+                        home: {
+                            title: "首页",
+                            description: "探索 Make4Gamers，提升你的实力，并与同水平玩家互动。"
+                        },
+                        games: {
+                            title: "游戏",
+                            description: "浏览游戏目录，使用筛选功能，在 Make4Gamers 找到下一场挑战。"
+                        },
+                        ranking: {
+                            title: "排行榜",
+                            description: "查看排行榜并通过比赛在 Make4Gamers 提升名次。"
+                        },
+                        login: {
+                            title: "登录",
+                            description: "登录 Make4Gamers 账户以保存进度并使用社交功能。"
+                        },
+                        register: {
+                            title: "注册",
+                            description: "创建你的 Make4Gamers 账户并开始与社区一起竞技。"
+                        },
+                        recoverPassword: {
+                            title: "找回密码",
+                            description: "安全重置密码，重新进入你的 Make4Gamers 账户。"
+                        },
+                        chat: {
+                            title: "聊天",
+                            description: "在 Make4Gamers 聊天中与好友沟通并协调对局。"
+                        },
+                        account: {
+                            title: "账户",
+                            description: "在 Make4Gamers 管理你的个人资料、偏好设置和账户信息。"
+                        },
+                        gameplay: {
+                            title: "对局",
+                            description: "在 Make4Gamers 进行对局并通过成绩追踪持续提升。"
+                        }
                     }
                 }
             }

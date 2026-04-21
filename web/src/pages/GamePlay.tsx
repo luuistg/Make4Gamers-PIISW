@@ -1,15 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import type { User } from "@supabase/supabase-js";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { getGameById, type Game } from "../services/games/getGameById.service";
-import { createMatch } from "../services/matches/createMatch.service";
-import { getUserGameScore } from "../services/scores/getUserGameScore.service";
+import { getGameById, type Game } from "../features/games/services/getGameById.service";
+import { getUserGameScore } from "../features/gameplay/services/getUserGameScore.service";
+import { createMatch } from "../features/gameplay/services/createMatch.service";
+import { getAuthenticatedUserId } from "../features/auth/services/auth.service";
 
-import { supabase } from "../supabase";
-import GameViewport from "../components/gameplay/GameViewport";
-import GameplaySidebar from "../components/gameplay/GameplaySidebar";
+import GameViewport from "../features/gameplay/components/GameViewport";
+import GameplaySidebar from "../features/gameplay/components/GameplaySidebar";
 
 export default function Gameplay() {
   const { id } = useParams<{ id: string }>();
@@ -19,8 +18,16 @@ export default function Gameplay() {
   const [loading, setLoading] = useState(true);
   const [game, setGame] = useState<Game | null>(null);
 
-  const [user, setUser] = useState<User | null>(null);
-  const [matchId, setMatchId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [playerName, setPlayerName] = useState<string>("anonimo");
+
+  const [timerPreset, setTimerPreset] = useState<"none" | "2" | "5" | "10" | "custom">("none");
+  const [customMinutes, setCustomMinutes] = useState<string>("");
+  const [timerActive, setTimerActive] = useState<boolean>(false);
+  const [timerExpired, setTimerExpired] = useState<boolean>(false);
+  const [sessionTimerEndsAtMs, setSessionTimerEndsAtMs] = useState<number | null>(null);
+  const [sessionTimerSecondsRemaining, setSessionTimerSecondsRemaining] = useState<number | null>(null);
+  const [startingSession, setStartingSession] = useState<boolean>(false);
 
   const [myScore, setMyScore] = useState<number | null>(null);
   const [scoreLoading, setScoreLoading] = useState(false);
@@ -45,52 +52,59 @@ export default function Gameplay() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user ?? null);
+      const currentUserId = await getAuthenticatedUserId();
+      setUserId(currentUserId);
     };
 
     fetchUser();
   }, []);
 
-  useEffect(() => {
-    const initMatch = async () => {
-      if (!game?.id || !user?.id || matchId) return;
+  const formatSeconds = (totalSeconds: number) => {
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  };
 
-      try {
-        const newMatchId = await createMatch({ gameId: game.id });
-        setMatchId(newMatchId);
-      } catch (error) {
-        console.error("Error creando match:", error);
+  const timerSeconds = useMemo(() => {
+    switch (timerPreset) {
+      case "none":
+        return 0;
+      case "2":
+        return 2 * 60;
+      case "5":
+        return 5 * 60;
+      case "10":
+        return 10 * 60;
+      case "custom": {
+        const minutes = Math.floor(Number(customMinutes));
+        if (!Number.isFinite(minutes) || minutes <= 0) return null;
+        // Límite razonable para evitar turnos demasiado largos.
+        if (minutes > 180) return null;
+        return minutes * 60;
       }
-    };
-
-    initMatch();
-  }, [game?.id, user?.id, matchId]);
+      default:
+        return null;
+    }
+  }, [timerPreset, customMinutes]);
 
   const finalGameUrl = useMemo(() => {
     if (!game?.game_url) return "";
 
-    const playerName = user?.id || "anonimo";
-    const currentMatchId = matchId || "";
     const currentGameId = game.id || id || "";
-
     const url = new URL(game.game_url);
     url.searchParams.set("player", playerName);
-    url.searchParams.set("matchId", currentMatchId);
     url.searchParams.set("gameId", currentGameId);
 
     return url.toString();
-  }, [game, id, user, matchId]);
+  }, [game, id, playerName]);
 
   useEffect(() => {
     const loadMyScore = async () => {
-      if (!user?.id || !game?.id) return;
+      if (!userId || !game?.id) return;
 
       setScoreLoading(true);
       try {
-        const score = await getUserGameScore(user.id, game.id);
+        const score = await getUserGameScore(userId, game.id);
         setMyScore(score);
       } catch (error) {
         console.error("Error cargando mi score:", error);
@@ -101,7 +115,72 @@ export default function Gameplay() {
     };
 
     loadMyScore();
-  }, [user?.id, game?.id]);
+  }, [userId, game?.id]);
+
+  useEffect(() => {
+    if (!timerActive || sessionTimerEndsAtMs == null) return;
+
+    const tick = () => {
+      const remainingMs = sessionTimerEndsAtMs - Date.now();
+      const remainingSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
+      setSessionTimerSecondsRemaining(remainingSeconds);
+
+      if (remainingMs <= 0) {
+        setTimerExpired(true);
+        setSessionTimerSecondsRemaining(0);
+      }
+    };
+
+    const intervalId = setInterval(() => tick(), 250);
+    tick();
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [timerActive, sessionTimerEndsAtMs]);
+
+  const handleStartSession = async () => {
+    if (!game?.id) return;
+    if (startingSession) return;
+
+    const seconds = timerSeconds;
+    const normalizedSeconds = seconds == null ? null : seconds;
+
+    // Si está en "custom" pero los minutos no son válidos, no empezamos.
+    if (timerPreset === "custom" && normalizedSeconds == null) return;
+
+    setStartingSession(true);
+    setTimerExpired(false);
+
+    const resolvedPlayerName = userId || "anonimo";
+    setPlayerName(resolvedPlayerName);
+
+    // Persistencia (si existe creación de match, la usamos para guardar duración configurada).
+    if (userId) {
+      try {
+        await createMatch({
+          gameId: game.id,
+          sessionTimerSeconds: normalizedSeconds && normalizedSeconds > 0 ? normalizedSeconds : null,
+        });
+      } catch (error) {
+        // No bloqueamos el juego si falla la persistencia del temporizador de turno.
+        console.error("Error creando match con temporizador de turno:", error);
+      }
+    }
+
+    setTimerActive(true);
+
+    if (normalizedSeconds != null && normalizedSeconds > 0) {
+      const endsAt = Date.now() + normalizedSeconds * 1000;
+      setSessionTimerEndsAtMs(endsAt);
+      setSessionTimerSecondsRemaining(normalizedSeconds);
+    } else {
+      setSessionTimerEndsAtMs(null);
+      setSessionTimerSecondsRemaining(null);
+    }
+
+    setStartingSession(false);
+  };
 
   if (loading)
     return (
@@ -159,10 +238,20 @@ export default function Gameplay() {
           </div>
 
           <button
-            onClick={() => navigate(`/ranking?gameId=${game.id}`)}
-            className="shrink-0 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm font-medium"
+            onClick={() =>
+              navigate(`/juegos/${game.id}/reglas`, {
+                state: {
+                  game: {
+                    id: game.id,
+                    title: game.title,
+                    rules_markdown_url: game.manual_url,
+                  },
+                },
+              })
+            }
+            className="shrink-0 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-sm font-medium"
           >
-            {t("gameplay.viewRanking")}
+            {t("gameplay.rules")}
           </button>
         </div>
       </div>
@@ -170,8 +259,129 @@ export default function Gameplay() {
       <div className="mt-6 mb-6">
         <div className="mx-auto w-full max-w-[1200px] px-8 lg:px-14">
           <div className="grid grid-cols-1 lg:grid-cols-[800px_280px] gap-4 justify-center items-stretch">
-            <section className="h-[600px] w-full max-w-[800px] rounded-xl overflow-hidden bg-black border border-indigo-500/50 shadow-xl shadow-indigo-500/10 transition-all duration-300">
-              <GameViewport src={finalGameUrl} title={`game-${game.id}`} ratio="4:3" />
+            <section className="relative h-[600px] w-full max-w-[800px] rounded-xl overflow-hidden bg-black border border-indigo-500/50 shadow-xl shadow-indigo-500/10 transition-all duration-300">
+              {timerActive ? <GameViewport src={finalGameUrl} title={`game-${game.id}`} ratio="4:3" /> : null}
+
+              {!timerActive ? (
+                <div className="absolute inset-0 z-20 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-6">
+                  <div className="w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-xl p-5 shadow-xl shadow-indigo-500/10">
+                    <h2 className="text-lg font-bold text-white mb-3">Duración del turno</h2>
+                    <p className="text-sm text-slate-300 mb-4">
+                      El temporizador limita cuánto tiempo puedes jugar por turno. Cuando termine, se agotará el turno.
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-2 mb-4">
+                      <button
+                        type="button"
+                        onClick={() => setTimerPreset("none")}
+                        className={`px-3 py-2 rounded-lg border text-sm transition-colors ${
+                          timerPreset === "none"
+                            ? "border-indigo-500/60 bg-indigo-500/10 text-indigo-300"
+                            : "border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:border-indigo-500/30"
+                        }`}
+                      >
+                        Sin temporizador
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setTimerPreset("2")}
+                        className={`px-3 py-2 rounded-lg border text-sm transition-colors ${
+                          timerPreset === "2"
+                            ? "border-indigo-500/60 bg-indigo-500/10 text-indigo-300"
+                            : "border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:border-indigo-500/30"
+                        }`}
+                      >
+                        2 min
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setTimerPreset("5")}
+                        className={`px-3 py-2 rounded-lg border text-sm transition-colors ${
+                          timerPreset === "5"
+                            ? "border-indigo-500/60 bg-indigo-500/10 text-indigo-300"
+                            : "border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:border-indigo-500/30"
+                        }`}
+                      >
+                        5 min
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setTimerPreset("10")}
+                        className={`px-3 py-2 rounded-lg border text-sm transition-colors ${
+                          timerPreset === "10"
+                            ? "border-indigo-500/60 bg-indigo-500/10 text-indigo-300"
+                            : "border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:border-indigo-500/30"
+                        }`}
+                      >
+                        10 min
+                      </button>
+                    </div>
+
+                    <div className="mb-3">
+                      <button
+                        type="button"
+                        onClick={() => setTimerPreset("custom")}
+                        className={`w-full px-3 py-2 rounded-lg border text-sm transition-colors mb-2 ${
+                          timerPreset === "custom"
+                            ? "border-indigo-500/60 bg-indigo-500/10 text-indigo-300"
+                            : "border-slate-800 bg-slate-900 text-slate-300 hover:text-white hover:border-indigo-500/30"
+                        }`}
+                      >
+                        Personalizado
+                      </button>
+                      {timerPreset === "custom" ? (
+                        <div className="flex gap-2 items-center">
+                          <input
+                            type="number"
+                            inputMode="numeric"
+                            min={1}
+                            max={180}
+                            value={customMinutes}
+                            onChange={(e) => setCustomMinutes(e.target.value)}
+                            placeholder="Minutos (1-180)"
+                            className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                          />
+                          <span className="text-sm text-slate-400 whitespace-nowrap">min</span>
+                        </div>
+                      ) : null}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleStartSession}
+                      disabled={startingSession || (timerPreset === "custom" && timerSeconds == null)}
+                      className="w-full mt-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 disabled:hover:bg-indigo-600 transition-colors text-white text-sm font-medium"
+                    >
+                      {startingSession ? "Iniciando..." : "Iniciar partida"}
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+
+              {timerActive && sessionTimerSecondsRemaining != null && !timerExpired ? (
+                <div className="absolute top-3 right-3 z-30">
+                  <div className="px-3 py-1.5 rounded-lg bg-slate-950/70 border border-indigo-500/40 text-indigo-200 text-sm font-semibold shadow-lg">
+                    Turno: {formatSeconds(sessionTimerSecondsRemaining)}
+                  </div>
+                </div>
+              ) : null}
+
+              {timerActive && timerExpired ? (
+                <div className="absolute inset-0 z-40 bg-slate-950/85 backdrop-blur-sm flex flex-col items-center justify-center p-6">
+                  <div className="w-full max-w-md text-center bg-slate-900/90 border border-red-500/40 rounded-xl p-6 shadow-xl">
+                    <h2 className="text-xl font-bold text-white mb-2">Tiempo del turno agotado</h2>
+                    <p className="text-sm text-slate-300 mb-5">
+                      Tu turno ha terminado. No se puede continuar hasta iniciar otro turno.
+                    </p>
+                    <button
+                      onClick={() => navigate("/juegos")}
+                      className="px-5 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white text-sm font-medium transition-colors"
+                    >
+                      Volver a juegos
+                    </button>
+                  </div>
+                </div>
+              ) : null}
             </section>
 
             <GameplaySidebar

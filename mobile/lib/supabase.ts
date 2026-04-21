@@ -1,7 +1,5 @@
-import { AppState } from 'react-native'
 import 'react-native-url-polyfill/auto'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { createClient } from '@supabase/supabase-js'
+import { createSupabaseClient } from '../../packages/api/src/supabase/createSupabaseClient'
 import * as SecureStore from 'expo-secure-store'
 
 // Adaptador para guardar la sesión de forma segura en el móvil
@@ -20,7 +18,7 @@ const ExpoSecureStoreAdapter = {
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL as string
 const supabaseKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY as string
 
-export const supabase = createClient(supabaseUrl, supabaseKey, {
+export const supabase = createSupabaseClient(supabaseUrl, supabaseKey, {
   auth: {
     storage: ExpoSecureStoreAdapter,
     autoRefreshToken: true,

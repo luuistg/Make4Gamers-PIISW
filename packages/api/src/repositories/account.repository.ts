@@ -1,0 +1,68 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { AccountProfile, AccountRecentGameRaw } from "../types/account";
+
+const PROFILE_FIELDS =
+  "id, username, avatar_url, status, allow_requests, role";
+
+export async function findAccountProfile(
+  client: SupabaseClient,
+  userId: string,
+): Promise<AccountProfile> {
+  const { data, error } = await client.from("profiles").select(PROFILE_FIELDS).eq("id", userId).single();
+
+  if (error || !data) {
+    throw new Error(error?.message || "No se pudo recuperar el perfil");
+  }
+
+  return data as AccountProfile;
+}
+
+export async function patchAccountProfile(
+  client: SupabaseClient,
+  userId: string,
+  patch: Partial<Omit<AccountProfile, "id">>,
+): Promise<void> {
+  const { error } = await client.from("profiles").update(patch).eq("id", userId);
+
+  if (error) {
+    throw new Error(error.message || "No se pudo actualizar el perfil");
+  }
+}
+
+export async function findRecentGamesByUser(
+  client: SupabaseClient,
+  userId: string,
+  limit = 5,
+): Promise<AccountRecentGameRaw[]> {
+  const { data, error } = await client
+    .from("scores")
+    .select("id, score, created_at, game:games(title)")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    throw new Error(error.message || "No se pudieron recuperar las partidas recientes");
+  }
+
+  return (data ?? []) as AccountRecentGameRaw[];
+}
+
+export async function findAcceptedFriendsByUser(
+  client: SupabaseClient,
+  userId: string,
+) {
+  const { data, error } = await client
+    .from("friendships")
+    .select(
+      "id, user_a, user_b, profile_a:profiles!friendships_user_a_fkey(username, avatar_url, status), profile_b:profiles!friendships_user_b_fkey(username, avatar_url, status)",
+    )
+    .eq("status", "accepted")
+    .or(`user_a.eq.${userId},user_b.eq.${userId}`);
+
+  if (error) {
+    throw new Error(error.message || "No se pudieron recuperar los amigos");
+  }
+
+  return data ?? [];
+}
