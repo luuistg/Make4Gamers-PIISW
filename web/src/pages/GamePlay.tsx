@@ -2,13 +2,16 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+
 import { getGameById, type Game } from "../features/games/services/getGameById.service";
 import { getUserGameScore } from "../features/gameplay/services/getUserGameScore.service";
 import { createMatch } from "../features/gameplay/services/createMatch.service";
 import { getAuthenticatedUserId } from "../features/auth/services/auth.service";
+import { supabase } from '../supabase';
 
 import GameViewport from "../features/gameplay/components/GameViewport";
 import GameplaySidebar from "../features/gameplay/components/GameplaySidebar";
+import AgeGuard from "../features/chat/components/AgeGuard";
 
 export default function Gameplay() {
   const { id } = useParams<{ id: string }>();
@@ -31,6 +34,26 @@ export default function Gameplay() {
 
   const [myScore, setMyScore] = useState<number | null>(null);
   const [scoreLoading, setScoreLoading] = useState(false);
+
+  const [edadMinima, setEdadMinima] = useState<number>(3);
+
+  useEffect(() => {
+    if (!id) return;
+    
+    const fetchEdadMinima = async () => {      
+      const { data, error } = await supabase
+        .from('games')
+        .select('edad_minima')
+        .eq('id', id)
+        .single();
+                
+      if (!error && data?.edad_minima) {
+        setEdadMinima(data.edad_minima);
+      }
+    };
+    
+    fetchEdadMinima();
+  }, [id]);
 
   useEffect(() => {
     const loadGame = async () => {
@@ -146,7 +169,6 @@ export default function Gameplay() {
     const seconds = timerSeconds;
     const normalizedSeconds = seconds == null ? null : seconds;
 
-    // Si está en "custom" pero los minutos no son válidos, no empezamos.
     if (timerPreset === "custom" && normalizedSeconds == null) return;
 
     setStartingSession(true);
@@ -155,7 +177,6 @@ export default function Gameplay() {
     const resolvedPlayerName = userId || "anonimo";
     setPlayerName(resolvedPlayerName);
 
-    // Persistencia (si existe creación de match, la usamos para guardar duración configurada).
     if (userId) {
       try {
         await createMatch({
@@ -163,7 +184,6 @@ export default function Gameplay() {
           sessionTimerSeconds: normalizedSeconds && normalizedSeconds > 0 ? normalizedSeconds : null,
         });
       } catch (error) {
-        // No bloqueamos el juego si falla la persistencia del temporizador de turno.
         console.error("Error creando match con temporizador de turno:", error);
       }
     }
@@ -227,6 +247,7 @@ export default function Gameplay() {
     );
 
   return (
+    <AgeGuard edadMinima={edadMinima}>
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="border-b border-slate-800">
         <div className="mx-auto w-full max-w-[1200px] px-8 lg:px-14 py-4 flex items-center justify-between">
@@ -393,5 +414,6 @@ export default function Gameplay() {
         </div>
       </div>
     </div>
+    </AgeGuard>
   );
 }

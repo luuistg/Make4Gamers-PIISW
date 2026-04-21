@@ -18,6 +18,9 @@ export default function AgeGuard({ edadMinima, children }: AgeGuardProps) {
   }, [edadMinima]);
 
   const checkAge = async () => {
+    setHasAccess(null);
+    setNeedsConfirmation(false);
+
     if (!edadMinima || edadMinima <= 3) {
       setHasAccess(true);
       return;
@@ -36,8 +39,7 @@ export default function AgeGuard({ edadMinima, children }: AgeGuardProps) {
       .single();
 
     if (!profile?.birth_date) {
-        //Sin fecha de nacimiento
-        setHasAccess(false);
+      setHasAccess(false);
       return;
     }
 
@@ -51,9 +53,10 @@ export default function AgeGuard({ edadMinima, children }: AgeGuardProps) {
     }
 
     if (age >= edadMinima) {
-      //Confirmacion manual es +18
+      //Confirmacion +18
       if (edadMinima >= 18 && !sessionStorage.getItem(`confirmed_18_${session.user.id}`)) {
         setNeedsConfirmation(true);
+        setHasAccess(false);
       } else {
         setHasAccess(true);
       }
@@ -62,24 +65,37 @@ export default function AgeGuard({ edadMinima, children }: AgeGuardProps) {
     }
   };
 
-  const handleConfirm = () => {
-    const userId = (supabase.auth.getUser() as any)?.data?.user?.id;
-    sessionStorage.setItem(`confirmed_18_${userId}`, 'true');
-    setNeedsConfirmation(false);
-    setHasAccess(true);
+  const handleConfirm = async () => {
+    // CORRECCIÓN: Leer el ID del usuario correctamente
+    const { data } = await supabase.auth.getSession();
+    const userId = data?.session?.user?.id;
+    
+    if (userId) {
+      sessionStorage.setItem(`confirmed_18_${userId}`, 'true');
+      setNeedsConfirmation(false);
+      setHasAccess(true);
+    }
   };
 
-  if (hasAccess === null) return <div className="p-10 text-center text-white">Verificando acceso...</div>;
+  if (hasAccess === null) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="text-lg text-slate-400 animate-pulse">Verificando acceso al juego...</div>
+      </div>
+    );
+  }
 
   if (!hasAccess && !needsConfirmation) {
     return (
-      <div className="flex flex-col items-center justify-center p-12 bg-slate-900 border border-red-900/50 rounded-2xl text-center">
+      <div className="flex flex-col items-center justify-center p-12 mt-10 bg-slate-900 border border-red-900/50 rounded-2xl text-center max-w-2xl mx-auto">
         <AlertOctagon size={64} className="text-red-500 mb-4" />
         <h2 className="text-2xl font-bold text-white mb-2">Acceso Restringido</h2>
         <p className="text-slate-400 max-w-md">
           Lo sentimos, este título está clasificado para mayores de {edadMinima} años según tu fecha de nacimiento registrada.
         </p>
-        <button onClick={() => navigate(-1)} className="mt-6 text-indigo-400 hover:underline">Volver atrás</button>
+        <button onClick={() => navigate(-1)} className="mt-6 px-6 py-2 bg-slate-800 text-indigo-400 rounded-lg hover:bg-slate-700 transition-colors">
+          Volver atrás
+        </button>
       </div>
     );
   }
