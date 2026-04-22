@@ -1,55 +1,37 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useGameScore } from "../hooks/useGameScore";
+import { useMatchMovements } from "../hooks/useMatchMovements";
 
 export type GameplayTab = "chat" | "history";
 
-type MoveItem = {
-  id: string;
-  move: string;
-  at: string;
-};
-
 type Props = {
-  myScore: number | null;
-  scoreLoading: boolean;
+  userId: string | null;
+  gameId: string | null;
+  matchId: string | null;
   availableModes?: string[] | null;
 };
 
 export default function GameplaySidebar({
-  myScore,
-  scoreLoading,
+  userId,
+  gameId,
+  matchId,
   availableModes,
 }: Props) {
   const { t } = useTranslation();
+  const { score: myScore, loading: scoreLoading } = useGameScore(userId, gameId);
+  const { movements, loading: movementsLoading } = useMatchMovements(matchId, userId);
 
   const [tab, setTab] = useState<GameplayTab>("chat");
   const [chatInput, setChatInput] = useState("");
   const [chatMessages, setChatMessages] = useState<string[]>([]);
-  const [moves, setMoves] = useState<MoveItem[]>([]);
 
   const supportsHistory = useMemo(() => {
     const modes = availableModes ?? [];
-    return modes.some((m) => ["turns", "turn-based", "history"].includes(m.toLowerCase()));
+    return modes.some((m) =>
+      ["turns", "turn-based", "history", "multiplayer"].includes(m.toLowerCase()),
+    );
   }, [availableModes]);
-
-  useEffect(() => {
-    const onMessage = (event: MessageEvent) => {
-      const msg = event.data;
-      if (!msg || msg.type !== "GAME_MOVE") return;
-
-      setMoves((prev) => [
-        {
-          id: crypto.randomUUID(),
-          move: msg.payload?.move ?? t("gameplay.noMovesYet"),
-          at: new Date().toLocaleTimeString(),
-        },
-        ...prev,
-      ]);
-    };
-
-    window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
-  }, [t]);
 
   const sendChat = () => {
     const value = chatInput.trim();
@@ -60,6 +42,7 @@ export default function GameplaySidebar({
 
   return (
     <aside className="h-[600px] rounded-xl border border-slate-800 bg-slate-900 flex flex-col overflow-hidden">
+      {/* Score */}
       <div className="px-4 py-3 border-b border-indigo-500/50 bg-slate-900 shadow-xl shadow-indigo-500/10">
         <p className="text-xs uppercase tracking-wide text-slate-300">{t("gameplay.myScore")}</p>
         <p className="text-2xl font-extrabold text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.35)] mt-1">
@@ -67,6 +50,7 @@ export default function GameplaySidebar({
         </p>
       </div>
 
+      {/* Tabs */}
       <div className="flex border-b border-slate-800">
         <button
           onClick={() => setTab("chat")}
@@ -86,8 +70,9 @@ export default function GameplaySidebar({
         </button>
       </div>
 
+      {/* Chat */}
       {tab === "chat" ? (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full overflow-hidden">
           <div className="flex-1 overflow-auto p-3 space-y-2">
             {chatMessages.length === 0 ? (
               <p className="text-slate-500 text-sm">{t("gameplay.noMessages")}</p>
@@ -114,19 +99,34 @@ export default function GameplaySidebar({
           </div>
         </div>
       ) : (
-        <div className="p-3 overflow-auto">
+        /* Historial de movimientos en tiempo real */
+        <div className="flex-1 overflow-auto p-3">
           {!supportsHistory ? (
             <p className="text-slate-500 text-sm">{t("gameplay.noMovesRequired")}</p>
-          ) : moves.length === 0 ? (
+          ) : movementsLoading ? (
+            <div className="space-y-2">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-10 rounded bg-slate-800 animate-pulse" />
+              ))}
+            </div>
+          ) : movements.length === 0 ? (
             <p className="text-slate-500 text-sm">{t("gameplay.noMovesYet")}</p>
           ) : (
             <ul className="space-y-2">
-              {moves.map((m) => (
-                <li key={m.id} className="text-sm bg-slate-800 rounded p-2">
-                  <div className="font-medium">{m.move}</div>
-                  <div className="text-xs text-slate-400">{m.at}</div>
-                </li>
-              ))}
+              {[...movements].reverse().map((m) => {
+                const moveLabel =
+                  typeof m.move_data?.move === "string"
+                    ? m.move_data.move
+                    : JSON.stringify(m.move_data);
+                const time = new Date(m.server_timestamp).toLocaleTimeString();
+
+                return (
+                  <li key={m.id} className="text-sm bg-slate-800 rounded p-2">
+                    <div className="font-medium text-white">{moveLabel}</div>
+                    <div className="text-xs text-slate-400">{time}</div>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>

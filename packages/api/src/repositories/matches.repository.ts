@@ -1,5 +1,31 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
+export type ActiveMatch = {
+  id: string;
+  player_1: string;
+  player_2: string | null;
+  status: string;
+};
+
+export async function findActiveMatch(
+  client: SupabaseClient,
+  gameId: string,
+  userId: string,
+): Promise<ActiveMatch | null> {
+  const { data, error } = await client
+    .from("matches")
+    .select("id, player_1, player_2, status")
+    .eq("game_id", gameId)
+    .eq("status", "in_progress")
+    .or(`player_1.eq.${userId},player_2.eq.${userId}`)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) throw new Error(error.message);
+  return data ?? null;
+}
+
 export async function insertMatch(
   client: SupabaseClient,
   input: { gameId: string; userId: string; sessionTimerSeconds?: number | null },
