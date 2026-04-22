@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, Globe, ChevronDown, User, LogOut,  Calculator, LifeBuoy, MessageSquare} from 'lucide-react';
+import { Menu, Globe, ChevronDown, User, LogOut,  Calculator, LifeBuoy, MessageSquare, Filter} from 'lucide-react';
 import { Logo } from '../icons/Logo';
 import { logout } from '../../features/auth/services/logout.service';
 import { useAuthStatus } from '../../features/auth/hooks/useAuthStatus';
@@ -226,6 +226,13 @@ const Header = () => {
                                         onClick={() => setIsAdminOpen(false)}
                                     >
                                         <MessageSquare size={16} /> Sugerencias
+                                    </Link>
+                                    <Link 
+                                        to="/admin/filtro" 
+                                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-indigo-600/10 hover:text-indigo-400 transition-colors"
+                                        onClick={() => setIsAdminOpen(false)}
+                                    >
+                                        <Filter size={16} /> Filtro de Palabras
                                     </Link>
                                 </div>
                             )}
