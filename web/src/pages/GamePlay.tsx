@@ -179,17 +179,6 @@ export default function Gameplay() {
     const resolvedPlayerName = userId || "anonimo";
     setPlayerName(resolvedPlayerName);
 
-    if (userId) {
-      try {
-        await createMatch({
-          gameId: game.id,
-          sessionTimerSeconds: normalizedSeconds && normalizedSeconds > 0 ? normalizedSeconds : null,
-        });
-      } catch (error) {
-        console.error("Error creando match con temporizador de turno:", error);
-      }
-    }
-
     setTimerActive(true);
 
     if (normalizedSeconds != null && normalizedSeconds > 0) {
