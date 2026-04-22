@@ -3,12 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { getGameById, type Game } from "../features/games/services/getGameById.service";
-import { getUserGameScore } from "../features/gameplay/services/getUserGameScore.service";
-import { createMatch } from "../features/gameplay/services/createMatch.service";
 import { getAuthenticatedUserId } from "../features/auth/services/auth.service";
 
 import GameViewport from "../features/gameplay/components/GameViewport";
 import GameplaySidebar from "../features/gameplay/components/GameplaySidebar";
+import PlayersBar from "../features/gameplay/components/PlayersBar";
+import { useActiveMatch } from "../features/gameplay/hooks/useActiveMatch";
+import { useMatchMovements } from "../features/gameplay/hooks/useMatchMovements";
 
 export default function Gameplay() {
   const { id } = useParams<{ id: string }>();
@@ -28,9 +29,14 @@ export default function Gameplay() {
   const [sessionTimerEndsAtMs, setSessionTimerEndsAtMs] = useState<number | null>(null);
   const [sessionTimerSecondsRemaining, setSessionTimerSecondsRemaining] = useState<number | null>(null);
   const [startingSession, setStartingSession] = useState<boolean>(false);
+  // matchId que el juego comunica via postMessage cuando lo tenga disponible
+  const [iframeMatchId, setIframeMatchId] = useState<string | null>(null);
 
-  const [myScore, setMyScore] = useState<number | null>(null);
-  const [scoreLoading, setScoreLoading] = useState(false);
+  const { match, loading: matchLoading } = useActiveMatch(id ?? null, userId);
+  const matchId = match?.id ?? iframeMatchId;
+  const { movements } = useMatchMovements(matchId, userId);
+  const lastMovedPlayerId = movements.at(-1)?.player_id ?? null;
+
 
   useEffect(() => {
     const loadGame = async () => {
@@ -98,24 +104,20 @@ export default function Gameplay() {
     return url.toString();
   }, [game, id, playerName]);
 
-  useEffect(() => {
-    const loadMyScore = async () => {
-      if (!userId || !game?.id) return;
 
-      setScoreLoading(true);
-      try {
-        const score = await getUserGameScore(userId, game.id);
-        setMyScore(score);
-      } catch (error) {
-        console.error("Error cargando mi score:", error);
-        setMyScore(null);
-      } finally {
-        setScoreLoading(false);
+  // Escucha postMessage del iframe — cuando el juego devuelva el match_id lo capturamos
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      const msg = event.data;
+      if (!msg) return;
+      if (msg.type === "MATCH_CREATED" && typeof msg.matchId === "string") {
+        console.log("[GamePlay] match_id recibido del juego:", msg.matchId);
+        setIframeMatchId(msg.matchId);
       }
     };
-
-    loadMyScore();
-  }, [userId, game?.id]);
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
 
   useEffect(() => {
     if (!timerActive || sessionTimerEndsAtMs == null) return;
@@ -154,19 +156,6 @@ export default function Gameplay() {
 
     const resolvedPlayerName = userId || "anonimo";
     setPlayerName(resolvedPlayerName);
-
-    // Persistencia (si existe creación de match, la usamos para guardar duración configurada).
-    if (userId) {
-      try {
-        await createMatch({
-          gameId: game.id,
-          sessionTimerSeconds: normalizedSeconds && normalizedSeconds > 0 ? normalizedSeconds : null,
-        });
-      } catch (error) {
-        // No bloqueamos el juego si falla la persistencia del temporizador de turno.
-        console.error("Error creando match con temporizador de turno:", error);
-      }
-    }
 
     setTimerActive(true);
 
@@ -258,6 +247,16 @@ export default function Gameplay() {
 
       <div className="mt-6 mb-6">
         <div className="mx-auto w-full max-w-[1200px] px-8 lg:px-14">
+          {/* Barra de jugadores — visible cuando hay partida activa */}
+          {(match || matchLoading) && (
+            <PlayersBar
+              players={match?.players ?? []}
+              currentUserId={userId}
+              lastMovedPlayerId={lastMovedPlayerId}
+              loading={matchLoading}
+            />
+          )}
+
           <div className="grid grid-cols-1 lg:grid-cols-[800px_280px] gap-4 justify-center items-stretch">
             <section className="relative h-[600px] w-full max-w-[800px] rounded-xl overflow-hidden bg-black border border-indigo-500/50 shadow-xl shadow-indigo-500/10 transition-all duration-300">
               {timerActive ? <GameViewport src={finalGameUrl} title={`game-${game.id}`} ratio="4:3" /> : null}
@@ -385,8 +384,9 @@ export default function Gameplay() {
             </section>
 
             <GameplaySidebar
-              myScore={myScore}
-              scoreLoading={scoreLoading}
+              userId={userId}
+              gameId={game.id}
+              movements={movements}
               availableModes={game.available_modes}
             />
           </div>

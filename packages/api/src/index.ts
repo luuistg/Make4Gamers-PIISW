@@ -14,7 +14,8 @@ export {
   getAuthenticatedUser,
   subscribeToAuthState,
 } from "./services/auth.service";
-export { createMatch } from "./services/matches.service";
+export { createMatch, getActiveMatch } from "./services/matches.service";
+export type { ActiveMatch } from "./services/matches.service";
 export { getUserGameScore } from "./services/scores.service";
 export { registrarPuntos } from "./services/ranking.service";
 export {

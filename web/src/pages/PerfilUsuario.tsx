@@ -7,7 +7,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 
 import { User as UserIcon, Activity, ArrowLeft, Trophy, Calendar, Gamepad2, Check, AlertCircle, AlertTriangle, Medal, Flag } from 'lucide-react';
 import { getAccountHighScores } from '../features/account/services/account.service';
-import { reportUser } from '../../../packages/api/src/services/reports.service';
+//import { reportUser } from '../../../packages/api/src/services/reports.service';
 
 
 export default function PerfilUsuario() {
