@@ -2,11 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+
 import { getGameById, type Game } from "../features/games/services/getGameById.service";
 import { getAuthenticatedUserId } from "../features/auth/services/auth.service";
+import { supabase } from '../supabase';
 
 import GameViewport from "../features/gameplay/components/GameViewport";
 import GameplaySidebar from "../features/gameplay/components/GameplaySidebar";
+import AgeGuard from "../features/chat/components/AgeGuard";
 import PlayersBar from "../features/gameplay/components/PlayersBar";
 import { useActiveMatch } from "../features/gameplay/hooks/useActiveMatch";
 import { useMatchMovements } from "../features/gameplay/hooks/useMatchMovements";
@@ -37,6 +40,26 @@ export default function Gameplay() {
   const { movements } = useMatchMovements(matchId, userId);
   const lastMovedPlayerId = movements.at(-1)?.player_id ?? null;
 
+
+  const [edadMinima, setEdadMinima] = useState<number>(3);
+
+  useEffect(() => {
+    if (!id) return;
+    
+    const fetchEdadMinima = async () => {      
+      const { data, error } = await supabase
+        .from('games')
+        .select('edad_minima')
+        .eq('id', id)
+        .single();
+                
+      if (!error && data?.edad_minima) {
+        setEdadMinima(data.edad_minima);
+      }
+    };
+    
+    fetchEdadMinima();
+  }, [id]);
 
   useEffect(() => {
     const loadGame = async () => {
@@ -148,7 +171,6 @@ export default function Gameplay() {
     const seconds = timerSeconds;
     const normalizedSeconds = seconds == null ? null : seconds;
 
-    // Si está en "custom" pero los minutos no son válidos, no empezamos.
     if (timerPreset === "custom" && normalizedSeconds == null) return;
 
     setStartingSession(true);
@@ -156,6 +178,17 @@ export default function Gameplay() {
 
     const resolvedPlayerName = userId || "anonimo";
     setPlayerName(resolvedPlayerName);
+
+    if (userId) {
+      try {
+        await createMatch({
+          gameId: game.id,
+          sessionTimerSeconds: normalizedSeconds && normalizedSeconds > 0 ? normalizedSeconds : null,
+        });
+      } catch (error) {
+        console.error("Error creando match con temporizador de turno:", error);
+      }
+    }
 
     setTimerActive(true);
 
@@ -216,6 +249,7 @@ export default function Gameplay() {
     );
 
   return (
+    <AgeGuard edadMinima={edadMinima}>
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="border-b border-slate-800">
         <div className="mx-auto w-full max-w-[1200px] px-8 lg:px-14 py-4 flex items-center justify-between">
@@ -393,5 +427,6 @@ export default function Gameplay() {
         </div>
       </div>
     </div>
+    </AgeGuard>
   );
 }
