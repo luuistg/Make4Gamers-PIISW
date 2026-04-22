@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom"; 
 import { toast } from "react-hot-toast";
-import { supabase } from "../../supabase"; 
+import { supabase, supabaseUrl } from "../../supabase"; 
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -123,7 +123,7 @@ function Layout() {
        
         const handleClose = () => {
           
-            const url = `${import.meta.env.VITE_SUPABASE_URL}/rest/v1/profiles?id=eq.${currentUserId}`;
+            const url = `${supabaseUrl}/rest/v1/profiles?id=eq.${currentUserId}`;
             const headers = new Blob([JSON.stringify({ status: 'Invisible' })], {
                 type: 'application/json'
             });

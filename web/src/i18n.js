@@ -205,14 +205,20 @@ i18n
                     account: {
                         locale: "es-ES",
                         common: {
-                            cancel: "Cancelar"
+                            cancel: "Cancelar",
+                            save: "Guardar"
                         },
                         alerts: {
                             saveConfigError: "Hubo un error al guardar la configuración.",
                             emptyUsername: "El nombre de usuario no puede estar vacío.",
                             saveUsernameError: "Hubo un error al guardar. Es posible que ese nombre de usuario ya esté en uso.",
                             avatarUpdated: "Foto de perfil actualizada con éxito.",
-                            avatarUploadError: "Error al subir la imagen"
+                            avatarUploadError: "Error al subir la imagen",
+                            passwordChanged: "Contraseña cambiada exitosamente.",
+                            profileUpdated: "Perfil actualizado exitosamente.",
+                            profileUpdateError: "Error al actualizar el perfil",
+                            reportSent: "Reporte enviado correctamente.",
+                            reportError: "No se pudo enviar el reporte."
                         },
                         states: {
                             profileLoadError: "No se pudo cargar el perfil. Asegúrate de haber iniciado sesión."
@@ -254,7 +260,7 @@ i18n
                             noResults: "No se encontraron amigos con ese filtro."
                         },
                         payments: {
-                            title: "Payments",
+                            title: "Pagos",
                             subscriptionType: "Tipo de suscripción",
                             defaultSubscription: "Pro Gamer Monthly",
                             paymentMethods: "Métodos de pago",
@@ -266,7 +272,7 @@ i18n
                             renewalNote: "La suscripción se renueva automáticamente al final de cada periodo."
                         },
                         security: {
-                            title: "Security",
+                            title: "Seguridad",
                             personalSection: "Cuenta personal",
                             changePassword: "Cambiar contraseña",
                             accountInfo: "Información de la cuenta",
@@ -275,13 +281,77 @@ i18n
                             enable2fa: "Activar doble factor",
                             changePaymentMethod: "Cambiar método de pago",
                             verifyEmail: "Verificar correo electrónico",
-                            socialSupportSection: "Social and support",
-                            reportPlayer: "Report jugador",
-                            reportGame: "Report game",
-                            reportIncident: "Report incident",
+                            socialSupportSection: "Social y soporte",
+                            reportPlayer: "Reportar jugador",
+                            reportGame: "Reportar game",
+                            reportIncident: "Reportar incident",
                             friendPrivacy: "Privacidad de amistad",
                             requestsEnabled: "Recibiendo solicitudes",
-                            requestsBlocked: "Solicitudes bloqueadas"
+                            requestsBlocked: "Solicitudes bloqueadas", 
+                            passwords: {
+                                currentPassword: "Contraseña actual",
+                                enterCurrentPassword: "Introduce tu contraseña actual",
+                                newPassword: "Nueva contraseña",
+                                enterNewPassword: "Introduce tu nueva contraseña",
+                                confirmPassword: "Confirmar contraseña",
+                                confirmNewPassword: "Confirma tu nueva contraseña",
+                                allFieldsRequired: "Todos los campos son obligatorios",
+                                minLength: "La contraseña debe tener al menos 8 caracteres",
+                                passwordMismatch: "Las contraseñas no coinciden",
+                                invalidCurrentPassword: "La contraseña actual no es correcta",
+                                changeError: "Error al cambiar la contraseña"
+                            },
+                            personalInfo: {
+                                requiredFields: "El nombre y apellido son obligatorios",
+                                enterFirstName: "Introduce tu nombre",
+                                enterLastName: "Introduce tu apellido",
+                                emailNotEditable: "El email no se puede cambiar desde aquí"
+                            },
+                            reportModal: {
+                                title: "Reportar jugador",
+                                targetUser: "Jugador",
+                                selectUser: "Selecciona un jugador",
+                                searchPlaceholder: "Busca por nombre de usuario (min. 2 caracteres)",
+                                selectedUser: "Seleccionado: {{username}}",
+                                searching: "Buscando jugadores...",
+                                noResults: "No se encontraron jugadores con ese nombre.",
+                                reason: "Motivo",
+                                selectReason: "Selecciona un motivo",
+                                details: "Detalles",
+                                detailsPlaceholder: "Describe brevemente lo ocurrido...",
+                                submit: "Enviar reporte",
+                                reasons: {
+                                    cheating: "Trampas",
+                                    abuse: "Lenguaje ofensivo",
+                                    spam: "Spam",
+                                    harassment: "Acoso",
+                                    other: "Otro"
+                                }
+                            },
+                            reportGameModal: {
+                                title: "Reportar juego",
+                                targetGame: "Juego",
+                                selectedGameLabel: "Juego seleccionado",
+                                changeSelection: "Cambiar",
+                                selectGame: "Selecciona un juego",
+                                searchPlaceholder: "Busca por nombre del juego (min. 2 caracteres)",
+                                searching: "Buscando juegos...",
+                                noResults: "No se encontraron juegos con ese nombre.",
+                                defaultGame: "Juego sin titulo",
+                                noMetadata: "Sin informacion adicional",
+                                reason: "Motivo",
+                                selectReason: "Selecciona un motivo",
+                                details: "Detalles",
+                                detailsPlaceholder: "Describe brevemente el problema del juego...",
+                                submit: "Enviar reporte",
+                                reasons: {
+                                    bug: "Error o bug",
+                                    inappropriate: "Contenido inapropiado",
+                                    brokenLink: "No carga o enlace roto",
+                                    copyright: "Problema de derechos",
+                                    other: "Otro"
+                                }
+                            }
                         },
                         avatarPolicy: {
                             title: "Normativa de imágenes",
@@ -544,14 +614,20 @@ i18n
                     account: {
                         locale: "en-US",
                         common: {
-                            cancel: "Cancel"
+                            cancel: "Cancel",
+                            save: "Save"
                         },
                         alerts: {
                             saveConfigError: "There was an error saving the settings.",
                             emptyUsername: "Username cannot be empty.",
                             saveUsernameError: "There was an error saving. That username may already be in use.",
                             avatarUpdated: "Profile picture updated successfully.",
-                            avatarUploadError: "Error uploading image"
+                            avatarUploadError: "Error uploading image",
+                            passwordChanged: "Password changed successfully.",
+                            profileUpdated: "Profile updated successfully.",
+                            profileUpdateError: "Error updating profile",
+                            reportSent: "Report sent successfully.",
+                            reportError: "Could not send report."
                         },
                         states: {
                             profileLoadError: "Profile could not be loaded. Make sure you are signed in."
@@ -620,7 +696,71 @@ i18n
                             reportIncident: "Report incident",
                             friendPrivacy: "Friend request privacy",
                             requestsEnabled: "Receiving requests",
-                            requestsBlocked: "Requests blocked"
+                            requestsBlocked: "Requests blocked",
+                            passwords: {
+                                currentPassword: "Current password",
+                                enterCurrentPassword: "Enter your current password",
+                                newPassword: "New password",
+                                enterNewPassword: "Enter your new password",
+                                confirmPassword: "Confirm password",
+                                confirmNewPassword: "Confirm your new password",
+                                allFieldsRequired: "All fields are required",
+                                minLength: "Password must be at least 8 characters",
+                                passwordMismatch: "Passwords do not match",
+                                invalidCurrentPassword: "Current password is incorrect",
+                                changeError: "Error changing password"
+                            },
+                            personalInfo: {
+                                requiredFields: "Name and surname are required",
+                                enterFirstName: "Enter your name",
+                                enterLastName: "Enter your surname",
+                                emailNotEditable: "Email cannot be changed from here"
+                            },
+                            reportModal: {
+                                title: "Report player",
+                                targetUser: "Player",
+                                selectUser: "Select a player",
+                                searchPlaceholder: "Search by username (min. 2 characters)",
+                                selectedUser: "Selected: {{username}}",
+                                searching: "Searching players...",
+                                noResults: "No players found with that username.",
+                                reason: "Reason",
+                                selectReason: "Select a reason",
+                                details: "Details",
+                                detailsPlaceholder: "Briefly describe what happened...",
+                                submit: "Send report",
+                                reasons: {
+                                    cheating: "Cheating",
+                                    abuse: "Abusive language",
+                                    spam: "Spam",
+                                    harassment: "Harassment",
+                                    other: "Other"
+                                }
+                            },
+                            reportGameModal: {
+                                title: "Report game",
+                                targetGame: "Game",
+                                selectedGameLabel: "Selected game",
+                                changeSelection: "Change",
+                                selectGame: "Select a game",
+                                searchPlaceholder: "Search by game title (min. 2 characters)",
+                                searching: "Searching games...",
+                                noResults: "No games found with that title.",
+                                defaultGame: "Untitled game",
+                                noMetadata: "No additional information",
+                                reason: "Reason",
+                                selectReason: "Select a reason",
+                                details: "Details",
+                                detailsPlaceholder: "Briefly describe the game issue...",
+                                submit: "Send report",
+                                reasons: {
+                                    bug: "Bug or error",
+                                    inappropriate: "Inappropriate content",
+                                    brokenLink: "Won't load or broken link",
+                                    copyright: "Copyright issue",
+                                    other: "Other"
+                                }
+                            }
                         },
                         avatarPolicy: {
                             title: "Image policy",
@@ -883,14 +1023,20 @@ i18n
                     account: {
                         locale: "zh-CN",
                         common: {
-                            cancel: "取消"
+                            cancel: "取消",
+                            save: "保存"
                         },
                         alerts: {
                             saveConfigError: "保存设置时出错。",
                             emptyUsername: "用户名不能为空。",
                             saveUsernameError: "保存时出错，该用户名可能已被占用。",
                             avatarUpdated: "头像更新成功。",
-                            avatarUploadError: "上传图片时出错"
+                            avatarUploadError: "上传图片时出错",
+                            passwordChanged: "密码已成功更改。",
+                            profileUpdated: "个人资料已成功更新。",
+                            profileUpdateError: "更新个人资料出错",
+                            reportSent: "举报发送成功。",
+                            reportError: "无法发送举报。"
                         },
                         states: {
                             profileLoadError: "无法加载个人资料，请确认你已登录。"
@@ -959,7 +1105,47 @@ i18n
                             reportIncident: "举报事件",
                             friendPrivacy: "好友申请隐私",
                             requestsEnabled: "接收申请中",
-                            requestsBlocked: "已屏蔽申请"
+                            requestsBlocked: "已屏蔽申请",
+                            passwords: {
+                                currentPassword: "当前密码",
+                                enterCurrentPassword: "输入你的当前密码",
+                                newPassword: "新密码",
+                                enterNewPassword: "输入你的新密码",
+                                confirmPassword: "确认密码",
+                                confirmNewPassword: "确认你的新密码",
+                                allFieldsRequired: "所有字段都是必需的",
+                                minLength: "密码必须至少 8 个字符",
+                                passwordMismatch: "密码不匹配",
+                                invalidCurrentPassword: "当前密码不正确",
+                                changeError: "更改密码出错"
+                            },
+                            personalInfo: {
+                                requiredFields: "名字和姓氏是必需的",
+                                enterFirstName: "输入你的名字",
+                                enterLastName: "输入你的姓氏",
+                                emailNotEditable: "邮箱无法从这里更改"
+                            },
+                            reportModal: {
+                                title: "举报玩家",
+                                targetUser: "玩家",
+                                selectUser: "选择一名玩家",
+                                searchPlaceholder: "按用户名搜索（至少 2 个字符）",
+                                selectedUser: "已选择：{{username}}",
+                                searching: "正在搜索玩家...",
+                                noResults: "未找到该用户名的玩家。",
+                                reason: "原因",
+                                selectReason: "选择一个原因",
+                                details: "详情",
+                                detailsPlaceholder: "简要描述发生了什么...",
+                                submit: "提交举报",
+                                reasons: {
+                                    cheating: "作弊",
+                                    abuse: "辱骂言论",
+                                    spam: "垃圾信息",
+                                    harassment: "骚扰",
+                                    other: "其他"
+                                }
+                            }
                         },
                         avatarPolicy: {
                             title: "图片规范",

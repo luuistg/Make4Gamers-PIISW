@@ -8,6 +8,8 @@ import {
   registerWithEmail as registerWithEmailFromApi,
   requestPasswordReset as requestPasswordResetFromApi,
   subscribeToAuthState as subscribeToAuthStateFromApi,
+  updatePassword as updatePasswordFromApi,
+  verifyCurrentPassword as verifyCurrentPasswordFromApi,
 } from "../../../../../packages/api/src";
 import { supabase } from "../../../supabase";
 
@@ -63,4 +65,12 @@ export function subscribeToAuthState(
   callback: (event: AuthChangeEvent, session: Session | null) => void,
 ) {
   return subscribeToAuthStateFromApi(supabase, callback);
+}
+
+export function updatePassword(newPassword: string) {
+  return updatePasswordFromApi(supabase, newPassword);
+}
+
+export function verifyCurrentPassword(currentPassword: string) {
+  return verifyCurrentPasswordFromApi(supabase, currentPassword);
 }

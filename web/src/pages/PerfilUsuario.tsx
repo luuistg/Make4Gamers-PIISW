@@ -7,7 +7,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 
 import { User as UserIcon, Activity, ArrowLeft, Trophy, Calendar, Gamepad2, Check, AlertCircle, AlertTriangle, Medal, Flag } from 'lucide-react';
 import { getAccountHighScores } from '../features/account/services/account.service';
-import { reportUser } from '../../../packages/api/src/services/reports.service';
+//import { reportUser } from '../../../packages/api/src/services/reports.service';
 
 
 export default function PerfilUsuario() {
@@ -21,7 +21,7 @@ export default function PerfilUsuario() {
   const [deleteSuccessMsg, setDeleteSuccessMsg] = useState('');
   const [deleteErrorMsg, setDeleteErrorMsg] = useState('');
   const navigate = useNavigate();
-  // Estados para el sistema de reportes
+
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportReason, setReportReason] = useState('');
   const [reportDetails, setReportDetails] = useState('');
@@ -194,7 +194,7 @@ export default function PerfilUsuario() {
                 <div>
                   <h1 className="text-3xl font-bold text-white">{profile?.username}</h1>
                   
-                  {/* BOTÓN DE REPORTAR (Debajo del nombre en móvil, al lado en escritorio) */}
+               
                   {currentUserId && currentUserId !== profile?.id && (
                     <button 
                       onClick={() => setShowReportModal(true)}

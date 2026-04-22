@@ -74,14 +74,18 @@ export interface ScoreHistory {
 
 
 
+export interface GameStat {
+  name: string;
+  plays: number;
+  highScore: number;
+}
+
 export async function getUserDetailedStats(userId: string) {
   try {
-   
     const { data: scoreDataRaw } = await supabase
       .from('scores')
       .select('score, created_at, game:games(title)')
       .eq('user_id', userId);
-
 
     const { data: matchesDataRaw } = await supabase
       .from('matches')
@@ -91,10 +95,9 @@ export async function getUserDetailedStats(userId: string) {
     const scoreData: any[] = scoreDataRaw || [];
     const matchesData: any[] = matchesDataRaw || [];
 
-  
     const gameMap: Record<string, GameStat> = {};
 
-   
+    
     matchesData.forEach(match => {
       const rawTitle = Array.isArray(match.game) ? match.game[0]?.title : match.game?.title;
       const title = rawTitle || 'Desconocido';
@@ -105,7 +108,7 @@ export async function getUserDetailedStats(userId: string) {
       gameMap[title].plays += 1;
     });
 
-  
+    
     scoreData.forEach(item => {
       const rawTitle = Array.isArray(item.game) ? item.game[0]?.title : item.game?.title;
       const title = rawTitle || 'Desconocido';
@@ -120,17 +123,20 @@ export async function getUserDetailedStats(userId: string) {
 
     const chartData = Object.values(gameMap);
 
-   
-    const historyData = scoreData.map(item => {
-      const rawTitle = Array.isArray(item.game) ? item.game[0]?.title : item.game?.title;
-      return {
-        date: new Date(item.created_at).toLocaleDateString(),
-        score: item.score,
-        game: rawTitle || 'Juego'
-      };
-    });
+ 
+    const historyData = matchesData
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) 
+      .slice(0, 8) 
+      .map(match => {
+        const rawTitle = Array.isArray(match.game) ? match.game[0]?.title : match.game?.title;
+        return {
+          date: new Date(match.created_at).toLocaleDateString(),
+          time: new Date(match.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+          game: rawTitle || 'Juego',
+          status: 'Partida Jugada'
+        };
+      });
 
-  
     const totalMatches = matchesData.length; 
     const highestScore = scoreData.length > 0 ? Math.max(...scoreData.map(s => s.score)) : 0;
     

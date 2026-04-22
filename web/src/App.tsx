@@ -18,8 +18,9 @@ import Ayuda from './pages/Ayuda';
 import Contacto from './pages/Contacto';
 import AdminSugerencias from './pages/AdminSugerencias';
 import AdminTickets from './pages/AdminTickets';
+import AdminFiltro from './pages/AdminFiltro';
 import Estadisticas from './pages/Estadisticas';
-
+import AdminFormulas from './pages/AdminFormulas';
 function App() {
   return (
     <>
@@ -45,6 +46,8 @@ function App() {
           <Route path="/actualizar-password" element={<ActualizarPassword />} />
           <Route path="/admin/sugerencias" element={<AdminSugerencias />} />
           <Route path="/admin/tickets" element={<AdminTickets />} />
+          <Route path="/admin/filtro" element={<AdminFiltro />} />
+          <Route path="/admin/formulas" element={<AdminFormulas />} />
 
           {/* Main */}
           <Route element={<Layout />}>

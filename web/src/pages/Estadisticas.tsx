@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { 
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-    LineChart, Line
+    
 } from 'recharts';
 import { Activity, Trophy, Gamepad2, Calendar} from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -109,6 +109,7 @@ export default function Estadisticas() {
                                     <XAxis dataKey="name" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
                                     <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
                                     <Tooltip 
+                                        cursor={false}
                                         contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '8px' }}
                                         itemStyle={{ color: '#818cf8' }}
                                     />
@@ -118,34 +119,41 @@ export default function Estadisticas() {
                         </div>
                     </div>
 
-                    {/* Gráfico de Líneas: Evolución de Puntos */}
-                    <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-                        <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                            <Calendar size={18} className="text-emerald-400" />
-                            Historial de Puntuaciones
-                        </h3>
-                        <div className="h-80 w-full">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <LineChart data={stats.historyData}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-                                    <XAxis dataKey="date" stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
-                                    <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
-                                    <Tooltip 
-                                        contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #1e293b', borderRadius: '8px' }}
-                                    />
-                                    <Line 
-                                        type="monotone" 
-                                        dataKey="score" 
-                                        stroke="#10b981" 
-                                        strokeWidth={3} 
-                                        dot={{ r: 4, fill: '#10b981' }} 
-                                        activeDot={{ r: 6 }}
-                                        name="Puntos"
-                                    />
-                                </LineChart>
-                            </ResponsiveContainer>
+        {/* Actividad Reciente */}
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+            <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+                <Activity className="text-indigo-400" /> Actividad Reciente
+            </h3>
+            
+            {!stats.historyData || stats.historyData.length === 0 ? (
+                <div className="text-center py-10 text-slate-500 bg-slate-800/20 rounded-xl border border-slate-800 border-dashed">
+                    Aún no hay actividad reciente.
+                </div>
+            ) : (
+                <div className="space-y-4">
+                    {stats.historyData.map((item: any, idx: number) => (
+                        <div key={idx} className="flex items-center justify-between p-4 bg-slate-800/40 border border-slate-700/50 rounded-xl hover:bg-slate-800/80 transition-colors">
+                            <div className="flex items-center gap-4">
+                                <div className="p-3 bg-indigo-500/10 rounded-lg text-indigo-400">
+                                    <Gamepad2 size={24} />
+                                </div>
+                                <div>
+                                    <p className="text-white font-medium">{item.game}</p>
+                                    <p className="text-xs text-slate-400 flex items-center gap-1 mt-1">
+                                        <Calendar size={12} /> {item.date} a las {item.time}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="text-right">
+                                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase tracking-wide">
+                                    {item.status}
+                                </span>
+                            </div>
                         </div>
-                    </div>
+                    ))}
+                </div>
+            )}
+        </div>
 
                 </div>
 
