@@ -229,7 +229,8 @@ i18n
                             personal: "Personal",
                             friends: "Amigos",
                             payments: "Pagos",
-                            security: "Seguridad"
+                            security: "Seguridad",
+                            support: "Soporte"
                         },
                         dashboard: {
                             defaultUser: "Usuario",
@@ -271,6 +272,26 @@ i18n
                             benefitLeagues: "Permite crear ligas",
                             renewalNote: "La suscripción se renueva automáticamente al final de cada periodo."
                         },
+                        support: {
+                            title: "Soporte",
+                            subtitle: "Consulta tus tickets y reportes enviados al equipo.",
+                            openTicket: "Abrir ticket",
+                            loading: "Cargando historial de soporte...",
+                            reason: "Motivo",
+                            unknownUser: "Usuario desconocido",
+                            unknownGame: "Juego desconocido",
+                            emptyTickets: "Todavía no has abierto ningún ticket.",
+                            emptyUserReports: "Todavía no has reportado ningún jugador.",
+                            emptyGameReports: "Todavía no has reportado ningún juego.",
+                            tabs: {
+                                tickets: "Tickets",
+                                users: "Jugadores",
+                                games: "Juegos"
+                            },
+                            status: {
+                                pending: "Pendiente"
+                            }
+                        },
                         security: {
                             title: "Seguridad",
                             personalSection: "Cuenta personal",
@@ -285,6 +306,7 @@ i18n
                             reportPlayer: "Reportar jugador",
                             reportGame: "Reportar game",
                             reportIncident: "Reportar incident",
+                            openTicket: "Abrir ticket",
                             friendPrivacy: "Privacidad de amistad",
                             requestsEnabled: "Recibiendo solicitudes",
                             requestsBlocked: "Solicitudes bloqueadas", 
@@ -349,6 +371,24 @@ i18n
                                     inappropriate: "Contenido inapropiado",
                                     brokenLink: "No carga o enlace roto",
                                     copyright: "Problema de derechos",
+                                    other: "Otro"
+                                }
+                            },
+                            ticketModal: {
+                                title: "Abrir ticket de soporte",
+                                subject: "Asunto",
+                                subjectPlaceholder: "Ej: Problema al iniciar una partida",
+                                category: "Categoría",
+                                message: "Descripción",
+                                messagePlaceholder: "Cuéntanos qué ocurre con el mayor detalle posible...",
+                                requiredFields: "El asunto y la descripción son obligatorios.",
+                                createError: "No se pudo abrir el ticket.",
+                                created: "Ticket {{ticketNumber}} abierto correctamente.",
+                                submit: "Enviar ticket",
+                                categories: {
+                                    technical: "Problema técnico",
+                                    payments: "Pagos y facturación",
+                                    abuse: "Denunciar un abuso",
                                     other: "Otro"
                                 }
                             }
@@ -638,7 +678,8 @@ i18n
                             personal: "Personal",
                             friends: "Friends",
                             payments: "Payments",
-                            security: "Security"
+                            security: "Security",
+                            support: "Support"
                         },
                         dashboard: {
                             defaultUser: "User",
@@ -680,6 +721,26 @@ i18n
                             benefitLeagues: "Create leagues",
                             renewalNote: "Subscription renews automatically at the end of each billing period."
                         },
+                        support: {
+                            title: "Support",
+                            subtitle: "Review your tickets and reports sent to the team.",
+                            openTicket: "Open ticket",
+                            loading: "Loading support history...",
+                            reason: "Reason",
+                            unknownUser: "Unknown user",
+                            unknownGame: "Unknown game",
+                            emptyTickets: "You have not opened any tickets yet.",
+                            emptyUserReports: "You have not reported any players yet.",
+                            emptyGameReports: "You have not reported any games yet.",
+                            tabs: {
+                                tickets: "Tickets",
+                                users: "Players",
+                                games: "Games"
+                            },
+                            status: {
+                                pending: "Pending"
+                            }
+                        },
                         security: {
                             title: "Security",
                             personalSection: "Personal account",
@@ -694,6 +755,7 @@ i18n
                             reportPlayer: "Report player",
                             reportGame: "Report game",
                             reportIncident: "Report incident",
+                            openTicket: "Open ticket",
                             friendPrivacy: "Friend request privacy",
                             requestsEnabled: "Receiving requests",
                             requestsBlocked: "Requests blocked",
@@ -758,6 +820,24 @@ i18n
                                     inappropriate: "Inappropriate content",
                                     brokenLink: "Won't load or broken link",
                                     copyright: "Copyright issue",
+                                    other: "Other"
+                                }
+                            },
+                            ticketModal: {
+                                title: "Open support ticket",
+                                subject: "Subject",
+                                subjectPlaceholder: "Example: Problem starting a match",
+                                category: "Category",
+                                message: "Description",
+                                messagePlaceholder: "Tell us what is happening with as much detail as possible...",
+                                requiredFields: "Subject and description are required.",
+                                createError: "The ticket could not be opened.",
+                                created: "Ticket {{ticketNumber}} opened successfully.",
+                                submit: "Send ticket",
+                                categories: {
+                                    technical: "Technical issue",
+                                    payments: "Payments and billing",
+                                    abuse: "Report abuse",
                                     other: "Other"
                                 }
                             }
@@ -1047,7 +1127,8 @@ i18n
                             personal: "个人信息",
                             friends: "好友",
                             payments: "支付",
-                            security: "安全"
+                            security: "安全",
+                            support: "支持"
                         },
                         dashboard: {
                             defaultUser: "用户",
@@ -1088,6 +1169,26 @@ i18n
                             benefitEarlyAccess: "可提前体验游戏",
                             benefitLeagues: "可创建联赛",
                             renewalNote: "订阅将在每个计费周期结束时自动续费。"
+                        },
+                        support: {
+                            title: "支持",
+                            subtitle: "查看你发送给团队的工单和举报。",
+                            openTicket: "打开工单",
+                            loading: "正在加载支持历史...",
+                            reason: "原因",
+                            unknownUser: "未知用户",
+                            unknownGame: "未知游戏",
+                            emptyTickets: "你还没有打开任何工单。",
+                            emptyUserReports: "你还没有举报任何玩家。",
+                            emptyGameReports: "你还没有举报任何游戏。",
+                            tabs: {
+                                tickets: "工单",
+                                users: "玩家",
+                                games: "游戏"
+                            },
+                            status: {
+                                pending: "待处理"
+                            }
                         },
                         security: {
                             title: "安全",
