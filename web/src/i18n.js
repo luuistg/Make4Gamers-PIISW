@@ -12,9 +12,17 @@ i18n
                     nav: {
                         games: "Juegos",
                         ranking: "Ranking",
+                        stats: "Estadísticas",
                         chat: "Chat",
                         account: "Cuenta",
                         logout: "Cerrar sesión"
+                    },
+                    admin: {
+                        management: "Gestión",
+                        formulas: "Fórmulas",
+                        tickets: "Tickets",
+                        suggestions: "Sugerencias",
+                        wordFilter: "Filtro de Palabras"
                     },
                     footer: {
                         description: "La plataforma definitiva para descubrir, jugar y compartir tus experiencias de juego favoritas.",
@@ -461,9 +469,17 @@ i18n
                     nav: {
                         games: "Games",
                         ranking: "Ranking",
+                        stats: "Stats",
                         chat: "Chat",
                         account: "Account",
                         logout: "Sign Out"
+                    },
+                    admin: {
+                        management: "Management",
+                        formulas: "Formulas",
+                        tickets: "Tickets",
+                        suggestions: "Suggestions",
+                        wordFilter: "Word Filter"
                     },
                     footer: {
                         description: "The ultimate platform to discover, play and share your favorite gaming experiences.",
@@ -910,9 +926,17 @@ i18n
                     nav: {
                         games: "游戏",
                         ranking: "排行榜",
+                        stats: "统计数据",
                         chat: "聊天",
                         account: "账户",
                         logout: "退出登录"
+                    },
+                    admin: {
+                        management: "管理",
+                        formulas: "公式",
+                        tickets: "工单",
+                        suggestions: "建议",
+                        wordFilter: "词语过滤"
                     },
                     footer: {
                         description: "发现、玩耍和分享您最喜爱的游戏体验的终极平台。",

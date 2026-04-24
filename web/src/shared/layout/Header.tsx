@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, Globe, ChevronDown, User, LogOut,  Calculator, LifeBuoy, MessageSquare, Filter} from 'lucide-react';
+import { Menu, Globe, ChevronDown, User, LogOut, Calculator, LifeBuoy, MessageSquare, Filter } from 'lucide-react';
 import { Logo } from '../icons/Logo';
 import { logout } from '../../features/auth/services/logout.service';
 import { useAuthStatus } from '../../features/auth/hooks/useAuthStatus';
-import { supabase } from '../../supabase'; 
+import { supabase } from '../../supabase';
 
 const Header = () => {
-    const { t, i18n } = useTranslation(); 
+    const { t, i18n } = useTranslation();
     const { isAuthenticated } = useAuthStatus();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isLangOpen, setIsLangOpen] = useState(false);
@@ -27,18 +27,18 @@ const Header = () => {
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
                 setCurrentUserId(user.id);
-                
-             
+
+
                 const { data: profile } = await supabase
                     .from('profiles')
                     .select('role')
                     .eq('id', user.id)
                     .single();
-                
+
                 if (profile?.role === 'admin') {
                     setIsAdmin(true);
                 }
-             
+
             }
         };
         if (isAuthenticated) {
@@ -46,7 +46,7 @@ const Header = () => {
         }
     }, [isAuthenticated]);
 
-   
+
     useEffect(() => {
         // Reset unread badge when navigating to chat
         const inChat = location.pathname === '/chat';
@@ -55,7 +55,7 @@ const Header = () => {
         }
     }, [location.pathname]);
 
-   
+
     useEffect(() => {
         if (!currentUserId) return;
 
@@ -66,10 +66,10 @@ const Header = () => {
                 { event: 'INSERT', schema: 'public', table: 'messages' },
                 (payload) => {
                     const newMessage = payload.new;
-                    
-                   
+
+
                     if (newMessage.sender_id !== currentUserId && location.pathname !== '/chat') {
-                        setHasUnread(true); 
+                        setHasUnread(true);
                     }
                 }
             )
@@ -81,10 +81,10 @@ const Header = () => {
     }, [currentUserId, location.pathname]);
 
 
-   
+
     const changeLanguage = (lng: string): void => {
         i18n.changeLanguage(lng);
-        setIsLangOpen(false);   
+        setIsLangOpen(false);
     };
 
     const currentLang = (i18n.language ?? 'es').split('-')[0].toUpperCase();
@@ -109,21 +109,10 @@ const Header = () => {
                     <Link to="/juegos" className="hover:text-indigo-400 transition-colors">{t('nav.games')}</Link>
                     <Link to="/ranking" className="hover:text-indigo-400 transition-colors">{t('nav.ranking')}</Link>
 
-                    <Link 
-                        to="/estadisticas" 
-                        className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
-                            location.pathname === '/estadisticas' 
-                            ? 'bg-indigo-500/10 text-indigo-400' 
-                            : 'text-slate-300 hover:text-white hover:bg-white/5'
-                        }`}
-                    >
-                        <span className="font-medium">Estadísticas</span>
-                    </Link>
-                  
+                    <Link to="/estadisticas" className="hover:text-indigo-400 transition-colors">{t('nav.stats')}</Link>
+
                     <Link to="/chat" className="relative hover:text-indigo-400 transition-colors flex items-center">
                         {t('nav.chat')}
-                        
-                 
                         {hasUnread && (
                             <span className="absolute -top-1.5 -right-3.5 flex h-2.5 w-2.5">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -133,9 +122,9 @@ const Header = () => {
                     </Link>
                 </nav>
 
-         
+
                 <div className="flex items-center gap-4">
-                  
+
                     {isAuthenticated ? (
                         <div className="relative">
                             <button
@@ -155,9 +144,9 @@ const Header = () => {
                                         <span>{t('nav.account')}</span>
                                     </Link>
 
-                                  
-                   
-                                 
+
+
+
                                     <div className="h-px bg-slate-800 my-1"></div>
                                     <button
                                         className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-slate-800 hover:text-red-300 transition-colors"
@@ -183,18 +172,18 @@ const Header = () => {
                     </button>
 
 
-            
+
                     {isAdmin && (
                         <div className="relative">
-                            <button 
-                                className="flex items-center gap-1.5 hover:text-indigo-400 text-slate-300 transition-colors font-bold tracking-tight" 
+                            <button
+                                className="flex items-center gap-1.5 hover:text-indigo-400 text-slate-300 transition-colors font-bold tracking-tight"
                                 onClick={() => {
                                     setIsAdminOpen(!isAdminOpen);
                                     setIsProfileOpen(false);
                                     setIsLangOpen(false);
                                 }}
                             >
-                                
+
                                 <span className="hidden md:inline uppercase text-[11px] bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
                                     Admin
                                 </span>
@@ -206,29 +195,29 @@ const Header = () => {
                                     <div className="px-4 py-2 border-b border-slate-800">
                                         <span className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Gestión</span>
                                     </div>
-                                    <Link 
-                                        to="/admin/formulas" 
+                                    <Link
+                                        to="/admin/formulas"
                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-indigo-600/10 hover:text-indigo-400 transition-colors"
                                         onClick={() => setIsAdminOpen(false)}
                                     >
                                         <Calculator size={16} /> Fórmulas
                                     </Link>
-                                    <Link 
-                                        to="/admin/tickets" 
+                                    <Link
+                                        to="/admin/tickets"
                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-indigo-600/10 hover:text-indigo-400 transition-colors"
                                         onClick={() => setIsAdminOpen(false)}
                                     >
                                         <LifeBuoy size={16} /> Tickets
                                     </Link>
-                                    <Link 
-                                        to="/admin/sugerencias" 
+                                    <Link
+                                        to="/admin/sugerencias"
                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-indigo-600/10 hover:text-indigo-400 transition-colors"
                                         onClick={() => setIsAdminOpen(false)}
                                     >
                                         <MessageSquare size={16} /> Sugerencias
                                     </Link>
-                                    <Link 
-                                        to="/admin/filtro" 
+                                    <Link
+                                        to="/admin/filtro"
                                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-indigo-600/10 hover:text-indigo-400 transition-colors"
                                         onClick={() => setIsAdminOpen(false)}
                                     >
@@ -238,7 +227,7 @@ const Header = () => {
                             )}
                         </div>
                     )}
-               
+
 
                     {/* Language Selector */}
                     <div className="relative hidden sm:block">
