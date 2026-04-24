@@ -109,6 +109,7 @@ const Header = () => {
                     <Link to="/juegos" className="hover:text-indigo-400 transition-colors">{t('nav.games')}</Link>
                     <Link to="/ranking" className="hover:text-indigo-400 transition-colors">{t('nav.ranking')}</Link>
 
+<<<<<<< Updated upstream
                     <Link 
                         to="/estadisticas" 
                         className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors ${
@@ -120,6 +121,8 @@ const Header = () => {
                         <span className="font-medium">Estadísticas</span>
                     </Link>
                   
+=======
+>>>>>>> Stashed changes
                     <Link to="/chat" className="relative hover:text-indigo-400 transition-colors flex items-center">
                         {t('nav.chat')}
                         

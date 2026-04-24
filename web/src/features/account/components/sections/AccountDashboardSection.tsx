@@ -15,10 +15,12 @@ type HighScoreEntry = {
 
 type AchievementEntry = {
   id: string | number;
-  achievement?: {
-    title?: string | null;
-    description?: string | null;
-  } | null;
+  unlocked_at: string;
+  achievement: {
+    title: string | null;
+    description: string | null;
+    badge_icon: string | null;
+  }[];
 };
 
 type RecentGame = {
@@ -70,7 +72,7 @@ export function AccountDashboardSection({
         <div className="mb-8">
           <h3 className="text-lg text-white font-semibold mb-4 flex items-center gap-2">
             <Medal size={20} className="text-amber-400" />
-            Mis Mejores Marcas
+            {t('account.dashboard.bestRecords')}
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {highScores.map((record, index) => (
@@ -98,7 +100,7 @@ export function AccountDashboardSection({
           <div className="p-2 bg-indigo-500/20 text-indigo-400 rounded-lg">
             <Trophy size={24} />
           </div>
-          <h3 className="text-xl font-bold text-white">Mis Emblemas</h3>
+          <h3 className="text-xl font-bold text-white">{t('account.dashboard.achievements')}</h3>
         </div>
 
         {userAchievements.length > 0 ? (
@@ -111,15 +113,15 @@ export function AccountDashboardSection({
                 <div className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 mb-3 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
                   <Trophy size={24} />
                 </div>
-                <h4 className="text-white font-bold text-sm mb-1">{ua.achievement?.title}</h4>
-                <p className="text-slate-400 text-xs">{ua.achievement?.description}</p>
+                <h4 className="text-white font-bold text-sm mb-1">{ua.achievement[0]?.title}</h4>
+                <p className="text-slate-400 text-xs">{ua.achievement[0]?.description}</p>
               </div>
             ))}
           </div>
         ) : (
           <div className="text-center py-8 bg-slate-800/30 rounded-xl border border-slate-700/30 border-dashed">
             <Trophy size={48} className="mx-auto text-slate-600 mb-3" />
-            <p className="text-slate-400">Aun no has desbloqueado ningun emblema.</p>
+            <p className="text-slate-400">{t('account.dashboard.noAchievements')}</p>
           </div>
         )}
       </div>
@@ -127,7 +129,7 @@ export function AccountDashboardSection({
       <div>
         <h3 className="text-lg text-white font-semibold mb-3 flex items-center gap-2">
           <Gamepad2 size={18} className="text-indigo-400" />
-          {t('account.dashboard.lastGames')}
+          {t('account.dashboard.recentGames')}
         </h3>
 
         <div className="space-y-2.5">
@@ -142,14 +144,14 @@ export function AccountDashboardSection({
                   <span>
                     {t('account.dashboard.status')}: {t('account.dashboard.finished')}
                   </span>
-                  <span>Score: {game.score}</span>
+                  <span>{t('account.dashboard.score')}: {game.score}</span>
                   <span>{formatDate(game.created_at)}</span>
                 </div>
               </div>
             ))
           ) : (
             <div className="rounded-xl border border-dashed border-slate-700 bg-slate-800/20 p-6 text-center text-slate-400">
-              No hay partidas recientes registradas.
+              {t('account.dashboard.noRecentGames')}
             </div>
           )}
         </div>

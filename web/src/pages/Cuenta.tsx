@@ -23,6 +23,8 @@ import { AccountPersonalSection } from '../features/account/components/sections/
 import { AccountFriendsSection } from '../features/account/components/sections/AccountFriendsSection';
 import { AccountPaymentsSection } from '../features/account/components/sections/AccountPaymentsSection';
 import { AccountSecuritySection } from '../features/account/components/sections/AccountSecuritySection';
+import { AccountMatchesSection } from '../features/account/components/sections/AccountMatchesSection';
+import { AccountAchievementsSection } from '../features/account/components/sections/AccountAchievementsSection';
 import { AvatarPolicyModal } from '../features/account/components/modals/AvatarPolicyModal';
 import { ChangePasswordModal } from '../features/account/components/modals/ChangePasswordModal';
 import { EditProfileModal } from '../features/account/components/modals/EditProfileModal';
@@ -670,6 +672,20 @@ export default function Cuenta() {
                 onOpenChangePassword={() => setShowChangePasswordModal(true)}
                 onOpenEditProfile={openEditProfileModal}
                 onTogglePrivacy={togglePrivacy}
+              />
+            )}
+
+            {activeSection === 'matches' && (
+              <AccountMatchesSection
+                highScores={highScores}
+                recentGames={recentGames}
+                formatDate={formatDate}
+              />
+            )}
+
+            {activeSection === 'achievements' && (
+              <AccountAchievementsSection
+                userAchievements={userAchievements}
               />
             )}
           </main>

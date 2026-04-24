@@ -6,6 +6,8 @@ import {
   CreditCard,
   Lock,
   Wrench,
+  Gamepad2,
+  Award,
 } from 'lucide-react';
 import type { AccountSection } from '../types/account-ui.types';
 
@@ -63,6 +65,30 @@ export function AccountSidebar({ activeSection, onSectionChange }: AccountSideba
         </button>
         <button
           type="button"
+          onClick={() => onSectionChange('matches')}
+          className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
+            activeSection === 'matches'
+              ? 'bg-indigo-500/15 text-indigo-100 border border-indigo-500/30'
+              : 'text-slate-200 hover:bg-slate-800/80 border border-transparent'
+          }`}
+        >
+          <Gamepad2 size={16} className="text-slate-400" />
+          {t('account.sidebar.matches')}
+        </button>
+        <button
+          type="button"
+          onClick={() => onSectionChange('achievements')}
+          className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
+            activeSection === 'achievements'
+              ? 'bg-indigo-500/15 text-indigo-100 border border-indigo-500/30'
+              : 'text-slate-200 hover:bg-slate-800/80 border border-transparent'
+          }`}
+        >
+          <Award size={16} className="text-slate-400" />
+          {t('account.sidebar.achievements')}
+        </button>
+        <button
+          type="button"
           onClick={() => onSectionChange('payments')}
           className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
             activeSection === 'payments'
@@ -75,18 +101,6 @@ export function AccountSidebar({ activeSection, onSectionChange }: AccountSideba
         </button>
         <button
           type="button"
-          onClick={() => onSectionChange('security')}
-          className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
-            activeSection === 'security'
-              ? 'bg-indigo-500/15 text-indigo-100 border border-indigo-500/30'
-              : 'text-slate-200 hover:bg-slate-800/80 border border-transparent'
-          }`}
-        >
-          <Lock size={16} className="text-slate-400" />
-          {t('account.sidebar.security')}
-        </button>
-        <button
-          type="button"
           onClick={() => onSectionChange('support')}
           className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
             activeSection === 'support'
@@ -96,6 +110,18 @@ export function AccountSidebar({ activeSection, onSectionChange }: AccountSideba
         >
           <Wrench size={16} className="text-slate-400" />
           {t('account.sidebar.support', { defaultValue: t('account.support.title') })}
+        </button>
+        <button
+          type="button"
+          onClick={() => onSectionChange('security')}
+          className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
+            activeSection === 'security'
+              ? 'bg-indigo-500/15 text-indigo-100 border border-indigo-500/30'
+              : 'text-slate-200 hover:bg-slate-800/80 border border-transparent'
+          }`}
+        >
+          <Lock size={16} className="text-slate-400" />
+          {t('account.sidebar.security')}
         </button>
       </nav>
     </aside>
