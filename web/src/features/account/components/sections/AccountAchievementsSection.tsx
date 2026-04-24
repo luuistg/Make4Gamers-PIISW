@@ -36,11 +36,15 @@ export function AccountAchievementsSection({
               key={ua.id}
               className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 flex flex-col items-center justify-center text-center hover:bg-slate-800 transition-colors"
             >
-              <div className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 mb-3 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
-                <Trophy size={24} />
+              <div className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 mb-3 shadow-[0_0_15px_rgba(99,102,241,0.2)] overflow-hidden">
+                {ua.achievement[0]?.badge_icon ? (
+                  <img src={ua.achievement[0].badge_icon} alt={ua.achievement[0]?.title || t('account.dashboard.achievementFallbackTitle')} className="w-full h-full object-cover" />
+                ) : (
+                  <Trophy size={24} />
+                )}
               </div>
-              <h4 className="text-white font-bold text-sm mb-1">{ua.achievement[0]?.title}</h4>
-              <p className="text-slate-400 text-xs">{ua.achievement[0]?.description}</p>
+              <h4 className="text-white font-bold text-sm mb-1">{ua.achievement[0]?.title || t('account.dashboard.achievementFallbackTitle')}</h4>
+              <p className="text-slate-400 text-xs">{ua.achievement[0]?.description || t('account.dashboard.achievementFallbackDescription')}</p>
             </div>
           ))}
         </div>

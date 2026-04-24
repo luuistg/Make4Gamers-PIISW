@@ -83,7 +83,7 @@ export function AccountMatchesSection({
                   <span>
                     {t('account.dashboard.status')}: {t('account.dashboard.finished')}
                   </span>
-                  <span>{t('account.dashboard.score')}: {game.score}</span>
+                  <span>{t('account.dashboard.score')}: {game.score ?? '-'}</span>
                   <span>{formatDate(game.created_at)}</span>
                 </div>
               </div>
