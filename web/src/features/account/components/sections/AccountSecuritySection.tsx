@@ -19,7 +19,7 @@ export function AccountSecuritySection({
   const { t } = useTranslation();
 
   return (
-    <section className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4 lg:h-full lg:overflow-y-auto">
+    <section className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
       <h3 className="text-xl font-semibold text-white">{t('account.security.title')}</h3>
 
       <div className="rounded-xl border border-slate-800 bg-slate-800/30 p-4">

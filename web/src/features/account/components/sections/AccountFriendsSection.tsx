@@ -23,7 +23,7 @@ export function AccountFriendsSection({
   const { t } = useTranslation();
 
   return (
-    <section className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl lg:h-full lg:overflow-y-auto">
+    <section className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
         <h3 className="text-xl font-semibold text-white">{t('account.friends.title')}</h3>
         <div className="relative w-full sm:w-72">

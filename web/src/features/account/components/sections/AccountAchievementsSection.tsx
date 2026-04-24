@@ -21,7 +21,7 @@ export function AccountAchievementsSection({
   const { t } = useTranslation();
 
   return (
-    <section className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5 lg:h-full lg:overflow-y-auto">
+    <section className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5">
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2 bg-indigo-500/20 text-indigo-400 rounded-lg">
           <Trophy size={24} />
