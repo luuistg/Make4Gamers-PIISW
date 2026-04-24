@@ -238,7 +238,10 @@ i18n
                             friends: "Amigos",
                             payments: "Pagos",
                             security: "Seguridad",
-                            support: "Soporte"
+                            support: "Soporte",
+                            matches: "Partidas",
+                            stats: "Estadisticas",
+                            achievements: "Logros"
                         },
                         dashboard: {
                             defaultUser: "Usuario",
@@ -250,7 +253,29 @@ i18n
                             vs: "Vs.",
                             defaultOpponent: "OpponentName",
                             status: "Estado",
-                            finished: "Finalizado"
+                            finished: "Finalizado",
+                            bestRecords: "Mis Mejores Marcas",
+                            achievements: "Mis Logros",
+                            noAchievements: "Aun no has desbloqueado ningun logro.",
+                            achievementFallbackTitle: "Logro desbloqueado",
+                            achievementFallbackDescription: "Este logro no tiene descripcion disponible.",
+                            recentGames: "Últimas partidas",
+                            noRecentGames: "No hay partidas recientes registradas.",
+                            score: "Puntos"
+                        },
+                        stats: {
+                            title: "Estadisticas",
+                            subtitle: "Analisis detallado de tu rendimiento en juegos.",
+                            totalMatches: "Partidas totales",
+                            highestScore: "Puntuacion maxima",
+                            favoriteGame: "Juego favorito",
+                            favoriteGamePlays: "{{count}} partidas jugadas",
+                            gamesChart: "Partidas por juego",
+                            recentActivity: "Actividad reciente",
+                            matches: "Partidas",
+                            emptyTitle: "Aun no hay estadisticas",
+                            emptyDescription: "Juega algunas partidas para empezar a ver tus graficas.",
+                            emptyActivity: "Aun no hay actividad reciente."
                         },
                         personal: {
                             noUsername: "Usuario Sin Nombre",
@@ -695,7 +720,10 @@ i18n
                             friends: "Friends",
                             payments: "Payments",
                             security: "Security",
-                            support: "Support"
+                            support: "Support",
+                            matches: "Matches",
+                            stats: "Stats",
+                            achievements: "Achievements"
                         },
                         dashboard: {
                             defaultUser: "User",
@@ -707,7 +735,29 @@ i18n
                             vs: "Vs.",
                             defaultOpponent: "OpponentName",
                             status: "Status",
-                            finished: "Finished"
+                            finished: "Finished",
+                            bestRecords: "My Best Records",
+                            achievements: "My Achievements",
+                            noAchievements: "You have not unlocked any achievement yet.",
+                            achievementFallbackTitle: "Achievement unlocked",
+                            achievementFallbackDescription: "This achievement has no description available.",
+                            recentGames: "Recent matches",
+                            noRecentGames: "No recent matches recorded.",
+                            score: "Score"
+                        },
+                        stats: {
+                            title: "Stats",
+                            subtitle: "Detailed analysis of your game performance.",
+                            totalMatches: "Total matches",
+                            highestScore: "Highest score",
+                            favoriteGame: "Favorite game",
+                            favoriteGamePlays: "{{count}} matches played",
+                            gamesChart: "Matches by game",
+                            recentActivity: "Recent activity",
+                            matches: "Matches",
+                            emptyTitle: "No stats yet",
+                            emptyDescription: "Play a few matches to start seeing your charts.",
+                            emptyActivity: "No recent activity yet."
                         },
                         personal: {
                             noUsername: "Unnamed user",
@@ -1152,7 +1202,10 @@ i18n
                             friends: "好友",
                             payments: "支付",
                             security: "安全",
-                            support: "支持"
+                            support: "支持",
+                            matches: "对局",
+                            stats: "统计",
+                            achievements: "成就"
                         },
                         dashboard: {
                             defaultUser: "用户",
@@ -1164,7 +1217,29 @@ i18n
                             vs: "对战",
                             defaultOpponent: "未知对手",
                             status: "状态",
-                            finished: "已结束"
+                            finished: "已结束",
+                            bestRecords: "我的最佳纪录",
+                            achievements: "我的成就",
+                            noAchievements: "你还没有解锁任何成就。",
+                            achievementFallbackTitle: "已解锁成就",
+                            achievementFallbackDescription: "该成就暂无详细说明。",
+                            recentGames: "最近对局",
+                            noRecentGames: "没有记录的对局。",
+                            score: "分数"
+                        },
+                        stats: {
+                            title: "统计",
+                            subtitle: "你的游戏表现详细分析。",
+                            totalMatches: "总对局",
+                            highestScore: "最高分",
+                            favoriteGame: "最常玩游戏",
+                            favoriteGamePlays: "已玩 {{count}} 场",
+                            gamesChart: "各游戏对局数",
+                            recentActivity: "最近活动",
+                            matches: "对局",
+                            emptyTitle: "暂无统计数据",
+                            emptyDescription: "先玩几场游戏，就能看到你的统计图表。",
+                            emptyActivity: "暂无最近活动。"
                         },
                         personal: {
                             noUsername: "未命名用户",

@@ -33,7 +33,8 @@ const Header = () => {
                     .from('profiles')
                     .select('role')
                     .eq('id', user.id)
-                    .single();
+                    .maybeSingle();
+
 
                 if (profile?.role === 'admin') {
                     setIsAdmin(true);
@@ -106,7 +107,7 @@ const Header = () => {
 
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-                    <Link to="/juegos" className="hover:text-indigo-400 transition-colors">{t('nav.games')}</Link>
+<Link to="/juegos" className="hover:text-indigo-400 transition-colors">{t('nav.games')}</Link>
                     <Link to="/ranking" className="hover:text-indigo-400 transition-colors">{t('nav.ranking')}</Link>
 
                     <Link to="/estadisticas" className="hover:text-indigo-400 transition-colors">{t('nav.stats')}</Link>

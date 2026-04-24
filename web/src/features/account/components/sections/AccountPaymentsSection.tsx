@@ -12,7 +12,7 @@ export function AccountPaymentsSection({
   const { t } = useTranslation();
 
   return (
-    <section className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5 lg:h-full lg:overflow-y-auto">
+    <section className="h-full bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5">
       <h3 className="text-xl font-semibold text-white">{t('account.payments.title')}</h3>
 
       <div className="rounded-xl border border-slate-800 bg-slate-800/30 p-4">

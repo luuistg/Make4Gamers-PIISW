@@ -57,7 +57,7 @@ export function AccountSupportSection({
     'rounded-2xl border border-slate-800 bg-[linear-gradient(180deg,rgba(30,41,59,0.40),rgba(15,23,42,0.55))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]';
 
   return (
-    <section className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5 lg:h-full lg:flex lg:flex-col lg:min-h-0">
+    <section className="h-full bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h3 className="text-xl font-semibold text-white flex items-center gap-2">
@@ -112,7 +112,7 @@ export function AccountSupportSection({
           {t('account.support.loading')}
         </div>
       ) : (
-        <div className="space-y-3 lg:flex-1 lg:min-h-0 lg:overflow-y-auto hide-scrollbar lg:pr-1">
+        <div className="space-y-3 max-h-[300px] overflow-y-auto hide-scrollbar">
           {activeSupportTab === 'tickets' &&
             (supportTickets.length > 0 ? (
               supportTickets.map((ticket) => (

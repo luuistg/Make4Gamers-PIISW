@@ -6,6 +6,9 @@ import {
   CreditCard,
   Lock,
   Wrench,
+  Gamepad2,
+  BarChart3,
+  Award,
 } from 'lucide-react';
 import type { AccountSection } from '../types/account-ui.types';
 
@@ -18,7 +21,7 @@ export function AccountSidebar({ activeSection, onSectionChange }: AccountSideba
   const { t } = useTranslation();
 
   return (
-    <aside className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl lg:h-[calc(100vh-7rem)]">
+    <aside className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl h-[600px]">
       <div className="mb-6 flex items-center gap-2 text-white">
         <UserIcon size={20} className="text-indigo-400" />
         <h2 className="text-lg font-semibold">{t('account.sidebar.title')}</h2>
@@ -63,6 +66,42 @@ export function AccountSidebar({ activeSection, onSectionChange }: AccountSideba
         </button>
         <button
           type="button"
+          onClick={() => onSectionChange('matches')}
+          className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
+            activeSection === 'matches'
+              ? 'bg-indigo-500/15 text-indigo-100 border border-indigo-500/30'
+              : 'text-slate-200 hover:bg-slate-800/80 border border-transparent'
+          }`}
+        >
+          <Gamepad2 size={16} className="text-slate-400" />
+          {t('account.sidebar.matches')}
+        </button>
+        <button
+          type="button"
+          onClick={() => onSectionChange('stats')}
+          className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
+            activeSection === 'stats'
+              ? 'bg-indigo-500/15 text-indigo-100 border border-indigo-500/30'
+              : 'text-slate-200 hover:bg-slate-800/80 border border-transparent'
+          }`}
+        >
+          <BarChart3 size={16} className="text-slate-400" />
+          {t('account.sidebar.stats')}
+        </button>
+        <button
+          type="button"
+          onClick={() => onSectionChange('achievements')}
+          className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
+            activeSection === 'achievements'
+              ? 'bg-indigo-500/15 text-indigo-100 border border-indigo-500/30'
+              : 'text-slate-200 hover:bg-slate-800/80 border border-transparent'
+          }`}
+        >
+          <Award size={16} className="text-slate-400" />
+          {t('account.sidebar.achievements')}
+        </button>
+        <button
+          type="button"
           onClick={() => onSectionChange('payments')}
           className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
             activeSection === 'payments'
@@ -75,18 +114,6 @@ export function AccountSidebar({ activeSection, onSectionChange }: AccountSideba
         </button>
         <button
           type="button"
-          onClick={() => onSectionChange('security')}
-          className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
-            activeSection === 'security'
-              ? 'bg-indigo-500/15 text-indigo-100 border border-indigo-500/30'
-              : 'text-slate-200 hover:bg-slate-800/80 border border-transparent'
-          }`}
-        >
-          <Lock size={16} className="text-slate-400" />
-          {t('account.sidebar.security')}
-        </button>
-        <button
-          type="button"
           onClick={() => onSectionChange('support')}
           className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
             activeSection === 'support'
@@ -96,6 +123,18 @@ export function AccountSidebar({ activeSection, onSectionChange }: AccountSideba
         >
           <Wrench size={16} className="text-slate-400" />
           {t('account.sidebar.support', { defaultValue: t('account.support.title') })}
+        </button>
+        <button
+          type="button"
+          onClick={() => onSectionChange('security')}
+          className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
+            activeSection === 'security'
+              ? 'bg-indigo-500/15 text-indigo-100 border border-indigo-500/30'
+              : 'text-slate-200 hover:bg-slate-800/80 border border-transparent'
+          }`}
+        >
+          <Lock size={16} className="text-slate-400" />
+          {t('account.sidebar.security')}
         </button>
       </nav>
     </aside>

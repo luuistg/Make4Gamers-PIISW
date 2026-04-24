@@ -55,6 +55,7 @@ export async function getUserAchievements(userId: string) {
       .select(`
         id,
         unlocked_at,
+        achievement_id,
         achievement:achievements (
           title,
           description,
@@ -65,9 +66,80 @@ export async function getUserAchievements(userId: string) {
       .order('unlocked_at', { ascending: false });
 
     if (error) throw error;
-    return data || [];
+
+    const rows = (data || []) as Array<{
+      id: string | number;
+      unlocked_at: string;
+      achievement_id?: string | null;
+      achievement?:
+        | { title?: string | null; description?: string | null; badge_icon?: string | null }
+        | Array<{ title?: string | null; description?: string | null; badge_icon?: string | null }>
+        | null;
+    }>;
+
+    const normalized = rows.map((row) => {
+      const achievementValue = Array.isArray(row.achievement) ? row.achievement[0] : row.achievement;
+      return {
+        id: row.id,
+        unlocked_at: row.unlocked_at,
+        achievement_id: row.achievement_id ?? null,
+        achievement: achievementValue
+          ? [
+              {
+                title: achievementValue.title ?? null,
+                description: achievementValue.description ?? null,
+                badge_icon: achievementValue.badge_icon ?? null,
+              },
+            ]
+          : [],
+      };
+    });
+
+    const missingAchievementIds = normalized
+      .filter((row) => row.achievement.length === 0 && row.achievement_id)
+      .map((row) => row.achievement_id as string);
+
+    if (missingAchievementIds.length === 0) {
+      return normalized;
+    }
+
+    const { data: achievementRows, error: achievementsError } = await supabase
+      .from('achievements')
+      .select('id, title, description, badge_icon')
+      .in('id', missingAchievementIds);
+
+    if (achievementsError || !achievementRows) {
+      return normalized;
+    }
+
+    const achievementById = new Map(
+      achievementRows.map((achievement) => [achievement.id, achievement]),
+    );
+
+    return normalized.map((row) => {
+      if (row.achievement.length > 0 || !row.achievement_id) {
+        return row;
+      }
+
+      const fallbackAchievement = achievementById.get(row.achievement_id);
+
+      if (!fallbackAchievement) {
+        return row;
+      }
+
+      return {
+        ...row,
+        achievement: [
+          {
+            title: fallbackAchievement.title,
+            description: fallbackAchievement.description,
+            badge_icon: fallbackAchievement.badge_icon,
+          },
+        ],
+      };
+    });
   } catch (error) {
-    console.error("Error obteniendo emblemas del usuario:", error);
+    console.error("Error obteniendo logros del usuario:", error);
     return [];
   }
 }

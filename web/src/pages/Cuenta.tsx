@@ -23,6 +23,9 @@ import { AccountPersonalSection } from '../features/account/components/sections/
 import { AccountFriendsSection } from '../features/account/components/sections/AccountFriendsSection';
 import { AccountPaymentsSection } from '../features/account/components/sections/AccountPaymentsSection';
 import { AccountSecuritySection } from '../features/account/components/sections/AccountSecuritySection';
+import { AccountMatchesSection } from '../features/account/components/sections/AccountMatchesSection';
+import { AccountStatsSection } from '../features/account/components/sections/AccountStatsSection';
+import { AccountAchievementsSection } from '../features/account/components/sections/AccountAchievementsSection';
 import { AvatarPolicyModal } from '../features/account/components/modals/AvatarPolicyModal';
 import { ChangePasswordModal } from '../features/account/components/modals/ChangePasswordModal';
 import { EditProfileModal } from '../features/account/components/modals/EditProfileModal';
@@ -604,75 +607,107 @@ export default function Cuenta() {
         </div>
       )}
 
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[250px_minmax(0,1fr)] lg:items-stretch">
-          <AccountSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
+<div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[250px_1fr] lg:items-stretch" style={{ height: '600px' }}>
+            <AccountSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
 
-          <main className="space-y-6 lg:h-[calc(100vh-7rem)] lg:overflow-y-auto lg:pr-1">
-            {activeSection === 'dashboard' && (
-              <AccountDashboardSection
-                profile={profile}
-                highScores={highScores}
-                userAchievements={userAchievements}
-                recentGames={recentGames}
-                formatDate={formatDate}
-              />
-            )}
-            {activeSection === 'personal' && (
-              <AccountPersonalSection
-                profile={profile}
-                uploadingAvatar={uploadingAvatar}
-                isEditingName={isEditingName}
-                editNameValue={editNameValue}
-                savingName={savingName}
-                fileInputRef={fileInputRef}
-                onOpenAvatarPolicy={() => setShowAvatarPolicyModal(true)}
-                onUploadAvatar={uploadAvatar}
-                onEditNameValueChange={setEditNameValue}
-                onEnableNameEdit={() => setIsEditingName(true)}
-                onCancelNameEdit={() => {
-                  setIsEditingName(false);
-                  setEditNameValue(profile.username || '');
-                }}
-                onSaveUsername={saveUsername}
-                onStatusChange={handleStatusChange}
-              />
-            )}
-            {activeSection === 'friends' && (
-              <AccountFriendsSection
-                friendsSearch={friendsSearch}
-                filteredFriends={filteredFriends}
-                onFriendsSearchChange={setFriendsSearch}
-              />
-            )}
-            {activeSection === 'payments' && (
-              <AccountPaymentsSection subscriptionTier={profile.subscription_tier} email={profile.email} />
-            )}
-            {activeSection === 'support' && (
-              <AccountSupportSection
-                activeSupportTab={activeSupportTab}
-                onSupportTabChange={setActiveSupportTab}
-                supportTickets={supportTickets}
-                sentUserReports={sentUserReports}
-                sentGameReports={sentGameReports}
-                loadingSupportHistory={loadingSupportHistory}
-                onOpenReportPlayer={openReportPlayerModal}
-                onOpenReportGame={openReportGameModal}
-                onOpenSupportTicket={openSupportTicketModal}
-                formatDate={formatDate}
-              />
-            )}
+            <main className="space-y-6 h-full flex flex-col">
+              <div className="flex-1 flex flex-col min-h-0">
+                {activeSection === 'dashboard' && (
+                  <div className="flex-1">
+                    <AccountDashboardSection profile={profile} />
+                  </div>
+                )}
+                {activeSection === 'personal' && (
+                  <div className="flex-1 overflow-y-auto">
+                    <AccountPersonalSection
+                      profile={profile}
+                      uploadingAvatar={uploadingAvatar}
+                      isEditingName={isEditingName}
+                      editNameValue={editNameValue}
+                      savingName={savingName}
+                      fileInputRef={fileInputRef}
+                      onOpenAvatarPolicy={() => setShowAvatarPolicyModal(true)}
+                      onUploadAvatar={uploadAvatar}
+                      onEditNameValueChange={setEditNameValue}
+                      onEnableNameEdit={() => setIsEditingName(true)}
+                      onCancelNameEdit={() => {
+                        setIsEditingName(false);
+                        setEditNameValue(profile.username || '');
+                      }}
+                      onSaveUsername={saveUsername}
+                      onStatusChange={handleStatusChange}
+                    />
+                  </div>
+                )}
+                {activeSection === 'friends' && (
+                  <div className="flex-1 overflow-y-auto">
+                    <AccountFriendsSection
+                      friendsSearch={friendsSearch}
+                      filteredFriends={filteredFriends}
+                      onFriendsSearchChange={setFriendsSearch}
+                    />
+                  </div>
+                )}
+                {activeSection === 'payments' && (
+                  <div className="flex-1">
+                    <AccountPaymentsSection subscriptionTier={profile.subscription_tier} email={profile.email} />
+                  </div>
+                )}
+                {activeSection === 'support' && (
+                  <div className="flex-1">
+                    <AccountSupportSection
+                      activeSupportTab={activeSupportTab}
+                      onSupportTabChange={setActiveSupportTab}
+                      supportTickets={supportTickets}
+                      sentUserReports={sentUserReports}
+                      sentGameReports={sentGameReports}
+                      loadingSupportHistory={loadingSupportHistory}
+                      onOpenReportPlayer={openReportPlayerModal}
+                      onOpenReportGame={openReportGameModal}
+                      onOpenSupportTicket={openSupportTicketModal}
+                      formatDate={formatDate}
+                    />
+                  </div>
+                )}
 
-            {activeSection === 'security' && (
-              <AccountSecuritySection
-                allowRequests={allowRequests}
-                savingPrivacy={savingPrivacy}
-                onOpenChangePassword={() => setShowChangePasswordModal(true)}
-                onOpenEditProfile={openEditProfileModal}
-                onTogglePrivacy={togglePrivacy}
-              />
-            )}
-          </main>
+                {activeSection === 'security' && (
+                  <div className="flex-1">
+                    <AccountSecuritySection
+                      allowRequests={allowRequests}
+                      savingPrivacy={savingPrivacy}
+                      onOpenChangePassword={() => setShowChangePasswordModal(true)}
+                      onOpenEditProfile={openEditProfileModal}
+                      onTogglePrivacy={togglePrivacy}
+                    />
+                  </div>
+                )}
+
+                {activeSection === 'matches' && (
+                  <div className="flex-1 overflow-y-auto">
+                    <AccountMatchesSection
+                      highScores={highScores}
+                      recentGames={recentGames}
+                      formatDate={formatDate}
+                    />
+                  </div>
+                )}
+
+                {activeSection === 'stats' && profile?.id && (
+                  <div className="flex-1 overflow-y-auto">
+                    <AccountStatsSection userId={profile.id} />
+                  </div>
+                )}
+
+                {activeSection === 'achievements' && (
+                  <div className="flex-1">
+                    <AccountAchievementsSection
+                      userAchievements={userAchievements}
+                    />
+                  </div>
+                )}
+              </div>
+            </main>
         </div>
       </div>
 
