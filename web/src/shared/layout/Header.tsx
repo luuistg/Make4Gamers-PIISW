@@ -110,8 +110,6 @@ const Header = () => {
 <Link to="/juegos" className="hover:text-indigo-400 transition-colors">{t('nav.games')}</Link>
                     <Link to="/ranking" className="hover:text-indigo-400 transition-colors">{t('nav.ranking')}</Link>
 
-                    <Link to="/estadisticas" className="hover:text-indigo-400 transition-colors">{t('nav.stats')}</Link>
-
                     <Link to="/chat" className="relative hover:text-indigo-400 transition-colors flex items-center">
                         {t('nav.chat')}
                         {hasUnread && (
