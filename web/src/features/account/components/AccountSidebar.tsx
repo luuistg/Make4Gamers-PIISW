@@ -20,7 +20,7 @@ export function AccountSidebar({ activeSection, onSectionChange }: AccountSideba
   const { t } = useTranslation();
 
   return (
-    <aside className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl lg:h-[calc(100vh-7rem)]">
+    <aside className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl">
       <div className="mb-6 flex items-center gap-2 text-white">
         <UserIcon size={20} className="text-indigo-400" />
         <h2 className="text-lg font-semibold">{t('account.sidebar.title')}</h2>
