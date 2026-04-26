@@ -11,8 +11,10 @@ import GameViewport from "../features/gameplay/components/GameViewport";
 import GameplaySidebar from "../features/gameplay/components/GameplaySidebar";
 import AgeGuard from "../features/chat/components/AgeGuard";
 import PlayersBar from "../features/gameplay/components/PlayersBar";
+import RulesReminderModal from "../features/gameplay/components/RulesReminderModal";
 import { useActiveMatch } from "../features/gameplay/hooks/useActiveMatch";
 import { useMatchMovements } from "../features/gameplay/hooks/useMatchMovements";
+import { useLastPlayed } from "../features/gameplay/hooks/useLastPlayed";
 
 export default function Gameplay() {
   const { id } = useParams<{ id: string }>();
@@ -36,6 +38,12 @@ export default function Gameplay() {
   const [iframeMatchId, setIframeMatchId] = useState<string | null>(null);
 
   const { match, loading: matchLoading } = useActiveMatch(id ?? null, userId);
+  const lastPlayedStatus = useLastPlayed(userId, id ?? null);
+  const [rulesReminderDismissed, setRulesReminderDismissed] = useState(false);
+  const showRulesReminder =
+    !rulesReminderDismissed &&
+    !timerActive &&
+    (lastPlayedStatus === "never" || lastPlayedStatus === "long_ago");
   const matchId = match?.id ?? iframeMatchId;
   const { movements } = useMatchMovements(matchId, userId);
   const lastMovedPlayerId = movements.at(-1)?.player_id ?? null;
@@ -284,7 +292,29 @@ export default function Gameplay() {
             <section className="relative h-[600px] w-full max-w-[800px] rounded-xl overflow-hidden bg-black border border-indigo-500/50 shadow-xl shadow-indigo-500/10 transition-all duration-300">
               {timerActive ? <GameViewport src={finalGameUrl} title={`game-${game.id}`} ratio="4:3" /> : null}
 
-              {!timerActive ? (
+              {/* Recordatorio de reglas — aparece antes del modal de temporizador */}
+              {showRulesReminder && game && (
+                <RulesReminderModal
+                  gameId={game.id}
+                  gameTitle={game.title}
+                  rulesUrl={game.manual_url}
+                  status={lastPlayedStatus}
+                  onDismiss={() => setRulesReminderDismissed(true)}
+                  onGoToRules={() =>
+                    navigate(`/juegos/${game.id}/reglas`, {
+                      state: {
+                        game: {
+                          id: game.id,
+                          title: game.title,
+                          rules_markdown_url: game.manual_url,
+                        },
+                      },
+                    })
+                  }
+                />
+              )}
+
+              {!timerActive && !showRulesReminder ? (
                 <div className="absolute inset-0 z-20 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-6">
                   <div className="w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-xl p-5 shadow-xl shadow-indigo-500/10">
                     <h2 className="text-lg font-bold text-white mb-3">Duración del turno</h2>
