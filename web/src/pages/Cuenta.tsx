@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { checkMatchCountAchievements, checkScoreAchievements, getUserAchievements, checkSocialAchievements } from '../features/achievements/services/achievements.service';
 import {
@@ -58,12 +58,20 @@ type Profile = {
   subscription_end_date?: string | null;
 };
 
-type AccountSection = 'dashboard' | 'personal' | 'friends' | 'payments' | 'security';
-
 const ACCOUNT_SECTION_STORAGE_KEY = 'account_active_section';
 
 function isAccountSection(value: string | null): value is AccountSection {
-  return value === 'dashboard' || value === 'personal' || value === 'friends' || value === 'payments' || value === 'security';
+  return (
+    value === 'dashboard' ||
+    value === 'personal' ||
+    value === 'friends' ||
+    value === 'matches' ||
+    value === 'stats' ||
+    value === 'achievements' ||
+    value === 'payments' ||
+    value === 'security' ||
+    value === 'support'
+  );
 }
 
 type RecentGame = {
@@ -108,7 +116,6 @@ export default function Cuenta() {
     const cachedSection = localStorage.getItem(ACCOUNT_SECTION_STORAGE_KEY);
     return isAccountSection(cachedSection) ? cachedSection : 'dashboard';
   });
-  const [activeSection, setActiveSection] = useState<AccountSection>('dashboard');
   const [activeSupportTab, setActiveSupportTab] = useState<SupportTab>('tickets');
   const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
 
