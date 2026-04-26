@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { checkMatchCountAchievements, checkScoreAchievements, getUserAchievements, checkSocialAchievements } from '../features/achievements/services/achievements.service';
 import {
@@ -57,6 +58,14 @@ type Profile = {
   subscription_end_date?: string | null;
 };
 
+type AccountSection = 'dashboard' | 'personal' | 'friends' | 'payments' | 'security';
+
+const ACCOUNT_SECTION_STORAGE_KEY = 'account_active_section';
+
+function isAccountSection(value: string | null): value is AccountSection {
+  return value === 'dashboard' || value === 'personal' || value === 'friends' || value === 'payments' || value === 'security';
+}
+
 type RecentGame = {
   id: number | string;
   score: number;
@@ -82,6 +91,7 @@ type UserAchievement = NonNullable<Awaited<ReturnType<typeof getUserAchievements
 
 export default function Cuenta() {
   const { t } = useTranslation();
+  const location = useLocation();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [allowRequests, setAllowRequests] = useState(true);
@@ -93,6 +103,11 @@ export default function Cuenta() {
 
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [showAvatarPolicyModal, setShowAvatarPolicyModal] = useState(false);
+  const [activeSection, setActiveSection] = useState<AccountSection>(() => {
+    if (typeof window === 'undefined') return 'dashboard';
+    const cachedSection = localStorage.getItem(ACCOUNT_SECTION_STORAGE_KEY);
+    return isAccountSection(cachedSection) ? cachedSection : 'dashboard';
+  });
   const [activeSection, setActiveSection] = useState<AccountSection>('dashboard');
   const [activeSupportTab, setActiveSupportTab] = useState<SupportTab>('tickets');
   const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
@@ -297,6 +312,18 @@ export default function Cuenta() {
       console.error('Error cargando datos secundarios:', err);
     });
   }, [buildSessionProfile]);
+
+  useEffect(() => {
+    const sectionFromState = (location.state as { initialSection?: AccountSection } | null)?.initialSection;
+
+    if (sectionFromState && isAccountSection(sectionFromState)) {
+      setActiveSection(sectionFromState);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    localStorage.setItem(ACCOUNT_SECTION_STORAGE_KEY, activeSection);
+  }, [activeSection]);
 
   useEffect(() => {
     const fetchProfile = async () => {
