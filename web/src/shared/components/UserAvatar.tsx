@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import AvatarPlaceholder from "./AvatarPlaceholder";
 
+// URLs que fallaron en esta sesión — evita reintentar la petición de red
+const failedUrls = new Set<string>();
+
 interface UserAvatarProps {
   src?: string | null;
   name?: string | null;
@@ -10,7 +13,7 @@ interface UserAvatarProps {
 }
 
 export default function UserAvatar({ src, name, size = 40, className = "", alt }: UserAvatarProps) {
-  const [imgError, setImgError] = useState(false);
+  const [imgError, setImgError] = useState(() => !!src && failedUrls.has(src));
 
   if (src && !imgError) {
     return (
@@ -19,8 +22,11 @@ export default function UserAvatar({ src, name, size = 40, className = "", alt }
         alt={alt ?? name ?? "avatar"}
         className={`rounded-full object-cover shrink-0 ${className}`}
         style={{ width: size, height: size }}
-        loading="lazy"
-        onError={() => setImgError(true)}
+        loading="eager"
+        onError={() => {
+          failedUrls.add(src);
+          setImgError(true);
+        }}
       />
     );
   }
