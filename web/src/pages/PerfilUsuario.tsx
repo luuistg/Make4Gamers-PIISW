@@ -5,7 +5,8 @@ import { supabase } from '../supabase';
 import { removeFriend } from '../features/chat/services/friend.service';
 import { useParams, Link, useNavigate } from 'react-router-dom'; 
 
-import { User as UserIcon, Activity, ArrowLeft, Trophy, Calendar, Gamepad2, Check, AlertCircle, AlertTriangle, Medal, Flag, Swords, Flame, Zap,Star} from 'lucide-react';
+import { User as UserIcon, Activity, ArrowLeft, Trophy, Calendar, Gamepad2, Check, AlertCircle, AlertTriangle, Medal, Flag, Swords, Flame, Zap, Star } from 'lucide-react';
+import UserAvatar from '../shared/components/UserAvatar';
 import { getAccountHighScores } from '../features/account/services/account.service';
 import { reportUser } from '../../../packages/api/src/services/reports.service';
 
@@ -203,12 +204,8 @@ useEffect(() => {
           <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
           
           <div className="relative flex flex-col md:flex-row items-center gap-6">
-            <div className="w-24 h-24 bg-slate-800 border-2 border-indigo-500 rounded-full flex items-center justify-center overflow-hidden shadow-lg shrink-0">
-              {profile.avatar_url ? (
-                <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
-              ) : (
-                <UserIcon size={40} className="text-indigo-400" />
-              )}
+            <div className="rounded-full border-2 border-indigo-500 shadow-lg shrink-0">
+              <UserAvatar src={profile.avatar_url} name={profile.username} size={96} />
             </div>
  
             <div className="text-center md:text-left flex-1">

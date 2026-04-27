@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Trophy, Medal, Crown, Gamepad2, TrendingUp } from 'lucide-react';
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../supabase';
 import { getRankingByGame, getUserRankPosition, getPlayerTier, type RankingEntry } from '../features/ranking/services/ranking.service';
+import UserAvatar from '../shared/components/UserAvatar';
 
 export default function Ranking() {
     const { t } = useTranslation(); 
@@ -103,7 +104,7 @@ export default function Ranking() {
                             {top3[1] && (
                                 <div className="order-2 md:order-1 w-full md:w-64 flex flex-col items-center animate-in slide-in-from-bottom-8 duration-500 delay-100">
                                     <div className="relative mb-4">
-                                        <img src={top3[1].avatar_url || 'https://via.placeholder.com/150'} alt="Avatar" className="w-20 h-20 rounded-full border-4 border-slate-400 object-cover" />
+                                        <UserAvatar src={top3[1].avatar_url} name={top3[1].username} size={80} className="border-4 border-slate-400" />
                                         <div className="absolute -bottom-3 -right-3 bg-slate-800 rounded-full p-1.5 border border-slate-400">
                                             <Medal className="text-slate-400" size={20} />
                                         </div>
@@ -125,7 +126,7 @@ export default function Ranking() {
                                 <div className="order-1 md:order-2 w-full md:w-72 flex flex-col items-center animate-in slide-in-from-bottom-12 duration-500 z-10">
                                     <div className="relative mb-4">
                                         <Crown className="absolute -top-8 left-1/2 -translate-x-1/2 text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]" size={32} />
-                                        <img src={top3[0].avatar_url || 'https://via.placeholder.com/150'} alt="Avatar" className="w-28 h-28 rounded-full border-4 border-yellow-400 object-cover shadow-[0_0_30px_rgba(250,204,21,0.2)]" />
+                                        <UserAvatar src={top3[0].avatar_url} name={top3[0].username} size={112} className="border-4 border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,0.2)]" />
                                     </div>
                                     <div className="bg-gradient-to-b from-yellow-500/10 to-slate-900/80 border-t-4 border-yellow-400 w-full rounded-t-2xl p-5 text-center pb-12 shadow-[0_-10px_40px_rgba(250,204,21,0.1)] flex flex-col items-center">
                                         <h3 className="font-bold text-xl text-white truncate w-full">{top3[0].username}</h3>
@@ -143,7 +144,7 @@ export default function Ranking() {
                             {top3[2] && (
                                 <div className="order-3 md:order-3 w-full md:w-64 flex flex-col items-center animate-in slide-in-from-bottom-4 duration-500 delay-200">
                                     <div className="relative mb-4">
-                                        <img src={top3[2].avatar_url || 'https://via.placeholder.com/150'} alt="Avatar" className="w-20 h-20 rounded-full border-4 border-amber-700 object-cover" />
+                                        <UserAvatar src={top3[2].avatar_url} name={top3[2].username} size={80} className="border-4 border-amber-700" />
                                         <div className="absolute -bottom-3 -right-3 bg-slate-800 rounded-full p-1.5 border border-amber-700">
                                             <Medal className="text-amber-700" size={20} />
                                         </div>
@@ -182,7 +183,7 @@ export default function Ranking() {
                                                     #{rankNumber}
                                                 </div>
                                                 <div className="col-span-6 md:col-span-5 flex items-center gap-4">
-                                                    <img src={entry.avatar_url || 'https://via.placeholder.com/150'} className="w-12 h-12 rounded-full object-cover border-2 border-slate-700" alt="Avatar" />
+                                                    <UserAvatar src={entry.avatar_url} name={entry.username} size={48} className="border-2 border-slate-700" />
                                                     <span className={`font-semibold text-base truncate ${isMe ? 'text-indigo-400' : 'text-slate-200'}`}>
                                                         {entry.username} {isMe && t('ranking.you')}
                                                     </span>

@@ -3,6 +3,7 @@ import { getFriendsList } from '../services/chat.service';
 import type { ChatProfile } from '../types/chat.types';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../../../supabase';
+import UserAvatar from '../../../shared/components/UserAvatar';
 
 interface FriendListProps {
     currentUserId: string | null;
@@ -97,13 +98,7 @@ export default function FriendList({ currentUserId, onSelectFriend, selectedFrie
                 >
                     {/* Contenedor del Avatar */}
                     <div className="relative">
-                        <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-white overflow-hidden shadow-md">
-                            {friend.avatar_url ? (
-                                <img src={friend.avatar_url} alt={friend.username} className="w-full h-full object-cover" />
-                            ) : (
-                                friend.username.charAt(0).toUpperCase()
-                            )}
-                        </div>
+                        <UserAvatar src={friend.avatar_url} name={friend.username} size={48} className="shadow-md" />
                         
                         <div 
                             className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-slate-800 ${getStatusColor(friend.status)}`}

@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { AlertTriangle, Check, Search } from 'lucide-react';
+import UserAvatar from '../../../../shared/components/UserAvatar';
 
 type ReportSearchEntry = {
   id: string;
@@ -61,13 +62,7 @@ export function ReportPlayerModal({
             {reportPlayerForm.reportedUserId ? (
               <div className="rounded-xl border border-indigo-400/40 bg-indigo-500/10 p-3">
                 <div className="flex items-center gap-3">
-                  {selectedReportedUser?.avatar_url ? (
-                    <img src={selectedReportedUser.avatar_url} alt={reportPlayerForm.reportedUsername} className="h-11 w-11 rounded-full border border-slate-700 object-cover" />
-                  ) : (
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 bg-slate-800 text-sm font-semibold text-slate-300">
-                      {reportPlayerForm.reportedUsername.slice(0, 2).toUpperCase()}
-                    </div>
-                  )}
+                  <UserAvatar src={selectedReportedUser?.avatar_url} name={reportPlayerForm.reportedUsername} size={44} />
                   <div className="min-w-0 flex-1">
                     <p className="text-xs uppercase tracking-[0.2em] text-indigo-300/80">Jugador seleccionado</p>
                     <div className="mt-1 flex items-center gap-2">
@@ -110,13 +105,7 @@ export function ReportPlayerModal({
                         className="w-full text-left px-3 py-3 text-sm border-b last:border-b-0 border-slate-700/70 text-slate-200 transition-colors hover:bg-slate-700/50"
                       >
                         <div className="flex items-center gap-3">
-                          {user.avatar_url ? (
-                            <img src={user.avatar_url} alt={user.username} className="h-9 w-9 rounded-full border border-slate-700 object-cover" />
-                          ) : (
-                            <div className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-800 text-xs font-semibold text-slate-300">
-                              {user.username.slice(0, 2).toUpperCase()}
-                            </div>
-                          )}
+                          <UserAvatar src={user.avatar_url} name={user.username} size={36} />
                           <div className="min-w-0 flex-1">
                             <span className="block truncate font-medium">{user.username}</span>
                             <span className="text-xs text-slate-400">{user.status || t('chat.status.disconnected')}</span>

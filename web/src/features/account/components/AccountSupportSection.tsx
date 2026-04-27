@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { Gamepad2, Send, User as UserIcon, Wrench } from 'lucide-react';
+import { Gamepad2, Send, Wrench } from 'lucide-react';
+import UserAvatar from '../../../shared/components/UserAvatar';
 import type { GameReport, UserReport } from '../../reports/services/reports.service';
 import type { SupportTicket } from '../../support/services/tickets.service';
 import type { SupportTab } from '../types/account-ui.types';
@@ -155,17 +156,7 @@ export function AccountSupportSection({
               sentUserReports.map((report) => (
                 <article key={report.id} className={supportCardClass}>
                   <div className="flex items-start gap-4">
-                    {report.reportedUser?.avatar_url ? (
-                      <img
-                        src={report.reportedUser.avatar_url}
-                        alt={report.reportedUser.username || ''}
-                        className="h-11 w-11 rounded-full border border-slate-700 object-cover shadow-lg shadow-slate-950/20"
-                      />
-                    ) : (
-                      <div className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-slate-400 shadow-lg shadow-slate-950/20">
-                        <UserIcon size={18} />
-                      </div>
-                    )}
+                    <UserAvatar src={report.reportedUser?.avatar_url} name={report.reportedUser?.username} size={44} />
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                         <div className="min-w-0">

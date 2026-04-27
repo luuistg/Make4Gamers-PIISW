@@ -7,6 +7,7 @@ import type { ChatProfile } from '../types/chat.types';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useChatFilter } from '../hooks/useChatFilter';
+import UserAvatar from '../../../shared/components/UserAvatar';
 
 interface ChatAreaProps {
   roomId: string;
@@ -70,18 +71,12 @@ const handleSendMessage = async (e: React.FormEvent) => {
 {/* Cabecera del chat */}
       <div className="px-6 py-4 bg-slate-800/80 border-b border-slate-700/50 flex items-center gap-3 shadow-sm z-10">
           
-            <Link 
-              to={`/usuario/${friendProfile.username}`} 
-              className="w-10 h-10 rounded-full overflow-hidden bg-slate-700 hover:opacity-80 transition-opacity cursor-pointer shadow-md"
+            <Link
+              to={`/usuario/${friendProfile.username}`}
+              className="hover:opacity-80 transition-opacity cursor-pointer"
               title={`Ver perfil de ${friendProfile.username}`}
             >
-              {friendProfile.avatar_url ? (
-                <img src={friendProfile.avatar_url} alt={friendProfile.username} className="w-full h-full object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center font-bold bg-gradient-to-br from-indigo-500 to-purple-600 text-white">
-                    {friendProfile.username.charAt(0).toUpperCase()}
-                </div>
-              )}
+              <UserAvatar src={friendProfile.avatar_url} name={friendProfile.username} size={40} className="shadow-md" />
             </Link>
 
             <div>

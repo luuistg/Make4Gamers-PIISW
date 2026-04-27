@@ -1,4 +1,5 @@
 import type { MatchPlayer } from "../hooks/useActiveMatch";
+import AvatarPlaceholder from "../../../shared/components/AvatarPlaceholder";
 
 type Props = {
   players: MatchPlayer[];
@@ -36,17 +37,13 @@ function PlayerAvatar({
           />
         ) : (
           <div
-            className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 ${
+            className={`rounded-full transition-all duration-300 ${
               isActiveTurn
-                ? "bg-yellow-400/20 border-2 border-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.6)]"
-                : "bg-indigo-600/30 border-2 border-slate-700"
+                ? "border-2 border-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.6)]"
+                : "border-2 border-slate-700"
             }`}
           >
-            <span
-              className={`text-xs font-bold ${isActiveTurn ? "text-yellow-300" : "text-indigo-300"}`}
-            >
-              {initials}
-            </span>
+            <AvatarPlaceholder name={player.username ?? initials} size={36} />
           </div>
         )}
 

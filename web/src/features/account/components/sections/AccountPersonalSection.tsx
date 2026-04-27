@@ -1,6 +1,7 @@
 import type { ChangeEvent, Ref } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Activity, Camera, Check, Edit2, User as UserIcon, X } from 'lucide-react';
+import { Activity, Camera, Check, Edit2, X } from 'lucide-react';
+import AvatarPlaceholder from '../../../../shared/components/AvatarPlaceholder';
 
 type ProfileDetails = {
   avatar_url: string | null;
@@ -58,7 +59,7 @@ export function AccountPersonalSection({
             ) : profile.avatar_url ? (
               <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
             ) : (
-              <UserIcon size={40} className="text-indigo-400" />
+              <AvatarPlaceholder name={profile.username ?? "U"} size={96} />
             )}
           </div>
 

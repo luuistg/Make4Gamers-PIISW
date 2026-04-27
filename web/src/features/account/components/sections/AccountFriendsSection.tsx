@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MessageCircle, Search } from 'lucide-react';
+import UserAvatar from '../../../../shared/components/UserAvatar';
 
 type FriendEntry = {
   id: string;
@@ -42,13 +43,7 @@ export function AccountFriendsSection({
         {filteredFriends.map((friend) => (
           <div key={friend.id} className="rounded-xl border border-slate-800 bg-slate-800/30 p-3 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-11 h-11 rounded-full overflow-hidden bg-slate-700 flex items-center justify-center text-slate-200 font-semibold shrink-0">
-                {friend.avatar_url ? (
-                  <img src={friend.avatar_url} alt={friend.username} className="w-full h-full object-cover" />
-                ) : (
-                  friend.username.charAt(0).toUpperCase()
-                )}
-              </div>
+              <UserAvatar src={friend.avatar_url} name={friend.username} size={44} />
               <div className="min-w-0">
                 <p className="text-white font-medium truncate">{friend.username}</p>
                 <p className="text-xs text-slate-400">{friend.status || 'Desconectado'}</p>
