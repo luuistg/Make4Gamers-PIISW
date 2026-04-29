@@ -110,57 +110,50 @@ const handleSendMessage = async (e: React.FormEvent) => {
               </span>
             </div>
       </div>
-      {/* Área de mensajes */}
-      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 space-y-6 hide-scrollbar">
-        {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-slate-500 space-y-2">
-            <p className="text-lg">{t('chat.breakIce')}</p>
-            <p className="text-sm">
-              {t('chat.firstMessage', { name: friendProfile.username })}
-            </p>
+      {/* Lista de Mensajes */}
+      <div 
+        ref={chatContainerRef}
+        className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent"
+      >
+        {loading ? (
+          <div className="flex justify-center py-10">
+            <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-indigo-500"></div>
           </div>
         ) : (
           <>
             {messages.map((msg) => {
-             
               const isMine = msg.sender_id === currentUserId;
-
-           
               const timeString = new Date(msg.created_at).toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
               });
 
               return (
-                <div
-                  key={msg.id}
-                  className={`flex flex-col ${
-                    isMine ? "items-end" : "items-start"
-                  }`}
-                >
-                 
-                  <div
-                    className={`px-4 py-2.5 max-w-[75%] rounded-2xl shadow-sm ${
-                      isMine
-                        ? "bg-indigo-600 text-white rounded-br-sm"
+                <div key={msg.id} className={`flex flex-col ${isMine ? "items-end" : "items-start"}`}>
+                  
+                  {!isMine && friendProfile.is_group && (
+                    <span className="text-[10px] font-bold text-indigo-400 mb-1 ml-2 uppercase tracking-wider">
+                      {msg.profiles?.username || 'Usuario'}
+                    </span>
+                  )}
+                  
+                  <div className={`px-4 py-2.5 max-w-[75%] rounded-2xl shadow-sm ${
+                      isMine 
+                        ? "bg-indigo-600 text-white rounded-br-sm" 
                         : "bg-slate-700 text-slate-100 rounded-bl-sm"
                     }`}
                   >
-                    <p className="break-words leading-relaxed">
-                      {msg.content}
-                    </p>
+                    <p className="break-words leading-relaxed">{msg.content}</p>
                   </div>
 
-          
-                <div className="flex items-center gap-1 mt-1.5 px-1">
-                    <span className="text-[11px] font-medium text-slate-500">
+                  <div className="flex items-center gap-1 mt-1.5 px-1">
+                    <span className="text-[10px] text-slate-500 font-medium">
                       {timeString}
                     </span>
-                  
-                    {msg.sender_id === currentUserId && (
+                    {isMine && (
                       msg.is_read ? (
                         <span title="Leído" className="flex items-center">
-                          <CheckCheck size={14} className="text-blue-400 drop-shadow-[0_0_2px_rgba(96,165,250,0.5)]" />
+                          <CheckCheck size={14} className="text-indigo-400" />
                         </span>
                       ) : (
                         <span title="Enviado" className="flex items-center">
@@ -172,7 +165,6 @@ const handleSendMessage = async (e: React.FormEvent) => {
                 </div>
               );
             })}
-           
           </>
         )}
       </div>

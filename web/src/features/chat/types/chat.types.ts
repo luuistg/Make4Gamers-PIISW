@@ -1,14 +1,14 @@
 
 export type FriendshipStatus = 'pending' | 'accepted' | 'blocked';
 
-
 export interface ChatProfile {
   id: string;
   username: string;
   avatar_url: string | null;
   status: string;
+  is_group?: boolean;
+  room_id?: string;
 }
-
 
 export interface ChatRoom {
   id: string;
