@@ -35,3 +35,59 @@ export function calculateLazyGlobalScore(highScores: {displayTitle: string, scor
   
   return totalScore;
 }
+
+export function getGlobalProgress(totalScore: number) {
+
+  if (totalScore >= globalThresholds.Obsidiana) {
+    return {
+      isMaxLevel: true,
+      currentPoints: totalScore,
+      nextTierName: 'Máximo Nivel',
+      pointsNeeded: 0,
+      percentage: 100
+    };
+  }
+
+  let nextTierThreshold = 0;
+  let currentTierThreshold = 0;
+  let nextTierName = '';
+
+
+  if (totalScore >= globalThresholds.Oro) {
+    currentTierThreshold = globalThresholds.Oro;
+    nextTierThreshold = globalThresholds.Obsidiana;
+    nextTierName = 'Obsidiana';
+  } else if (totalScore >= globalThresholds.Plata) {
+    currentTierThreshold = globalThresholds.Plata;
+    nextTierThreshold = globalThresholds.Oro;
+    nextTierName = 'Oro';
+  } else if (totalScore >= globalThresholds.Bronce) {
+    currentTierThreshold = globalThresholds.Bronce;
+    nextTierThreshold = globalThresholds.Plata;
+    nextTierName = 'Plata';
+  } else {
+    currentTierThreshold = 0; 
+    nextTierThreshold = globalThresholds.Bronce;
+    nextTierName = 'Bronce';
+  }
+
+
+  const pointsNeeded = nextTierThreshold - totalScore;
+  const pointsInCurrentTier = totalScore - currentTierThreshold;
+  const pointsRequiredForNextTier = nextTierThreshold - currentTierThreshold;
+  
+  let percentage = Math.floor((pointsInCurrentTier / pointsRequiredForNextTier) * 100);
+
+
+  if (isNaN(percentage) || percentage < 0) percentage = 0;
+  if (percentage > 100) percentage = 100;
+
+  return {
+    isMaxLevel: false,
+    currentPoints: totalScore,
+    nextTierName,
+    pointsNeeded,
+    percentage,
+    nextTierThreshold
+  };
+}
