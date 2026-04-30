@@ -1,7 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import { Trophy, Star } from 'lucide-react';
+import { Trophy, Star, ChevronRight } from 'lucide-react';
 import UserAvatar from '../../../../shared/components/UserAvatar';
-import { getTierForScore, getGlobalTier, calculateLazyGlobalScore } from '../../../progression/services/progression.service';
+import { 
+  getTierForScore, 
+  getGlobalTier, 
+  calculateLazyGlobalScore,
+  getGlobalProgress 
+} from '../../../progression/services/progression.service';
 
 type ProfileSummary = {
   username: string | null;
@@ -20,15 +25,16 @@ type AccountDashboardSectionProps = {
   highScores: HighScoreEntry[];
 };
 
+
 const getGlobalControllerData = (tier: string) => {
   const basePath = '/assets';
   switch(tier) {
-    case 'Hierro': return { name: 'Hierro', image: `${basePath}/hierro.png`, color: 'text-slate-400', glow: 'shadow-slate-500/40' };
-    case 'Bronce': return { name: 'Bronce', image: `${basePath}/bronce.png`, color: 'text-orange-400', glow: 'shadow-orange-500/40' };
-    case 'Plata': return { name: 'Plata', image: `${basePath}/plata.png`, color: 'text-slate-200', glow: 'shadow-slate-300/50' };
-    case 'Oro': return { name: 'Oro', image: `${basePath}/oro.png`, color: 'text-yellow-400', glow: 'shadow-yellow-500/50' };
-    case 'Obsidiana': return { name: 'Obsidiana', image: `${basePath}/obsidiana.png`, color: 'text-fuchsia-400', glow: 'shadow-fuchsia-500/60' };
-    default: return { name: 'Hierro', image: `${basePath}/hierro.png`, color: 'text-slate-500', glow: 'shadow-slate-500/20' };
+    case 'Hierro': return { name: 'Iniciado', image: `${basePath}/hierro.png`, color: 'text-slate-400', bgClass: 'bg-slate-400', glowClass: 'shadow-[0_0_15px_rgba(148,163,184,0.6)]' };
+    case 'Bronce': return { name: 'Bronce', image: `${basePath}/bronce.png`, color: 'text-orange-400', bgClass: 'bg-orange-400', glowClass: 'shadow-[0_0_15px_rgba(251,146,60,0.6)]' };
+    case 'Plata': return { name: 'Plata', image: `${basePath}/plata.png`, color: 'text-slate-200', bgClass: 'bg-slate-200', glowClass: 'shadow-[0_0_15px_rgba(226,232,240,0.6)]' };
+    case 'Oro': return { name: 'Oro', image: `${basePath}/oro.png`, color: 'text-yellow-400', bgClass: 'bg-yellow-400', glowClass: 'shadow-[0_0_15px_rgba(250,204,21,0.6)]' };
+    case 'Obsidiana': return { name: 'Obsidiana', image: `${basePath}/obsidiana.png`, color: 'text-fuchsia-400', bgClass: 'bg-fuchsia-400', glowClass: 'shadow-[0_0_15px_rgba(232,121,249,0.6)]' };
+    default: return { name: 'Iniciado', image: `${basePath}/hierro.png`, color: 'text-slate-500', bgClass: 'bg-slate-500', glowClass: 'shadow-[0_0_15px_rgba(100,116,139,0.6)]' };
   }
 };
 
@@ -46,61 +52,93 @@ const getGameControllerData = (tier: string) => {
 
 export function AccountDashboardSection({ profile, highScores }: AccountDashboardSectionProps) {
   const { t } = useTranslation();
+  
+
   const globalScore = calculateLazyGlobalScore(highScores || []);
   const globalTier = getGlobalTier(globalScore);
   const globalEmblem = getGlobalControllerData(globalTier);
+  const progress = getGlobalProgress(globalScore);
 
   return (
     <section className="space-y-6 w-full pb-8">
       
-    
       <div className="relative w-full overflow-hidden bg-slate-950 border border-slate-700/50 rounded-[2.5rem] p-5 sm:p-8 shadow-[0_0_40px_-10px_rgba(0,0,0,0.5)]">
         
-  
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f46e510_1px,transparent_1px),linear-gradient(to_bottom,#4f46e510_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-       
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500/20 rounded-full blur-[80px]"></div>
-      
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f46e515_1px,transparent_1px),linear-gradient(to_bottom,#4f46e515_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500/30 rounded-full blur-[80px]"></div>
         <div className={`absolute bottom-0 left-10 w-64 h-64 ${globalEmblem.color} opacity-20 blur-[60px] rounded-full bg-current`}></div>
         
-
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-8 w-full min-w-0">
           
-          {/* Contenedor del Mando */}
           <div className="relative group shrink-0">
             <div className={`absolute inset-0 blur-[40px] opacity-40 bg-current ${globalEmblem.color}`}></div>
             <img 
               src={globalEmblem.image} 
               alt={globalEmblem.name} 
-              className="relative z-10 w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-6"
+              className="relative z-10 w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]"
             />
           </div>
 
-          {/* Textos y Puntuación */}
-          <div className="text-center md:text-left space-y-2 flex-1 min-w-0 w-full overflow-hidden">
-            <span className="inline-block px-3 sm:px-4 py-1.5 bg-slate-900/80 text-slate-300 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] border border-slate-700 backdrop-blur-sm">
-              Rango de Plataforma
-            </span>
-            <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tighter ${globalEmblem.color} italic break-all md:break-words w-full drop-shadow-lg`}>
-              {globalEmblem.name}
-            </h2>
-            <div className="flex items-center justify-center md:justify-start gap-2 mt-2">
-              <Star className="text-yellow-500 shrink-0" size={20} fill="currentColor" />
-              <p className="text-white text-lg sm:text-xl font-bold truncate">
-                {globalScore} <span className="text-slate-400 text-xs sm:text-sm font-normal">Puntos Globales</span>
-              </p>
+          <div className="text-center md:text-left space-y-4 flex-1 min-w-0 w-full overflow-hidden">
+            <div>
+               <span className="inline-block px-3 sm:px-4 py-1.5 bg-slate-900/80 text-slate-300 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] border border-slate-700 backdrop-blur-sm">
+                 Rango de Plataforma
+               </span>
+               <h2 className={`text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tighter ${globalEmblem.color} italic break-all md:break-words w-full mt-2`}>
+                 {globalEmblem.name}
+               </h2>
+               <div className="flex items-center justify-center md:justify-start gap-2 mt-1">
+                 <Star className="text-yellow-500 shrink-0" size={20} fill="currentColor" />
+                 <p className="text-white text-lg sm:text-xl font-bold truncate">
+                   {globalScore} <span className="text-slate-400 text-xs sm:text-sm font-normal">Puntos Globales</span>
+                 </p>
+               </div>
             </div>
-            
-           
-            <p className="text-slate-400 text-xs sm:text-sm max-w-md mx-auto md:mx-0 mt-4 line-clamp-2">
-              Juega a más juegos y mejora tus récords individuales para subir tu Rango Global a lo más alto.
-            </p>
-          </div>
 
+            <p className="text-slate-400 text-sm max-w-lg mx-auto md:mx-0">
+               Juega a más juegos y mejora tus récords para subir tu Rango Global. ¡Cada punto cuenta para desbloquear el siguiente mando!
+            </p>
+
+            <div className="max-w-md mx-auto md:mx-0 w-full bg-slate-900/50 p-4 rounded-2xl border border-slate-800 backdrop-blur-sm shadow-inner mt-4">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                   {progress.isMaxLevel ? (
+                     <Trophy size={12} className="text-fuchsia-400" />
+                   ) : (
+                     <ChevronRight size={12} className={globalEmblem.color} />
+                   )}
+                  {progress.isMaxLevel ? 'Nivel Máximo Alcanzado' : `Siguiente: ${progress.nextTierName}`}
+                </span>
+                {!progress.isMaxLevel && (
+                  <span className="text-[10px] font-bold text-white bg-slate-950 px-2 py-1 rounded border border-slate-800">
+                    Faltan {progress.pointsNeeded} pts
+                  </span>
+                )}
+              </div>
+
+              {/* Contenedor de la barra */}
+              <div className="h-3 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800/50 relative shadow-[inset_0_1px_4px_rgba(0,0,0,0.5)]">
+     
+                 <div 
+                   className={`h-full rounded-full transition-all duration-1000 ease-out ${globalEmblem.bgClass} ${globalEmblem.glowClass}`}
+                   style={{ width: `${progress.percentage}%` }}
+                 ></div>
+              </div>
+              
+              <div className="flex justify-between items-center mt-2 text-[10px]">
+                <span className={`font-bold ${globalEmblem.color}`}>{globalEmblem.name}</span>
+                {!progress.isMaxLevel && (
+                  <span className="font-bold text-slate-500">
+                     Siguiente rango a los {progress.nextTierThreshold} pts
+                  </span>
+                )}
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
 
-      {/* INFO DEL PERFIL DE USUARIO */}
       <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 flex flex-col sm:flex-row items-center gap-6 shadow-xl w-full">
         <UserAvatar src={profile.avatar_url} name={profile.username} size={80} />
         <div className="flex-1 text-center sm:text-left min-w-0 w-full">
@@ -114,7 +152,6 @@ export function AccountDashboardSection({ profile, highScores }: AccountDashboar
         </div>
       </div>
 
-      {/* SALA DE TROFEOS POR JUEGO */}
       <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-6 shadow-xl w-full">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-2 bg-indigo-500/20 text-indigo-400 rounded-lg shrink-0"><Trophy size={24} /></div>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { MessageCircle, Search } from 'lucide-react';
+import { MessageCircle, Search, User } from 'lucide-react'; 
 import UserAvatar from '../../../../shared/components/UserAvatar';
 
 type FriendEntry = {
@@ -34,35 +34,50 @@ export function AccountFriendsSection({
             value={friendsSearch}
             onChange={(e) => onFriendsSearchChange(e.target.value)}
             placeholder={t('account.friends.searchPlaceholder')}
-            className="w-full rounded-lg border border-slate-700 bg-slate-800/60 py-2 pl-9 pr-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500"
+            className="w-full rounded-xl border border-slate-700 bg-slate-800/60 py-2 pl-9 pr-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500"
           />
         </div>
       </div>
 
       <div className="space-y-3">
         {filteredFriends.map((friend) => (
-          <div key={friend.id} className="rounded-xl border border-slate-800 bg-slate-800/30 p-3 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3 min-w-0">
-              <UserAvatar src={friend.avatar_url} name={friend.username} size={44} />
-              <div className="min-w-0">
-                <p className="text-white font-medium truncate">{friend.username}</p>
-                <p className="text-xs text-slate-400">{friend.status || 'Desconectado'}</p>
+          <div key={friend.id} className="rounded-xl border border-slate-800 bg-slate-800/30 p-3 flex items-center justify-between gap-3 hover:bg-slate-800/50 transition-colors">
+        
+            <Link 
+   
+              to={`/usuario/${friend.username}`} 
+              className="flex items-center gap-3 min-w-0 group cursor-pointer"
+              title={`Ver perfil de ${friend.username}`}
+            >
+              <div className="relative shrink-0">
+                <UserAvatar src={friend.avatar_url} name={friend.username} size={44} />
+                <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 border-2 border-slate-900 rounded-full ${friend.status === 'Online' ? 'bg-green-500' : 'bg-slate-500'}`}></div>
               </div>
-            </div>
+              <div className="min-w-0">
+                <p className="text-white font-medium truncate group-hover:text-indigo-400 transition-colors">
+                  {friend.username}
+                </p>
+                <p className="text-xs text-slate-400 group-hover:text-slate-300">
+                  {friend.status || 'Desconectado'}
+                </p>
+              </div>
+            </Link>
+
 
             <Link
               to="/chat"
-              className="inline-flex items-center gap-2 rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-2 text-sm font-medium text-indigo-100 hover:bg-indigo-500/20 transition-colors"
+              className="inline-flex items-center gap-2 rounded-lg border border-indigo-500/30 bg-indigo-500/10 px-3 py-2 text-sm font-medium text-indigo-100 hover:bg-indigo-500/20 transition-colors shrink-0"
             >
               <MessageCircle size={15} />
-              {t('account.friends.sendMessage')}
+              <span className="hidden xs:inline">{t('account.friends.sendMessage')}</span>
             </Link>
+
           </div>
         ))}
 
         {filteredFriends.length === 0 && (
-          <div className="rounded-xl border border-dashed border-slate-700 bg-slate-800/20 p-6 text-center text-slate-400">
-            {t('account.friends.noResults')}
+          <div className="text-center py-10">
+            <p className="text-slate-500 text-sm italic">No se encontraron amigos.</p>
           </div>
         )}
       </div>

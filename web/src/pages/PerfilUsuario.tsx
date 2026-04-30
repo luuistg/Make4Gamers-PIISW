@@ -4,7 +4,7 @@ import {
   getGlobalTier, 
   calculateLazyGlobalScore 
 } from '../features/progression/services/progression.service';
-
+import GlobalRankEmblem from '../features/progression/components/GlobalRankEmblem';
 import { getTierForScore } from '../features/progression/services/progression.service';
 import { supabase } from '../supabase';
 import { removeFriend } from '../features/chat/services/friend.service';
@@ -76,7 +76,8 @@ export default function PerfilUsuario() {
   const [reportDetails, setReportDetails] = useState('');
   const [isSubmittingReport, setIsSubmittingReport] = useState(false);
   const [reportFeedback, setReportFeedback] = useState<{type: 'success' | 'error', text: string} | null>(null);
-
+  const [testScore, setTestScore] = useState(globalScore);
+ 
 
 useEffect(() => {
     const fetchProfileAndActivity = async () => {
@@ -150,6 +151,7 @@ useEffect(() => {
 
   if (loading) {
     return (
+
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
       </div>
@@ -228,8 +230,10 @@ useEffect(() => {
   };
 
   return (
+
     <div className="min-h-screen bg-slate-950 text-slate-300 py-10 px-4">
       <div className="max-w-4xl mx-auto space-y-8">
+
         
         {/* Boton volver */}
         <Link to="/cuenta" className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
@@ -240,8 +244,11 @@ useEffect(() => {
           <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
           
           <div className="relative flex flex-col md:flex-row items-center gap-6">
-            <div className="rounded-full border-2 border-indigo-500 shadow-lg shrink-0">
-              <UserAvatar src={profile.avatar_url} name={profile.username} size={96} />
+            <div className="relative group">
+              <GlobalRankEmblem score={globalScore} size="xl">
+          
+                <UserAvatar src={profile?.avatar_url} name={profile?.username} className="w-full h-full" size={128}/>
+              </GlobalRankEmblem>
             </div>
  
             <div className="text-center md:text-left flex-1">
