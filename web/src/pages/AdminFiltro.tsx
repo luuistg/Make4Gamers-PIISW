@@ -4,6 +4,20 @@ import { ShieldAlert, Trash2, Plus, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
+function getForbiddenWordErrorMessage(error: { code?: string; message?: string } | null) {
+  if (!error) return 'No se pudo completar la operacion.';
+
+  if (error.code === '23505') {
+    return 'La palabra ya existe en el filtro.';
+  }
+
+  if (error.code === '42501' || /row-level security|permission denied/i.test(error.message || '')) {
+    return 'No tienes permisos para modificar el filtro de palabras.';
+  }
+
+  return error.message || 'No se pudo completar la operacion.';
+}
+
 export default function AdminFiltro() {
   const [words, setWords] = useState<any[]>([]);
   const [newWord, setNewWord] = useState('');
@@ -21,14 +35,16 @@ export default function AdminFiltro() {
 
   const handleAddWord = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newWord.trim()) return;
+    const normalizedWord = newWord.toLowerCase().trim();
+    if (!normalizedWord) return;
 
     const { error } = await supabase
       .from('forbidden_words')
-      .insert([{ word: newWord.toLowerCase().trim() }]);
+      .insert([{ word: normalizedWord }]);
 
     if (error) {
-      toast.error('Error o la palabra ya existe');
+      console.error('Error creando palabra prohibida:', error);
+      toast.error(getForbiddenWordErrorMessage(error));
     } else {
       toast.success('Palabra añadida al filtro');
       setNewWord('');
@@ -37,7 +53,12 @@ export default function AdminFiltro() {
   };
 
   const handleDelete = async (id: string) => {
-    await supabase.from('forbidden_words').delete().eq('id', id);
+    const { error } = await supabase.from('forbidden_words').delete().eq('id', id);
+    if (error) {
+      console.error('Error eliminando palabra prohibida:', error);
+      toast.error(getForbiddenWordErrorMessage(error));
+      return;
+    }
     fetchWords();
     toast.success('Palabra eliminada');
   };

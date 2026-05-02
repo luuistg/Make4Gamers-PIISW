@@ -21,6 +21,9 @@ import AdminTickets from './pages/AdminTickets';
 import AdminFiltro from './pages/AdminFiltro';
 import Estadisticas from './pages/Estadisticas';
 import AdminFormulas from './pages/AdminFormulas';
+import AdminLayout from './shared/layout/AdminLayout';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminSolicitudesDev from './pages/AdminSolicitudesDev';
 function App() {
   return (
     <>
@@ -44,10 +47,14 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/recuperar-password" element={<RecuperarPassword />} />
           <Route path="/actualizar-password" element={<ActualizarPassword />} />
-          <Route path="/admin/sugerencias" element={<AdminSugerencias />} />
-          <Route path="/admin/tickets" element={<AdminTickets />} />
-          <Route path="/admin/filtro" element={<AdminFiltro />} />
-          <Route path="/admin/formulas" element={<AdminFormulas />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="sugerencias" element={<AdminSugerencias />} />
+            <Route path="tickets" element={<AdminTickets />} />
+            <Route path="filtro" element={<AdminFiltro />} />
+            <Route path="formulas" element={<AdminFormulas />} />
+            <Route path="solicitudes" element={<AdminSolicitudesDev />} />
+          </Route>
 
           {/* Main */}
           <Route element={<Layout />}>
