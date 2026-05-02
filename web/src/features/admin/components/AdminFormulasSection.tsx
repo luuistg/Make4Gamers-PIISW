@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../supabase';
+import { useTranslation } from 'react-i18next';
+import { supabase } from '../../../supabase';
 import { useNavigate } from 'react-router-dom';
 import { Settings2, Save, Info, Check} from 'lucide-react';
-import { getScoringSettings, updateScoringSetting } from '../features/admin/services/settings.service';
+import { getScoringSettings, updateScoringSetting } from '../services/settings.service';
 
 export default function AdminFormulas() {
+  const { t } = useTranslation();
   const [settings, setSettings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -64,10 +66,10 @@ export default function AdminFormulas() {
       for (const setting of settings) {
         await updateScoringSetting(supabase, setting.setting_key, Number(setting.setting_value));
       }
-      setMessage({ type: 'success', text: '¡Fórmulas actualizadas y aplicadas en tiempo real!' });
+      setMessage({ type: 'success', text: t('admin.formulasPage.success') });
       setTimeout(() => setMessage(null), 4000); 
     } catch (error) {
-      setMessage({ type: 'error', text: 'Hubo un error al guardar las configuraciones.' });
+      setMessage({ type: 'error', text: t('admin.formulasPage.error') });
     } finally {
       setSaving(false);
     }
@@ -95,8 +97,8 @@ export default function AdminFormulas() {
            
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white">Laboratorio de Fórmulas</h1>
-            <p className="text-slate-400 mt-1">Ajusta la economía y puntuaciones del juego en tiempo real.</p>
+            <h1 className="text-3xl font-bold text-white">{t('admin.formulasPage.title')}</h1>
+            <p className="text-slate-400 mt-1">{t('admin.formulasPage.subtitle')}</p>
           </div>
         </div>
 
@@ -112,12 +114,13 @@ export default function AdminFormulas() {
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
           <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
-            <Info size={18} className="text-amber-400" /> Vista Previa del Multiplicador
+            <Info size={18} className="text-amber-400" /> {t('admin.formulasPage.previewTitle')}
           </h3>
           <p className="text-sm text-slate-400">
-            Si un jugador gana una partida de <strong className="text-white">{baseScore} puntos</strong> ahora mismo, 
-            con el multiplicador actual de <strong className="text-indigo-400">x{rankingMultiplier}</strong>, 
-            recibirá un total de <strong className="text-green-400 text-lg">{Math.round(baseScore * rankingMultiplier)} puntos</strong> para el ranking.
+            {t('admin.formulasPage.previewText.beforeScore')} <strong className="text-white">{baseScore} {t('admin.formulasPage.points')}</strong>{' '}
+            {t('admin.formulasPage.previewText.beforeMultiplier')} <strong className="text-indigo-400">x{rankingMultiplier}</strong>{' '}
+            {t('admin.formulasPage.previewText.beforeTotal')} <strong className="text-green-400 text-lg">{Math.round(baseScore * rankingMultiplier)} {t('admin.formulasPage.points')}</strong>{' '}
+            {t('admin.formulasPage.previewText.afterTotal')}
           </p>
         </div>
 
@@ -165,7 +168,7 @@ export default function AdminFormulas() {
             className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium transition-colors disabled:opacity-50"
           >
             {saving ? <Settings2 className="animate-spin" size={20} /> : <Save size={20} />}
-            {saving ? 'Guardando...' : 'Guardar y Aplicar Fórmulas'}
+            {saving ? t('admin.formulasPage.saving') : t('admin.formulasPage.saveApply')}
           </button>
         </div>
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, Globe, ChevronDown, User, LogOut, Calculator, LifeBuoy, MessageSquare, Filter } from 'lucide-react';
+import { Menu, Globe, ChevronDown, User, LogOut } from 'lucide-react';
 import { Logo } from '../icons/Logo';
 import { logout } from '../../features/auth/services/logout.service';
 import { useAuthStatus } from '../../features/auth/hooks/useAuthStatus';
@@ -17,7 +17,6 @@ const Header = () => {
     const [isLangOpen, setIsLangOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    const [isAdminOpen, setIsAdminOpen] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
 
@@ -231,58 +230,12 @@ const Header = () => {
 
 
                     {isAdmin && (
-                        <div className="relative">
-                            <button
-                                className="flex items-center gap-1.5 hover:text-indigo-400 text-slate-300 transition-colors font-bold tracking-tight"
-                                onClick={() => {
-                                    setIsAdminOpen(!isAdminOpen);
-                                    setIsProfileOpen(false);
-                                    setIsLangOpen(false);
-                                }}
-                            >
-
-                                <span className="hidden md:inline uppercase text-[11px] bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
-                                    Admin
-                                </span>
-                                <ChevronDown size={14} className={`transition-transform ${isAdminOpen ? 'rotate-180' : ''} text-slate-500`} />
-                            </button>
-
-                            {isAdminOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl overflow-hidden py-1 z-50 animate-in fade-in zoom-in duration-100">
-                                    <div className="px-4 py-2 border-b border-slate-800">
-                                        <span className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Gestión</span>
-                                    </div>
-                                    <Link
-                                        to="/admin/formulas"
-                                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-indigo-600/10 hover:text-indigo-400 transition-colors"
-                                        onClick={() => setIsAdminOpen(false)}
-                                    >
-                                        <Calculator size={16} /> Fórmulas
-                                    </Link>
-                                    <Link
-                                        to="/admin/tickets"
-                                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-indigo-600/10 hover:text-indigo-400 transition-colors"
-                                        onClick={() => setIsAdminOpen(false)}
-                                    >
-                                        <LifeBuoy size={16} /> Tickets
-                                    </Link>
-                                    <Link
-                                        to="/admin/sugerencias"
-                                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-indigo-600/10 hover:text-indigo-400 transition-colors"
-                                        onClick={() => setIsAdminOpen(false)}
-                                    >
-                                        <MessageSquare size={16} /> Sugerencias
-                                    </Link>
-                                    <Link
-                                        to="/admin/filtro"
-                                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-indigo-600/10 hover:text-indigo-400 transition-colors"
-                                        onClick={() => setIsAdminOpen(false)}
-                                    >
-                                        <Filter size={16} /> Filtro de Palabras
-                                    </Link>
-                                </div>
-                            )}
-                        </div>
+                        <Link
+                            to="/admin"
+                            className="hidden md:inline uppercase text-[11px] bg-slate-800 px-2 py-0.5 rounded border border-slate-700 text-slate-300 hover:text-indigo-300 hover:border-indigo-500/40 transition-colors"
+                        >
+                            {t('admin.panelButton', { defaultValue: 'Admin' })}
+                        </Link>
                     )}
 
 

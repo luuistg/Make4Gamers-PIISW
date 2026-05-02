@@ -15,7 +15,11 @@ import {
   getAccountProfile,
   getAccountRecentGames,
   updateAccountProfile,
-  getAccountHighScores
+  getAccountHighScores,
+  cancelDeveloperRequest,
+  createDeveloperRequest,
+  getLatestDeveloperRequest,
+  type DeveloperRequest,
 } from '../features/account/services/account.service';
 import { AccountSidebar } from '../features/account/components/AccountSidebar';
 import { AccountSupportSection } from '../features/account/components/AccountSupportSection';
@@ -33,6 +37,7 @@ import { EditProfileModal } from '../features/account/components/modals/EditProf
 import { ReportPlayerModal } from '../features/account/components/modals/ReportPlayerModal';
 import { ReportGameModal } from '../features/account/components/modals/ReportGameModal';
 import { SupportTicketModal } from '../features/account/components/modals/SupportTicketModal';
+import { DeveloperRequestModal } from '../features/account/components/modals/DeveloperRequestModal';
 import { useAccountSupport } from '../features/account/hooks/useAccountSupport';
 import { useReportPlayer } from '../features/account/hooks/useReportPlayer';
 import { useReportGame } from '../features/account/hooks/useReportGame';
@@ -148,6 +153,12 @@ export default function Cuenta() {
   const [friends, setFriends] = useState<FriendEntry[]>([]);
   const [friendsSearch, setFriendsSearch] = useState('');
   const [highScores, setHighScores] = useState<HighScoreEntry[]>([]);
+  const [developerRequest, setDeveloperRequest] = useState<DeveloperRequest | null>(null);
+  const [devRequestTitle, setDevRequestTitle] = useState('');
+  const [devRequestReason, setDevRequestReason] = useState('');
+  const [creatingDeveloperRequest, setCreatingDeveloperRequest] = useState(false);
+  const [cancellingDeveloperRequest, setCancellingDeveloperRequest] = useState(false);
+  const [showDeveloperRequestModal, setShowDeveloperRequestModal] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -315,7 +326,13 @@ export default function Cuenta() {
     }
     setAllowRequests(mergedProfile.allow_requests !== false);
     setEditNameValue(mergedProfile.username || '');
-    Promise.all([loadRecentGames(user.id), loadFriends(user.id), loadHighScores(user.id), loadSupportHistory(user.id)]).catch(err => {
+    Promise.all([
+      loadRecentGames(user.id),
+      loadFriends(user.id),
+      loadHighScores(user.id),
+      loadSupportHistory(user.id),
+      loadDeveloperRequest(user.id),
+    ]).catch(err => {
       console.error('Error cargando datos secundarios:', err);
     });
   }, [buildSessionProfile]);
@@ -429,6 +446,70 @@ export default function Cuenta() {
     } catch (error) {
       console.warn('Error o timeout cargando amigos:', error);
       setFriends([]);
+    }
+  };
+
+  const loadDeveloperRequest = async (userId: string) => {
+    try {
+      const latestRequest = await getLatestDeveloperRequest(userId);
+      setDeveloperRequest(latestRequest);
+    } catch (error) {
+      console.warn('Error cargando solicitud de developer:', error);
+      setDeveloperRequest(null);
+    }
+  };
+
+  const handleCreateDeveloperRequest = async () => {
+    if (!profile?.id) return;
+
+    const titulo = devRequestTitle.trim();
+    const motivo = devRequestReason.trim();
+
+    if (!titulo || !motivo) {
+      showToast('Debes completar titulo y motivo para enviar la solicitud.', 'error');
+      return;
+    }
+
+    setCreatingDeveloperRequest(true);
+    try {
+      const request = await createDeveloperRequest({
+        userId: profile.id,
+        titulo,
+        motivo,
+      });
+
+      setDeveloperRequest(request);
+      setDevRequestTitle('');
+      setDevRequestReason('');
+      setShowDeveloperRequestModal(false);
+      showToast('Solicitud enviada correctamente.');
+    } catch (error) {
+      console.error('Error creando solicitud de developer:', error);
+      showToast('No se pudo enviar la solicitud.', 'error');
+    } finally {
+      setCreatingDeveloperRequest(false);
+    }
+  };
+
+  const handleCancelDeveloperRequest = async () => {
+    if (!profile?.id || !developerRequest?.id || developerRequest.estado !== 'pendiente') {
+      return;
+    }
+
+    setCancellingDeveloperRequest(true);
+    try {
+      await cancelDeveloperRequest({
+        requestId: developerRequest.id,
+        userId: profile.id,
+      });
+      setDeveloperRequest(null);
+      showToast('Solicitud cancelada correctamente.');
+    } catch (error) {
+      console.error('Error cancelando solicitud de developer:', error);
+      const message = error instanceof Error ? error.message : 'No se pudo cancelar la solicitud.';
+      showToast(message, 'error');
+    } finally {
+      setCancellingDeveloperRequest(false);
     }
   };
 
@@ -642,19 +723,19 @@ export default function Cuenta() {
       )}
 
     <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[250px_1fr] lg:items-stretch" style={{ height: '600px' }}>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[250px_1fr] lg:items-stretch lg:h-[600px]" style={{ minHeight: '600px' }}>
             <AccountSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
 
-            <main className="space-y-6 h-full flex flex-col">
-                  <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar"> 
+            <main className="space-y-6 h-full min-h-[600px] flex flex-col overflow-hidden">
+                  <div className="flex-1 min-h-full overflow-y-auto hide-scrollbar pr-2"> 
                 {activeSection === 'dashboard' && (
-                  <div className="h-[450px] overflow-y-auto pr-4 pb-10 custom-scrollbar">
+                  <div className="h-full min-h-full pr-4 pb-10">
                     <AccountDashboardSection profile={profile} highScores={highScores} />
                   </div>
                 )}
                 
                 {activeSection === 'personal' && (
-                  <div className="flex-1 overflow-y-auto">
+                  <div className="flex-1 h-full min-h-full">
                     <AccountPersonalSection
                       profile={profile}
                       uploadingAvatar={uploadingAvatar}
@@ -672,12 +753,17 @@ export default function Cuenta() {
                       }}
                       onSaveUsername={saveUsername}
                       onStatusChange={handleStatusChange}
+                      developerRequest={developerRequest}
+                      creatingDeveloperRequest={creatingDeveloperRequest}
+                      cancellingDeveloperRequest={cancellingDeveloperRequest}
+                      onOpenDeveloperRequestModal={() => setShowDeveloperRequestModal(true)}
+                      onCancelDeveloperRequest={handleCancelDeveloperRequest}
                     />
                   </div>
                 )}
                 
                 {activeSection === 'friends' && (
-                  <div className="flex-1 overflow-y-auto">
+                  <div className="flex-1 h-full min-h-full">
                     <AccountFriendsSection
                       friendsSearch={friendsSearch}
                       filteredFriends={filteredFriends}
@@ -687,7 +773,7 @@ export default function Cuenta() {
                 )}
                 
                 {activeSection === 'payments' && (
-                  <div className="flex-1">
+                  <div className="flex-1 h-full min-h-full">
                     <AccountPaymentsSection 
                       userId={profile.id}
                       currentTier={profile.subscription_tier || 'free'}
@@ -697,7 +783,7 @@ export default function Cuenta() {
                 )}
                 
                 {activeSection === 'support' && (
-                  <div className="flex-1">
+                  <div className="flex-1 h-full min-h-full">
                     <AccountSupportSection
                       activeSupportTab={activeSupportTab}
                       onSupportTabChange={setActiveSupportTab}
@@ -714,7 +800,7 @@ export default function Cuenta() {
                 )}
 
                 {activeSection === 'security' && (
-                  <div className="flex-1">
+                  <div className="flex-1 h-full min-h-full">
                     <AccountSecuritySection
                       allowRequests={allowRequests}
                       savingPrivacy={savingPrivacy}
@@ -726,7 +812,7 @@ export default function Cuenta() {
                 )}
 
                 {activeSection === 'matches' && (
-                  <div className="flex-1 overflow-y-auto">
+                  <div className="flex-1 h-full min-h-full">
                  
                     <AccountMatchesSection
                       recentGames={recentGames}
@@ -736,13 +822,13 @@ export default function Cuenta() {
                 )}
 
                 {activeSection === 'stats' && profile?.id && (
-                  <div className="flex-1 overflow-y-auto">
+                  <div className="flex-1 h-full min-h-full">
                     <AccountStatsSection userId={profile.id} />
                   </div>
                 )}
 
                 {activeSection === 'achievements' && (
-                  <div className="flex-1">
+                  <div className="flex-1 h-full min-h-full">
                     <AccountAchievementsSection
                       userAchievements={userAchievements}
                     />
@@ -833,6 +919,18 @@ export default function Cuenta() {
           onFormChange={setSupportTicketForm}
           onClose={closeSupportTicketModal}
           onSubmit={handleCreateSupportTicket}
+        />
+      )}
+
+      {showDeveloperRequestModal && (
+        <DeveloperRequestModal
+          title={devRequestTitle}
+          reason={devRequestReason}
+          creating={creatingDeveloperRequest}
+          onTitleChange={setDevRequestTitle}
+          onReasonChange={setDevRequestReason}
+          onClose={() => setShowDeveloperRequestModal(false)}
+          onSubmit={handleCreateDeveloperRequest}
         />
       )}
     </div>

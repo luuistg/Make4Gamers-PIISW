@@ -25,7 +25,6 @@ export function AccountSidebar({ activeSection, onSectionChange, isPremium }: Ac
   return (
     <aside className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl h-[600px]">
       <div className="mb-6 flex items-center gap-2 text-white">
-        <UserIcon size={20} className="text-indigo-400" />
         {isPremium ? (
           <Save size={20} className="text-yellow-500 fill-yellow-500/20 drop-shadow-[0_0_8px_rgba(234,179,8,0.5)] animate-pulse" />
         ) : (
