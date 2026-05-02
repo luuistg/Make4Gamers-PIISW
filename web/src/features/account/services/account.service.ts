@@ -11,6 +11,18 @@ import { supabase } from "../../../supabase";
 
 export type { AccountProfile, AccountRecentGame, AccountFriend };
 
+export type DeveloperRequestStatus = "pendiente" | "aceptada" | "rechazada";
+
+export type DeveloperRequest = {
+  id: string;
+  user_id: string;
+  titulo: string;
+  motivo: string;
+  estado: DeveloperRequestStatus;
+  created_at: string;
+  reviewed_at: string | null;
+};
+
 export function getAccountProfile(userId: string): Promise<AccountProfile> {
   return getAccountProfileFromApi(supabase, userId);
 }
@@ -157,5 +169,60 @@ export async function getUserDetailedStats(userId: string) {
   } catch (error) {
     console.error("Error en el servicio de estadísticas:", error);
     return null;
+  }
+}
+
+export async function getLatestDeveloperRequest(userId: string): Promise<DeveloperRequest | null> {
+  const { data, error } = await supabase
+    .from("developer_requests")
+    .select("id, user_id, titulo, motivo, estado, created_at, reviewed_at")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
+export async function createDeveloperRequest(input: {
+  userId: string;
+  titulo: string;
+  motivo: string;
+}): Promise<DeveloperRequest> {
+  const { data, error } = await supabase
+    .from("developer_requests")
+    .insert({
+      user_id: input.userId,
+      titulo: input.titulo,
+      motivo: input.motivo,
+      estado: "pendiente",
+    })
+    .select("id, user_id, titulo, motivo, estado, created_at, reviewed_at")
+    .single();
+
+  if (error || !data) {
+    throw error ?? new Error("No se pudo crear la solicitud de developer");
+  }
+
+  return data;
+}
+
+export async function cancelDeveloperRequest(input: {
+  requestId: string;
+  userId: string;
+}): Promise<void> {
+  const { error } = await supabase
+    .from("developer_requests")
+    .delete()
+    .eq("id", input.requestId)
+    .eq("user_id", input.userId)
+    .eq("estado", "pendiente");
+
+  if (error) {
+    throw error;
   }
 }

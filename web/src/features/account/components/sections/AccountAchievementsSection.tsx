@@ -15,7 +15,7 @@ export function AccountAchievementsSection({ userAchievements }: { userAchieveme
   const { t } = useTranslation();
 
   return (
-    <section className="bg-slate-900/80 border border-slate-800 rounded-3xl p-8 shadow-xl">
+    <section className="h-full bg-slate-900/80 border border-slate-800 rounded-3xl p-8 shadow-xl">
       <div className="flex items-center gap-3 mb-8">
         <div className="p-2 bg-amber-500/20 text-amber-400 rounded-lg">
           <Trophy size={24} />
