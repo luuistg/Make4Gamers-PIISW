@@ -7,6 +7,9 @@ import { logout } from '../../features/auth/services/logout.service';
 import { useAuthStatus } from '../../features/auth/hooks/useAuthStatus';
 import { supabase } from '../../supabase';
 
+
+import { calculateLazyGlobalScore, getGlobalProgress } from '../../features/progression/services/progression.service';
+
 const Header = () => {
     const { t, i18n } = useTranslation();
     const { isAuthenticated } = useAuthStatus();
@@ -21,6 +24,9 @@ const Header = () => {
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const [hasUnread, setHasUnread] = useState(false);
 
+
+    const [globalProgress, setGlobalProgress] = useState<{ percentage: number, nextTierName: string, pointsNeeded: number } | null>(null);
+   
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -40,6 +46,36 @@ const Header = () => {
                     setIsAdmin(true);
                 }
 
+
+                try {
+            
+                    const { data: userScores, error } = await supabase
+                        .from('scores') 
+                        .select(`
+                            score,
+                            games (
+                                title
+                            )
+                        `) 
+                        .eq('user_id', user.id);
+
+                    if (error) throw error;
+
+                    if (userScores) {
+                    
+                        const highScores = userScores.map((row: any) => ({
+                            
+                            displayTitle: row.games?.title || 'Juego Desconocido',
+                            score: row.score
+                        }));
+                        
+                        const totalScore = calculateLazyGlobalScore(highScores);
+                        setGlobalProgress(getGlobalProgress(totalScore));
+                    }
+                } catch (error) {
+                    console.error("Error cargando progreso global:", error);
+                }
+               
             }
         };
         if (isAuthenticated) {
@@ -49,7 +85,7 @@ const Header = () => {
 
 
     useEffect(() => {
-        // Reset unread badge when navigating to chat
+       
         const inChat = location.pathname === '/chat';
         if (inChat) {
             queueMicrotask(() => setHasUnread(false));
@@ -107,7 +143,7 @@ const Header = () => {
 
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-<Link to="/juegos" className="hover:text-indigo-400 transition-colors">{t('nav.games')}</Link>
+                    <Link to="/juegos" className="hover:text-indigo-400 transition-colors">{t('nav.games')}</Link>
                     <Link to="/ranking" className="hover:text-indigo-400 transition-colors">{t('nav.ranking')}</Link>
 
                     <Link to="/chat" className="relative hover:text-indigo-400 transition-colors flex items-center">
@@ -125,37 +161,59 @@ const Header = () => {
                 <div className="flex items-center gap-4">
 
                     {isAuthenticated ? (
-                        <div className="relative">
-                            <button
-                                onClick={() => { setIsProfileOpen(!isProfileOpen); setIsLangOpen(false); }}
-                                className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-                            >
-                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 border border-slate-700 text-slate-300">
-                                    <User size={16} />
-                                </div>
-                                <ChevronDown size={14} className={`text-slate-400 hidden sm:block transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
-                            </button>
-
-                            {isProfileOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-lg shadow-xl overflow-hidden py-1 z-50">
-                                    <Link to="/cuenta" className="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white transition-colors" onClick={() => setIsProfileOpen(false)}>
-                                        <User size={16} />
-                                        <span>{t('nav.account')}</span>
-                                    </Link>
-
-
-
-
-                                    <div className="h-px bg-slate-800 my-1"></div>
-                                    <button
-                                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-slate-800 hover:text-red-300 transition-colors"
-                                        onClick={handleLogout}
-                                    >
-                                        <LogOut size={16} />
-                                        <span>{t('nav.logout')}</span>
-                                    </button>
+                       
+                        <div className="flex items-center gap-4">
+                            
+                           
+                            {globalProgress && globalProgress.nextTierName !== 'MAX' && (
+                                <div className="hidden md:flex flex-col items-end justify-center group cursor-help">
+                                    <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 group-hover:text-amber-400 transition-colors mb-0.5">
+                                        Faltan {globalProgress.pointsNeeded} pts para <span className="text-amber-400">{globalProgress.nextTierName}</span>
+                                    </span>
+                                    <div className="h-1.5 w-28 bg-slate-900 rounded-full overflow-hidden border border-slate-800 shadow-inner">
+                                        <div 
+                                            className="h-full bg-gradient-to-r from-amber-600 to-amber-400 rounded-full transition-all duration-1000 ease-out relative"
+                                            style={{ width: `${globalProgress.percentage}%` }}
+                                        >
+                                            <div className="absolute top-0 right-0 bottom-0 w-4 bg-white/30 blur-[2px]"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             )}
+                           
+
+                            <div className="relative">
+                                <button
+                                    onClick={() => { setIsProfileOpen(!isProfileOpen); setIsLangOpen(false); }}
+                                    className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                                >
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 border border-slate-700 text-slate-300">
+                                        <User size={16} />
+                                    </div>
+                                    <ChevronDown size={14} className={`text-slate-400 hidden sm:block transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
+                                </button>
+
+                                {isProfileOpen && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-lg shadow-xl overflow-hidden py-1 z-50">
+                                        <Link to="/cuenta" className="flex items-center gap-2 px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white transition-colors" onClick={() => setIsProfileOpen(false)}>
+                                            <User size={16} />
+                                            <span>{t('nav.account')}</span>
+                                        </Link>
+
+
+
+
+                                        <div className="h-px bg-slate-800 my-1"></div>
+                                        <button
+                                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-slate-800 hover:text-red-300 transition-colors"
+                                            onClick={handleLogout}
+                                        >
+                                            <LogOut size={16} />
+                                            <span>{t('nav.logout')}</span>
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     ) : (
                         <Link

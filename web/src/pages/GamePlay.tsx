@@ -35,7 +35,7 @@ export default function Gameplay() {
   const [sessionTimerEndsAtMs, setSessionTimerEndsAtMs] = useState<number | null>(null);
   const [sessionTimerSecondsRemaining, setSessionTimerSecondsRemaining] = useState<number | null>(null);
   const [startingSession, setStartingSession] = useState<boolean>(false);
-  // matchId que el juego comunica via postMessage cuando lo tenga disponible
+
   const [iframeMatchId, setIframeMatchId] = useState<string | null>(null);
 
   const { match, loading: matchLoading } = useActiveMatch(id ?? null, userId);
@@ -116,7 +116,7 @@ export default function Gameplay() {
       case "custom": {
         const minutes = Math.floor(Number(customMinutes));
         if (!Number.isFinite(minutes) || minutes <= 0) return null;
-        // Límite razonable para evitar turnos demasiado largos.
+        
         if (minutes > 180) return null;
         return minutes * 60;
       }
@@ -136,8 +136,6 @@ export default function Gameplay() {
     return url.toString();
   }, [game, id, playerName]);
 
-
-  // Escucha postMessage del iframe — cuando el juego devuelva el match_id lo capturamos
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
       const msg = event.data;
@@ -279,7 +277,7 @@ export default function Gameplay() {
 
       <div className="mt-6 mb-6">
         <div className="mx-auto w-full max-w-[1200px] px-8 lg:px-14">
-          {/* Barra de jugadores — visible cuando hay partida activa */}
+         
           {(match || matchLoading) && (
             <PlayersBar
               players={match?.players ?? []}
@@ -293,7 +291,7 @@ export default function Gameplay() {
             <section className="relative h-[600px] w-full max-w-[800px] rounded-xl overflow-hidden bg-black border border-indigo-500/50 shadow-xl shadow-indigo-500/10 transition-all duration-300">
               {timerActive ? <GameViewport src={finalGameUrl} title={`game-${game.id}`} ratio="4:3" /> : null}
 
-              {/* Recordatorio de reglas — aparece antes del modal de temporizador */}
+             
               {showRulesReminder && game && (
                 <RulesReminderModal
                   gameId={game.id}
@@ -440,6 +438,7 @@ export default function Gameplay() {
             <GameplaySidebar
               userId={userId}
               gameId={game.id}
+              gameTitle={game.title}
               movements={movements}
               availableModes={game.available_modes}
             />

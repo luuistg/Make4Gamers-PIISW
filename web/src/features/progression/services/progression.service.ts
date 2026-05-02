@@ -104,3 +104,52 @@ export function getGlobalProgress(totalScore: number) {
     nextTierThreshold
   };
 }
+
+
+
+export function getGameProgress(gameTitle: string, score: number) {
+
+  const config = progressionConfig.find(
+    c => c.gameTitle.toLowerCase() === gameTitle.toLowerCase()
+  ) || defaultTierConfig;
+
+  const t = config.thresholds;
+
+
+  if (score >= t.PS5) {
+    return { percentage: 100, nextTierName: 'MAX', pointsNeeded: 0 };
+  }
+  
+  let currentTierThreshold = 0;
+  let nextTierThreshold = t.SNES;
+  let nextTierName = 'SNES';
+
+  if (score >= t.PS4) {
+    currentTierThreshold = t.PS4;
+    nextTierThreshold = t.PS5;
+    nextTierName = 'PS5';
+  } else if (score >= t.PS3) {
+    currentTierThreshold = t.PS3;
+    nextTierThreshold = t.PS4;
+    nextTierName = 'PS4';
+  } else if (score >= t.PS1) {
+    currentTierThreshold = t.PS1;
+    nextTierThreshold = t.PS3;
+    nextTierName = 'PS3';
+  } else if (score >= t.SNES) {
+    currentTierThreshold = t.SNES;
+    nextTierThreshold = t.PS1;
+    nextTierName = 'PS1';
+  }
+
+  // Calculamos el porcentaje
+  const pointsInCurrent = score - currentTierThreshold;
+  const pointsRequired = nextTierThreshold - currentTierThreshold;
+  const percentage = Math.max(0, Math.min(100, Math.floor((pointsInCurrent / pointsRequired) * 100)));
+
+  return {
+    percentage,
+    nextTierName,
+    pointsNeeded: nextTierThreshold - score,
+  };
+}

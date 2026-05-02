@@ -5,7 +5,8 @@ import {
   getTierForScore, 
   getGlobalTier, 
   calculateLazyGlobalScore,
-  getGlobalProgress 
+  getGlobalProgress,
+  getGameProgress
 } from '../../../progression/services/progression.service';
 
 type ProfileSummary = {
@@ -42,15 +43,14 @@ const getGlobalControllerData = (tier: string) => {
 const getGameControllerData = (tier: string) => {
   const basePath = '/assets/emblems';
   switch(tier) {
-    case 'SNES': return { name: 'SNES', image: `${basePath}/nintendoEmblem.png`, color: 'text-slate-400', glow: 'shadow-slate-500/40', border: 'hover:border-slate-500/50' };
-    case 'PS1': return { name: 'PS1', image: `${basePath}/ps1Emblem.png`, color: 'text-orange-400', glow: 'shadow-orange-500/40', border: 'hover:border-orange-500/50' };
-    case 'PS3': return { name: 'PS3', image: `${basePath}/ps3Emblem.png`, color: 'text-slate-200', glow: 'shadow-slate-300/50', border: 'hover:border-slate-300/50' };
-    case 'PS4': return { name: 'PS4', image: `${basePath}/ps4Emblem.png`, color: 'text-yellow-400', glow: 'shadow-yellow-500/50', border: 'hover:border-yellow-500/50' };
-    case 'PS5': return { name: 'PS5', image: `${basePath}/ps5Emblem.png`, color: 'text-fuchsia-400', glow: 'shadow-fuchsia-500/60', border: 'hover:border-fuchsia-500/50' };
-    default: return { name: 'SNES', image: `${basePath}/nintendoEmblem.png`, color: 'text-slate-500', glow: 'shadow-slate-500/20', border: 'hover:border-slate-500/50' };
+    case 'SNES': return { name: 'SNES', image: `${basePath}/nintendoEmblem.png`, color: 'text-slate-400', glow: 'shadow-slate-500/40', border: 'hover:border-slate-500/50', bgClass: 'bg-slate-400' };
+    case 'PS1': return { name: 'PS1', image: `${basePath}/ps1Emblem.png`, color: 'text-orange-400', glow: 'shadow-orange-500/40', border: 'hover:border-orange-500/50', bgClass: 'bg-orange-400' };
+    case 'PS3': return { name: 'PS3', image: `${basePath}/ps3Emblem.png`, color: 'text-slate-200', glow: 'shadow-slate-300/50', border: 'hover:border-slate-300/50', bgClass: 'bg-slate-200' };
+    case 'PS4': return { name: 'PS4', image: `${basePath}/ps4Emblem.png`, color: 'text-yellow-400', glow: 'shadow-yellow-500/50', border: 'hover:border-yellow-500/50', bgClass: 'bg-yellow-400' };
+    case 'PS5': return { name: 'PS5', image: `${basePath}/ps5Emblem.png`, color: 'text-fuchsia-400', glow: 'shadow-fuchsia-500/60', border: 'hover:border-fuchsia-500/50', bgClass: 'bg-fuchsia-400' };
+    default: return { name: 'SNES', image: `${basePath}/nintendoEmblem.png`, color: 'text-slate-500', glow: 'shadow-slate-500/20', border: 'hover:border-slate-500/50', bgClass: 'bg-slate-500' };
   }
 };
-
 export function AccountDashboardSection({ profile, highScores }: AccountDashboardSectionProps) {
   const { t } = useTranslation();
   
@@ -168,28 +168,58 @@ export function AccountDashboardSection({ profile, highScores }: AccountDashboar
 
         {highScores && highScores.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+        
             {highScores.map((record, index) => {
               const tier = getTierForScore(record.displayTitle, record.score);
               const consoleEmblem = getGameControllerData(tier);
+              
+             
+              const progress = getGameProgress(record.displayTitle, record.score);
+
               return (
-                <div key={index} className={`group relative bg-gradient-to-b from-slate-800/40 to-slate-900/90 border border-slate-700/50 rounded-3xl p-1 transition-all duration-500 ${consoleEmblem.border} hover:shadow-2xl`}>
-                  <div className="bg-slate-900/40 rounded-[22px] p-5 h-full flex flex-col items-center">
-                    <div className="w-full flex justify-between items-center mb-4">
-                      <span className="text-xs font-medium text-slate-400 truncate">{record.displayTitle}</span>
-                      <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 bg-slate-950/50 rounded-lg ${consoleEmblem.color}`}>{consoleEmblem.name}</span>
+             
+                <div key={index} className="group relative bg-slate-900 border border-slate-700/50 rounded-2xl p-4 flex flex-col hover:border-indigo-500/50 transition-colors overflow-hidden h-full">
+                  
+                 
+                  <div className="flex justify-between items-start mb-2 flex-shrink-0">
+                    <span className="font-bold text-white group-hover:text-indigo-400 truncate">{record.displayTitle}</span>
+                    <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 bg-slate-950/50 rounded-lg ${consoleEmblem.color}`}>{consoleEmblem.name}</span>
+                  </div>
+
+         
+                  <div className="relative w-full h-24 flex items-center justify-center mb-4 mt-2 flex-shrink-0">
+                    <div className={`absolute w-20 h-20 rounded-full blur-[40px] opacity-20 ${consoleEmblem.glow} bg-current ${consoleEmblem.color}`}></div>
+                    <img src={consoleEmblem.image} className="relative z-10 h-full object-contain group-hover:scale-110 transition-all duration-500" alt="rank" />
+                  </div>
+
+           
+                  <div className="text-center w-full mb-5 flex-shrink-0">
+                    <span className="text-3xl font-black text-white tracking-tighter">{record.score}</span>
+                    <span className="text-indigo-400 text-xs font-bold uppercase ml-1">PTS</span>
+                  </div>
+
+                
+                  <div className="mt-auto pt-3 border-t border-slate-800/50 w-full flex-shrink-0">
+                    <div className="flex justify-between items-end mb-1.5 overflow-visible">
+                      <span className="text-[10px] text-slate-400 font-medium tracking-wider whitespace-nowrap">
+                        {progress.nextTierName === 'MAX' ? 'NIVEL MÁXIMO' : `HACIA ${progress.nextTierName}`}
+                      </span>
+                      <span className="text-[10px] font-bold text-slate-300">
+                        {progress.pointsNeeded > 0 ? `${progress.pointsNeeded} pts rest.` : 'MAX'}
+                      </span>
                     </div>
-                    <div className="relative w-full h-24 flex items-center justify-center mb-4">
-                      <div className={`absolute w-20 h-20 rounded-full blur-[40px] opacity-20 ${consoleEmblem.glow} bg-current ${consoleEmblem.color}`}></div>
-                      <img src={consoleEmblem.image} className="relative z-10 h-full object-contain group-hover:scale-110 transition-all duration-500" alt="rank" />
-                    </div>
-                    <div className="text-center w-full mt-auto">
-                      <span className="text-3xl font-black text-white tracking-tighter">{record.score}</span>
-                      <span className="text-indigo-400 text-xs font-bold uppercase ml-1">PTS</span>
+                    <div className="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden shadow-inner border border-slate-800">
+                      <div 
+                        className={`h-full rounded-full ${consoleEmblem.bgClass} transition-all duration-1000 ease-out`}
+                        style={{ width: `${progress.percentage}%` }}
+                      ></div>
                     </div>
                   </div>
+
                 </div>
               );
             })}
+           
           </div>
         ) : (
           <div className="text-center py-12 bg-slate-800/30 rounded-xl border border-slate-700/30 border-dashed">
