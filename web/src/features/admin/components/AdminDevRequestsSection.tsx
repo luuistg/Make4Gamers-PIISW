@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { supabase } from '../supabase';
+import { supabase } from '../../../supabase';
 
 type DeveloperRequestRow = {
   id: string;

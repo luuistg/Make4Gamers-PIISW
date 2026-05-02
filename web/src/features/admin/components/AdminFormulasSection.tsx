@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { supabase } from '../supabase';
+import { supabase } from '../../../supabase';
 import { useNavigate } from 'react-router-dom';
 import { Settings2, Save, Info, Check} from 'lucide-react';
-import { getScoringSettings, updateScoringSetting } from '../features/admin/services/settings.service';
+import { getScoringSettings, updateScoringSetting } from '../services/settings.service';
 
 export default function AdminFormulas() {
   const { t } = useTranslation();

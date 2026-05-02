@@ -16,14 +16,8 @@ import Cuenta from './pages/Cuenta';
 import GameRules from "./pages/GameRules";
 import Ayuda from './pages/Ayuda';
 import Contacto from './pages/Contacto';
-import AdminSugerencias from './pages/AdminSugerencias';
-import AdminTickets from './pages/AdminTickets';
-import AdminFiltro from './pages/AdminFiltro';
 import Estadisticas from './pages/Estadisticas';
-import AdminFormulas from './pages/AdminFormulas';
-import AdminLayout from './shared/layout/AdminLayout';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminSolicitudesDev from './pages/AdminSolicitudesDev';
+import Admin from './pages/Admin';
 function App() {
   return (
     <>
@@ -47,14 +41,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/recuperar-password" element={<RecuperarPassword />} />
           <Route path="/actualizar-password" element={<ActualizarPassword />} />
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="sugerencias" element={<AdminSugerencias />} />
-            <Route path="tickets" element={<AdminTickets />} />
-            <Route path="filtro" element={<AdminFiltro />} />
-            <Route path="formulas" element={<AdminFormulas />} />
-            <Route path="solicitudes" element={<AdminSolicitudesDev />} />
-          </Route>
+          <Route path="/admin" element={<Admin />} />
 
           {/* Main */}
           <Route element={<Layout />}>

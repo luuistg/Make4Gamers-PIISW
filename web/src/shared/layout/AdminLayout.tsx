@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Calculator,
@@ -13,9 +13,17 @@ import {
 import Header from './Header';
 import Footer from './Footer';
 import { supabase } from '../../supabase';
+import AdminDashboard from '../../features/admin/components/AdminDashboardSection';
+import AdminFormulas from '../../features/admin/components/AdminFormulasSection';
+import AdminTickets from '../../features/admin/components/AdminTicketsSection';
+import AdminSugerencias from '../../features/admin/components/AdminSuggestionsSection';
+import AdminFiltro from '../../features/admin/components/AdminWordFilterSection';
+import AdminSolicitudesDev from '../../features/admin/components/AdminDevRequestsSection';
+
+type AdminSection = 'dashboard' | 'formulas' | 'tickets' | 'sugerencias' | 'filtro' | 'solicitudes';
 
 type NavItem = {
-  to: string;
+  key: AdminSection;
   label: string;
   icon: LucideIcon;
   badge?: number;
@@ -27,6 +35,7 @@ export default function AdminLayout() {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [pendingDevRequests, setPendingDevRequests] = useState(0);
+  const [activeSection, setActiveSection] = useState<AdminSection>('dashboard');
 
   useEffect(() => {
     const checkAccess = async () => {
@@ -80,18 +89,35 @@ export default function AdminLayout() {
   }
 
   const navItems: NavItem[] = [
-    { to: '/admin', label: t('admin.dashboard', { defaultValue: 'Panel' }), icon: LayoutDashboard },
-    { to: '/admin/formulas', label: t('admin.formulas'), icon: Calculator },
-    { to: '/admin/tickets', label: t('admin.tickets'), icon: LifeBuoy },
-    { to: '/admin/sugerencias', label: t('admin.suggestions'), icon: MessageSquare },
-    { to: '/admin/filtro', label: t('admin.wordFilter'), icon: Filter },
+    { key: 'dashboard', label: t('admin.dashboard', { defaultValue: 'Panel' }), icon: LayoutDashboard },
+    { key: 'formulas', label: t('admin.formulas'), icon: Calculator },
+    { key: 'tickets', label: t('admin.tickets'), icon: LifeBuoy },
+    { key: 'sugerencias', label: t('admin.suggestions'), icon: MessageSquare },
+    { key: 'filtro', label: t('admin.wordFilter'), icon: Filter },
     {
-      to: '/admin/solicitudes',
+      key: 'solicitudes',
       label: t('admin.devRequests', { defaultValue: 'Solicitudes Dev' }),
       icon: UserCog,
       badge: pendingDevRequests,
     },
   ];
+
+  const renderActiveSection = () => {
+    switch (activeSection) {
+      case 'formulas':
+        return <AdminFormulas />;
+      case 'tickets':
+        return <AdminTickets />;
+      case 'sugerencias':
+        return <AdminSugerencias />;
+      case 'filtro':
+        return <AdminFiltro />;
+      case 'solicitudes':
+        return <AdminSolicitudesDev />;
+      default:
+        return <AdminDashboard />;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200">
@@ -117,17 +143,15 @@ export default function AdminLayout() {
               {navItems.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    end={item.to === '/admin'}
-                    className={({ isActive }) =>
-                      `flex items-center justify-between rounded-lg border px-3 py-2 text-sm transition-colors ${
-                        isActive
-                          ? 'border-indigo-500/40 bg-indigo-500/15 text-indigo-100'
-                          : 'border-transparent text-slate-300 hover:border-slate-700 hover:bg-slate-800/70'
-                      }`
-                    }
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => setActiveSection(item.key)}
+                    className={`w-full flex items-center justify-between rounded-lg border px-3 py-2 text-sm transition-colors ${
+                      activeSection === item.key
+                        ? 'border-indigo-500/40 bg-indigo-500/15 text-indigo-100'
+                        : 'border-transparent text-slate-300 hover:border-slate-700 hover:bg-slate-800/70'
+                    }`}
                   >
                     <span className="flex items-center gap-2">
                       <Icon size={16} className="text-slate-400" />
@@ -138,14 +162,14 @@ export default function AdminLayout() {
                         {item.badge}
                       </span>
                     ) : null}
-                  </NavLink>
+                  </button>
                 );
               })}
             </nav>
           </aside>
 
           <section className="rounded-2xl border border-slate-800 bg-slate-900/50 p-4 md:p-6 min-h-[600px]">
-            <Outlet />
+            {renderActiveSection()}
           </section>
         </div>
       </main>

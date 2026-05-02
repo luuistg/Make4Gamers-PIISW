@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { supabase } from '../supabase';
+import { supabase } from '../../../supabase';
 
 type Card = {
   title: string;
